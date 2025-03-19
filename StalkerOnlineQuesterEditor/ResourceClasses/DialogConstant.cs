@@ -90,14 +90,14 @@ namespace StalkerOnlineQuesterEditor
                 ret.Add(key);
             return ret;
         }
-        
+
         protected void loadFile(string path)
         {
             try
             {
                 doc = XDocument.Load(path);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 System.Windows.Forms.MessageBox.Show("Не удалось загрузить файл:" + System.IO.Path.GetFullPath(path), "Ошибка");
             }
@@ -199,7 +199,7 @@ namespace StalkerOnlineQuesterEditor
             {
                 doc = XDocument.Load("source/NPCItems.xml");
             }
-            catch(Exception)
+            catch (Exception)
             {
                 System.Windows.Forms.MessageBox.Show("Не удалось загрузить файл:" + System.IO.Path.GetFullPath("source/NPCItems.xml"), "Ошибка");
                 return;
@@ -218,7 +218,7 @@ namespace StalkerOnlineQuesterEditor
                         case "NPC_BODY": body.Add(ID, name); break;
                     }
                 }
-                
+
             }
             if (!System.IO.File.Exists("source/ItemWeapons.xml"))
             {
@@ -236,27 +236,27 @@ namespace StalkerOnlineQuesterEditor
             }
             foreach (XElement items in doc.Root.Elements())
             {
-                  string weapon_type = items.Name.ToString();
+                string weapon_type = items.Name.ToString();
 
-                    foreach (XElement item in items.Elements())
+                foreach (XElement item in items.Elements())
+                {
+                    int ID = Convert.ToInt32(item.Element("id").Value.ToString());
+
+                    string name = item.Element("Name").Value;
+                    switch (weapon_type)
                     {
-                        int ID = Convert.ToInt32(item.Element("id").Value.ToString());
+                        case "PRIMARY_WEAPONS": primaryWeapons.Add(ID, name); break;
+                        case "SECONDARY_WEAPONS": secondaryyWeapons.Add(ID, name); break;
+                    }
+                }
 
-                        string name = item.Element("Name").Value;
-                        switch (weapon_type)
-                        {
-                            case "PRIMARY_WEAPONS": primaryWeapons.Add(ID, name); break;
-                            case "SECONDARY_WEAPONS": secondaryyWeapons.Add(ID, name); break;
-                    }
-                    }
-                
             }
         }
     }
 
     public class AvatarActions
     {
-       protected List<string> _constants;
+        protected List<string> _constants;
 
         public AvatarActions()
         {
@@ -332,10 +332,6 @@ namespace StalkerOnlineQuesterEditor
             Dictionary<string, string> sync = new Dictionary<string, string>();
             while (reader.Read())
             {
-                if (reader.TokenType == JsonToken.String)
-                {
-                    Console.WriteLine(reader.Value.ToString());
-                }
                 if (reader.TokenType == JsonToken.PropertyName)
                 {
                     if (!space.Any())
@@ -386,9 +382,9 @@ namespace StalkerOnlineQuesterEditor
                 }
             }
 
-            foreach(var i in sync)
+            foreach (var i in sync)
             {
-                _constants[i.Value] = new List<string>(_constants[i.Key]);
+                _constants[i.Key] = new List<string>(_constants[i.Value]);
             }
 
         }
@@ -402,7 +398,7 @@ namespace StalkerOnlineQuesterEditor
         {
             List<string> weathers = new List<string>();
             foreach (var i in _constants.Values)
-                foreach(var weather in i)
+                foreach (var weather in i)
                 {
                     if (!weathers.Contains(weather)) weathers.Add(weather);
                 }
@@ -438,6 +434,43 @@ namespace StalkerOnlineQuesterEditor
         public List<string> getKeys()
         {
             return _constants;
+        }
+    }
+
+
+
+    public static class SeasonEvents
+    {
+
+        static List<string> events = new List<string>();
+
+        public static void parse()
+        {
+            string JSON_PATH = "../../../res/scripts/server_data/season_events_config.json";
+
+            JsonTextReader reader = new JsonTextReader(new StreamReader(JSON_PATH, Encoding.UTF8));
+            int level = 0;
+            while (reader.Read())
+            {
+
+                if (reader.TokenType == JsonToken.PropertyName)
+                {
+                    if (level == 1)
+                        events.Add(reader.Value.ToString());
+                }
+                else if (reader.TokenType == JsonToken.EndObject)
+                    level--;
+                else if (reader.TokenType == JsonToken.StartObject)
+                    level++;
+
+            }
+            reader.Close();
+        }
+
+
+        public static string[] getListNames()
+        {
+            return events.ToArray();
         }
     }
 }

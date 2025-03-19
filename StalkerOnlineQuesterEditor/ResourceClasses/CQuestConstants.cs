@@ -16,6 +16,7 @@ namespace StalkerOnlineQuesterEditor
         List<СQuestType> ierarchyQuestsType = new List<СQuestType>();
         List<СQuestType> simpleQuestsType = new List<СQuestType>();
         List<СQuestType> pvpQuestsType = new List<СQuestType>();
+        List<int> ontestQuestsType = new List<int>();
 
         public static int TYPE_FARM = 0; // собрать предметы
         public static int TYPE_FARM_AUTO = 16; // собранные предметы автоматически исчезают
@@ -64,6 +65,8 @@ namespace StalkerOnlineQuesterEditor
         public static int TYPE_B2C_REVIVE = 46; //Оживить игрока во время захвата
 
         public static int TYPE_DUNGEON_BOX_COUNTER = 45; // собрать коробки внутри танка в данже
+        public static int TYPE_LEAVE_MAP = 47;
+        public static int TYPE_ENTER_MAP = 48;
         public static int TYPE_CREATE_NPC = 51; // создать бегающего НИП
         public static int TYPE_CREATE_MOB = 52; // создать моба
         public static int TYPE_KILLSCENARIONPC = 53; // убить НИП созданного квестом
@@ -118,7 +121,8 @@ namespace StalkerOnlineQuesterEditor
             pvpQuestsType.Add(new СQuestType(TYPE_B2C_REVIVE, "46 [Захват баз] Оживить союзников"));
 
             simpleQuestsType.Add(new СQuestType(TYPE_DUNGEON_BOX_COUNTER, "45 [Данж] Погрузить нужное кол-во коробок"));
-
+            simpleQuestsType.Add(new СQuestType(TYPE_LEAVE_MAP, "47 Покинуть карту"));
+            simpleQuestsType.Add(new СQuestType(TYPE_ENTER_MAP, "48 Попасть на карту"));
             // ierarchyQuestsType.Add(new СQuestType(50, "50 Игра против режиссера."));
             simpleQuestsType.Add(new СQuestType(TYPE_CREATE_NPC, "51 [Сценарий] Создать NPC"));
             simpleQuestsType.Add(new СQuestType(TYPE_CREATE_MOB, "52 [Сценарий] Создать моба"));
@@ -138,7 +142,20 @@ namespace StalkerOnlineQuesterEditor
             ierarchyQuestsType.Add(new СQuestType(13, "13  Выполнить подквесты в любом порядке (--> OnTest)"));
             ierarchyQuestsType.Add(new СQuestType(14, "14 Выполнить подквесты по порядку (--> OnTest)"));
             ierarchyQuestsType.Add(new СQuestType(15, "15 Выполнить один подквест на выбор (--> OnTest)"));
-            ierarchyQuestsType.Add(new СQuestType(100, "100 Проверить все дочерние квесты."));           
+            ierarchyQuestsType.Add(new СQuestType(100, "100 Проверить все дочерние квесты."));
+
+            ontestQuestsType.Add(TYPE_FARM);
+            ontestQuestsType.Add(TYPE_KILLMOBS_WITH_ONTEST);
+            ontestQuestsType.Add(13);
+            ontestQuestsType.Add(14);
+            ontestQuestsType.Add(15);
+            ontestQuestsType.Add(TYPE_HAVE_EFFECT);
+            ontestQuestsType.Add(TYPE_IN_AREA);
+            ontestQuestsType.Add(TYPE_CRAFT_ITEM);
+            ontestQuestsType.Add(TYPE_COOK_ITEM);
+            ontestQuestsType.Add(TYPE_KILLNPC_WITH_ONTEST);
+            ontestQuestsType.Add(TYPE_KILLSCENARIONPC_WITH_ONTEST);
+            ontestQuestsType.Add(TYPE_ENTITY_SEEN_AUTO);
         }
         public bool isSimple(int questType)
         {
@@ -154,6 +171,11 @@ namespace StalkerOnlineQuesterEditor
                 if (quest.getType() == questType)
                     return true;
             return false;
+        }
+
+        public bool isOnTest(int questType)
+        {
+            return ontestQuestsType.Contains(questType);
         }
 
         public string getDescription(int questType)

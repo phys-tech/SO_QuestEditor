@@ -42,11 +42,6 @@ namespace StalkerOnlineQuesterEditor.Forms
                 locale_quest.QuestInformation.Description = "";
                 locale_quest.QuestInformation.DescriptionClosed = "";
                 locale_quest.QuestInformation.DescriptionOnTest = "";
-                locale_quest.QuestInformation.onFailed = "";
-                locale_quest.QuestInformation.onWin = "";
-                locale_quest.QuestInformation.onGet = "";
-                locale_quest.QuestInformation.onOpen = "";
-                locale_quest.QuestInformation.onTest = "";
                 locale_quest.QuestInformation.Title = "";
                 foreach (var key in locale_quest.QuestInformation.Items.Keys)
                 {
@@ -63,11 +58,13 @@ namespace StalkerOnlineQuesterEditor.Forms
             descriptionTextBox.Text = quest.QuestInformation.Description;
             descriptionOnTestTextBox.Text = quest.QuestInformation.DescriptionOnTest;
             descriptionClosedTextBox.Text = quest.QuestInformation.DescriptionClosed;
-            onWonTextBox.Text = quest.QuestInformation.onWin;
-            onGetTextBox.Text = quest.QuestInformation.onGet;
-            onFailedTextBox.Text = quest.QuestInformation.onFailed;
-            onOpenTextBox.Text = quest.QuestInformation.onOpen;
-            onTestTextBox.Text = quest.QuestInformation.onTest;
+
+            for (int i=0; i< quest.QuestInformation.messages.Count; i++ )
+            {
+                object[] row = { quest.QuestInformation.messages[i].message, locale_quest.QuestInformation.messages[i].message };
+                dgQuestMessages.Rows.Add(row);
+            }
+
 
             // если заголовки и описание совпадают, это означает, что в локализации просто копия русских
             // текстов (еще не готова и тупо скопирована) - значит ее не выводим на форму
@@ -78,12 +75,6 @@ namespace StalkerOnlineQuesterEditor.Forms
                 localeDescriptionTextBox.Text = locale_quest.QuestInformation.Description;
                 localeDescriptionOnTestTextBox.Text = locale_quest.QuestInformation.DescriptionOnTest;
                 localeDescriptionClosedTextBox.Text = locale_quest.QuestInformation.DescriptionClosed;
-
-                localeOnWonTextBox.Text = locale_quest.QuestInformation.onWin;
-                localeOnFailedTextBox.Text = locale_quest.QuestInformation.onFailed;
-                localeOnGetTextBox.Text = locale_quest.QuestInformation.onGet;
-                localeOnOpenTextBox.Text = locale_quest.QuestInformation.onOpen;
-                localeOnTestTextBox.Text = locale_quest.QuestInformation.onTest;
             }
 
             ComponentResourceManager resources = new ComponentResourceManager(this.GetType());
@@ -129,11 +120,14 @@ namespace StalkerOnlineQuesterEditor.Forms
             cur_locale_quest.QuestInformation.Description = localeDescriptionTextBox.Text;
             cur_locale_quest.QuestInformation.DescriptionOnTest = localeDescriptionOnTestTextBox.Text;
             cur_locale_quest.QuestInformation.DescriptionClosed = localeDescriptionClosedTextBox.Text;
-            cur_locale_quest.QuestInformation.onWin = localeOnWonTextBox.Text;
-            cur_locale_quest.QuestInformation.onGet = localeOnGetTextBox.Text;
-            cur_locale_quest.QuestInformation.onFailed = localeOnFailedTextBox.Text;
-            cur_locale_quest.QuestInformation.onOpen = localeOnOpenTextBox.Text;
-            cur_locale_quest.QuestInformation.onTest = localeOnTestTextBox.Text;
+
+
+            foreach (DataGridViewRow row in dgQuestMessages.Rows)
+            {
+                string text_loc = row.Cells["text_loc"].FormattedValue.ToString();
+                cur_locale_quest.QuestInformation.messages[row.Index].message = text_loc;
+            }
+
             cur_locale_quest.Version = pub_version;
             // возможно здесь придется копировать данные из quest в cur_locale_quest
             parent.addLocaleQuest(cur_locale_quest);

@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelCreateMob = new System.Windows.Forms.Panel();
             this.cbMobInvul = new System.Windows.Forms.CheckBox();
             this.cbMobLevel = new System.Windows.Forms.ComboBox();
@@ -102,25 +103,15 @@
             this.label26 = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.messageGridView = new System.Windows.Forms.DataGridView();
+            this.state1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.state2 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.message = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.show = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btnFindError = new System.Windows.Forms.Button();
-            this.cbTestScreenMsg = new System.Windows.Forms.CheckBox();
-            this.label39 = new System.Windows.Forms.Label();
-            this.onTestTextBox = new System.Windows.Forms.RichTextBox();
-            this.cbOpenScreenMsg = new System.Windows.Forms.CheckBox();
-            this.label38 = new System.Windows.Forms.Label();
-            this.onOpenTextBox = new System.Windows.Forms.RichTextBox();
             this.btnSpace = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
-            this.cbGetScreenMsg = new System.Windows.Forms.CheckBox();
-            this.cbFailScreenMsg = new System.Windows.Forms.CheckBox();
-            this.cbWonScreenMsg = new System.Windows.Forms.CheckBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.onGotTextBox = new System.Windows.Forms.RichTextBox();
-            this.lFailed = new System.Windows.Forms.Label();
-            this.lWin = new System.Windows.Forms.Label();
-            this.onFailedTextBox = new System.Windows.Forms.RichTextBox();
-            this.onWonTextBox = new System.Windows.Forms.RichTextBox();
             this.cantFailCheckBox = new System.Windows.Forms.CheckBox();
             this.cantCancelCheckBox = new System.Windows.Forms.CheckBox();
             this.availabilityCheckBox = new System.Windows.Forms.CheckBox();
@@ -195,6 +186,10 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.rewardGroupBox = new System.Windows.Forms.GroupBox();
+            this.cbTargetMode = new System.Windows.Forms.ComboBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.tbDungTarget = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.clanPointsValue = new System.Windows.Forms.NumericUpDown();
             this.label40 = new System.Windows.Forms.Label();
             this.tbGetKnowleges = new System.Windows.Forms.TextBox();
@@ -243,6 +238,7 @@
             this.cbQuestLink = new System.Windows.Forms.ComboBox();
             this.cbFraction2Bonus = new System.Windows.Forms.ComboBox();
             this.label34 = new System.Windows.Forms.Label();
+            this.cbMarkOnTest = new System.Windows.Forms.CheckBox();
             this.panelCreateMob.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nupMobCount)).BeginInit();
             this.panelPVPQuests.SuspendLayout();
@@ -253,6 +249,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nupNPCSpeed)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.messageGridView)).BeginInit();
             this.tcDescriptions.SuspendLayout();
             this.tabOpen.SuspendLayout();
             this.tabOnTest.SuspendLayout();
@@ -1009,30 +1006,16 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.messageGridView);
             this.tabPage3.Controls.Add(this.btnFindError);
-            this.tabPage3.Controls.Add(this.cbTestScreenMsg);
-            this.tabPage3.Controls.Add(this.label39);
-            this.tabPage3.Controls.Add(this.onTestTextBox);
-            this.tabPage3.Controls.Add(this.cbOpenScreenMsg);
-            this.tabPage3.Controls.Add(this.label38);
-            this.tabPage3.Controls.Add(this.onOpenTextBox);
             this.tabPage3.Controls.Add(this.btnSpace);
             this.tabPage3.Controls.Add(this.label23);
             this.tabPage3.Controls.Add(this.label21);
-            this.tabPage3.Controls.Add(this.cbGetScreenMsg);
-            this.tabPage3.Controls.Add(this.cbFailScreenMsg);
-            this.tabPage3.Controls.Add(this.cbWonScreenMsg);
-            this.tabPage3.Controls.Add(this.label19);
             this.tabPage3.Controls.Add(this.labelGiveQuestsCanceled);
-            this.tabPage3.Controls.Add(this.onGotTextBox);
             this.tabPage3.Controls.Add(this.label26);
-            this.tabPage3.Controls.Add(this.lFailed);
             this.tabPage3.Controls.Add(this.labelGiveQuestsFailed);
-            this.tabPage3.Controls.Add(this.lWin);
             this.tabPage3.Controls.Add(this.label24);
-            this.tabPage3.Controls.Add(this.onFailedTextBox);
             this.tabPage3.Controls.Add(this.labelGiveQuestsClosed);
-            this.tabPage3.Controls.Add(this.onWonTextBox);
             this.tabPage3.Controls.Add(this.label22);
             this.tabPage3.Controls.Add(this.labelGiveQuestsOpened);
             this.tabPage3.Controls.Add(this.cantFailCheckBox);
@@ -1054,6 +1037,62 @@
             this.tabPage3.Text = "Информация";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // messageGridView
+            // 
+            this.messageGridView.AllowUserToOrderColumns = true;
+            this.messageGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.messageGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.state1,
+            this.state2,
+            this.message,
+            this.show});
+            this.messageGridView.Location = new System.Drawing.Point(6, 280);
+            this.messageGridView.Name = "messageGridView";
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.messageGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            this.messageGridView.Size = new System.Drawing.Size(618, 122);
+            this.messageGridView.TabIndex = 75;
+            // 
+            // state1
+            // 
+            this.state1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.state1.HeaderText = "Состояние ДО";
+            this.state1.Items.AddRange(new object[] {
+            "Any",
+            "Open",
+            "On test",
+            "Closed",
+            "Freez",
+            "Absient"});
+            this.state1.Name = "state1";
+            this.state1.Width = 70;
+            // 
+            // state2
+            // 
+            this.state2.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.state2.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.state2.HeaderText = "Состояние ПОСЛЕ";
+            this.state2.Items.AddRange(new object[] {
+            "Any",
+            "Open",
+            "On test",
+            "Closed",
+            "Freez",
+            "Absient"});
+            this.state2.Name = "state2";
+            this.state2.Width = 70;
+            // 
+            // message
+            // 
+            this.message.HeaderText = "Сообщение";
+            this.message.Name = "message";
+            this.message.Width = 335;
+            // 
+            // show
+            // 
+            this.show.HeaderText = "На экран";
+            this.show.Name = "show";
+            // 
             // btnFindError
             // 
             this.btnFindError.Location = new System.Drawing.Point(539, 110);
@@ -1063,68 +1102,6 @@
             this.btnFindError.Text = "Поиск ошибок";
             this.btnFindError.UseVisualStyleBackColor = true;
             this.btnFindError.Click += new System.EventHandler(this.btnFindError_Click);
-            // 
-            // cbTestScreenMsg
-            // 
-            this.cbTestScreenMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbTestScreenMsg.AutoSize = true;
-            this.cbTestScreenMsg.Location = new System.Drawing.Point(487, 379);
-            this.cbTestScreenMsg.Name = "cbTestScreenMsg";
-            this.cbTestScreenMsg.Size = new System.Drawing.Size(131, 17);
-            this.cbTestScreenMsg.TabIndex = 73;
-            this.cbTestScreenMsg.Text = "сообщение на экран";
-            this.cbTestScreenMsg.UseVisualStyleBackColor = true;
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(6, 380);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(39, 13);
-            this.label39.TabIndex = 71;
-            this.label39.Text = "on test";
-            // 
-            // onTestTextBox
-            // 
-            this.onTestTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.onTestTextBox.Location = new System.Drawing.Point(75, 378);
-            this.onTestTextBox.Name = "onTestTextBox";
-            this.onTestTextBox.Size = new System.Drawing.Size(407, 20);
-            this.onTestTextBox.TabIndex = 72;
-            this.onTestTextBox.Text = "";
-            this.onTestTextBox.TextChanged += new System.EventHandler(this.RichTextBox_TextChanged);
-            // 
-            // cbOpenScreenMsg
-            // 
-            this.cbOpenScreenMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbOpenScreenMsg.AutoSize = true;
-            this.cbOpenScreenMsg.Location = new System.Drawing.Point(487, 355);
-            this.cbOpenScreenMsg.Name = "cbOpenScreenMsg";
-            this.cbOpenScreenMsg.Size = new System.Drawing.Size(131, 17);
-            this.cbOpenScreenMsg.TabIndex = 70;
-            this.cbOpenScreenMsg.Text = "сообщение на экран";
-            this.cbOpenScreenMsg.UseVisualStyleBackColor = true;
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(6, 356);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(57, 13);
-            this.label38.TabIndex = 68;
-            this.label38.Text = "Открытие";
-            // 
-            // onOpenTextBox
-            // 
-            this.onOpenTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.onOpenTextBox.Location = new System.Drawing.Point(75, 354);
-            this.onOpenTextBox.Name = "onOpenTextBox";
-            this.onOpenTextBox.Size = new System.Drawing.Size(407, 20);
-            this.onOpenTextBox.TabIndex = 69;
-            this.onOpenTextBox.Text = "";
-            this.onOpenTextBox.TextChanged += new System.EventHandler(this.RichTextBox_TextChanged);
             // 
             // btnSpace
             // 
@@ -1155,99 +1132,6 @@
             this.label21.Size = new System.Drawing.Size(254, 13);
             this.label21.TabIndex = 54;
             this.label21.Text = "Описание задания в зависимости от состояния:";
-            // 
-            // cbGetScreenMsg
-            // 
-            this.cbGetScreenMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbGetScreenMsg.AutoSize = true;
-            this.cbGetScreenMsg.Location = new System.Drawing.Point(487, 331);
-            this.cbGetScreenMsg.Name = "cbGetScreenMsg";
-            this.cbGetScreenMsg.Size = new System.Drawing.Size(131, 17);
-            this.cbGetScreenMsg.TabIndex = 65;
-            this.cbGetScreenMsg.Text = "сообщение на экран";
-            this.cbGetScreenMsg.UseVisualStyleBackColor = true;
-            // 
-            // cbFailScreenMsg
-            // 
-            this.cbFailScreenMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbFailScreenMsg.AutoSize = true;
-            this.cbFailScreenMsg.Location = new System.Drawing.Point(487, 309);
-            this.cbFailScreenMsg.Name = "cbFailScreenMsg";
-            this.cbFailScreenMsg.Size = new System.Drawing.Size(131, 17);
-            this.cbFailScreenMsg.TabIndex = 64;
-            this.cbFailScreenMsg.Text = "сообщение на экран";
-            this.cbFailScreenMsg.UseVisualStyleBackColor = true;
-            // 
-            // cbWonScreenMsg
-            // 
-            this.cbWonScreenMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbWonScreenMsg.AutoSize = true;
-            this.cbWonScreenMsg.Location = new System.Drawing.Point(487, 288);
-            this.cbWonScreenMsg.Name = "cbWonScreenMsg";
-            this.cbWonScreenMsg.Size = new System.Drawing.Size(131, 17);
-            this.cbWonScreenMsg.TabIndex = 63;
-            this.cbWonScreenMsg.Text = "сообщение на экран";
-            this.cbWonScreenMsg.UseVisualStyleBackColor = true;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(6, 333);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(43, 13);
-            this.label19.TabIndex = 61;
-            this.label19.Text = "Взятие";
-            // 
-            // onGotTextBox
-            // 
-            this.onGotTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.onGotTextBox.Location = new System.Drawing.Point(75, 330);
-            this.onGotTextBox.Name = "onGotTextBox";
-            this.onGotTextBox.Size = new System.Drawing.Size(407, 20);
-            this.onGotTextBox.TabIndex = 62;
-            this.onGotTextBox.Text = "";
-            this.onGotTextBox.Validated += new System.EventHandler(this.RichTextBox_TextChanged);
-            // 
-            // lFailed
-            // 
-            this.lFailed.AutoSize = true;
-            this.lFailed.Location = new System.Drawing.Point(6, 310);
-            this.lFailed.Name = "lFailed";
-            this.lFailed.Size = new System.Drawing.Size(60, 13);
-            this.lFailed.TabIndex = 58;
-            this.lFailed.Text = "Проигрыш";
-            // 
-            // lWin
-            // 
-            this.lWin.AutoSize = true;
-            this.lWin.Location = new System.Drawing.Point(6, 288);
-            this.lWin.Name = "lWin";
-            this.lWin.Size = new System.Drawing.Size(55, 13);
-            this.lWin.TabIndex = 57;
-            this.lWin.Text = "Выигрыш";
-            // 
-            // onFailedTextBox
-            // 
-            this.onFailedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.onFailedTextBox.Location = new System.Drawing.Point(75, 307);
-            this.onFailedTextBox.Name = "onFailedTextBox";
-            this.onFailedTextBox.Size = new System.Drawing.Size(407, 20);
-            this.onFailedTextBox.TabIndex = 60;
-            this.onFailedTextBox.Text = "";
-            this.onFailedTextBox.TextChanged += new System.EventHandler(this.RichTextBox_TextChanged);
-            // 
-            // onWonTextBox
-            // 
-            this.onWonTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.onWonTextBox.Location = new System.Drawing.Point(75, 285);
-            this.onWonTextBox.Name = "onWonTextBox";
-            this.onWonTextBox.Size = new System.Drawing.Size(407, 20);
-            this.onWonTextBox.TabIndex = 59;
-            this.onWonTextBox.Text = "";
-            this.onWonTextBox.TextChanged += new System.EventHandler(this.RichTextBox_TextChanged);
             // 
             // cantFailCheckBox
             // 
@@ -1685,6 +1569,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.cbMarkOnTest);
             this.tabPage5.Controls.Add(this.dataGridMapMark);
             this.tabPage5.Controls.Add(this.label37);
             this.tabPage5.Controls.Add(this.cbTakeItems);
@@ -1731,8 +1616,8 @@
             // 
             // radius
             // 
-            dataGridViewCellStyle2.NullValue = "0";
-            this.radius.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.NullValue = "0";
+            this.radius.DefaultCellStyle = dataGridViewCellStyle6;
             this.radius.HeaderText = "радиус";
             this.radius.Name = "radius";
             // 
@@ -2050,6 +1935,10 @@
             // 
             // rewardGroupBox
             // 
+            this.rewardGroupBox.Controls.Add(this.cbTargetMode);
+            this.rewardGroupBox.Controls.Add(this.label28);
+            this.rewardGroupBox.Controls.Add(this.tbDungTarget);
+            this.rewardGroupBox.Controls.Add(this.label19);
             this.rewardGroupBox.Controls.Add(this.clanPointsValue);
             this.rewardGroupBox.Controls.Add(this.label40);
             this.rewardGroupBox.Controls.Add(this.tbGetKnowleges);
@@ -2076,10 +1965,47 @@
             this.rewardGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rewardGroupBox.Location = new System.Drawing.Point(0, 0);
             this.rewardGroupBox.Name = "rewardGroupBox";
-            this.rewardGroupBox.Size = new System.Drawing.Size(627, 128);
+            this.rewardGroupBox.Size = new System.Drawing.Size(627, 144);
             this.rewardGroupBox.TabIndex = 6;
             this.rewardGroupBox.TabStop = false;
             this.rewardGroupBox.Text = "Награда";
+            // 
+            // cbTargetMode
+            // 
+            this.cbTargetMode.FormattingEnabled = true;
+            this.cbTargetMode.Items.AddRange(new object[] {
+            "выкл",
+            "вкл",
+            "вкл/выкл"});
+            this.cbTargetMode.Location = new System.Drawing.Point(467, 113);
+            this.cbTargetMode.Name = "cbTargetMode";
+            this.cbTargetMode.Size = new System.Drawing.Size(121, 21);
+            this.cbTargetMode.TabIndex = 57;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(400, 116);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(63, 13);
+            this.label28.TabIndex = 56;
+            this.label28.Text = "target mode";
+            // 
+            // tbDungTarget
+            // 
+            this.tbDungTarget.Location = new System.Drawing.Point(468, 89);
+            this.tbDungTarget.Name = "tbDungTarget";
+            this.tbDungTarget.Size = new System.Drawing.Size(121, 20);
+            this.tbDungTarget.TabIndex = 55;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(400, 92);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(67, 13);
+            this.label19.TabIndex = 54;
+            this.label19.Text = "Dung Target";
             // 
             // clanPointsValue
             // 
@@ -2551,6 +2477,17 @@
             this.label34.TabIndex = 61;
             this.label34.Text = "Бонус группы:";
             // 
+            // cbMarkOnTest
+            // 
+            this.cbMarkOnTest.AutoSize = true;
+            this.cbMarkOnTest.Location = new System.Drawing.Point(516, 237);
+            this.cbMarkOnTest.Name = "cbMarkOnTest";
+            this.cbMarkOnTest.Size = new System.Drawing.Size(90, 30);
+            this.cbMarkOnTest.TabIndex = 60;
+            this.cbMarkOnTest.Text = "не скрывать\r\nпри ontest";
+            this.cbMarkOnTest.UseVisualStyleBackColor = true;
+            this.cbMarkOnTest.CheckedChanged += new System.EventHandler(this.cbMarkOnTest_CheckedChanged);
+            // 
             // EditQuestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2598,6 +2535,7 @@
             this.tabControl.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.messageGridView)).EndInit();
             this.tcDescriptions.ResumeLayout(false);
             this.tabOpen.ResumeLayout(false);
             this.tabOnTest.ResumeLayout(false);
@@ -2692,15 +2630,6 @@
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.CheckBox cbGetScreenMsg;
-        private System.Windows.Forms.CheckBox cbFailScreenMsg;
-        private System.Windows.Forms.CheckBox cbWonScreenMsg;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.RichTextBox onGotTextBox;
-        private System.Windows.Forms.Label lFailed;
-        private System.Windows.Forms.Label lWin;
-        private System.Windows.Forms.RichTextBox onFailedTextBox;
-        private System.Windows.Forms.RichTextBox onWonTextBox;
         private System.Windows.Forms.CheckBox cantFailCheckBox;
         private System.Windows.Forms.CheckBox cantCancelCheckBox;
         private System.Windows.Forms.CheckBox availabilityCheckBox;
@@ -2826,12 +2755,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn coords;
         private System.Windows.Forms.DataGridViewTextBoxColumn radius;
         private System.Windows.Forms.DataGridViewComboBoxColumn Space;
-        private System.Windows.Forms.CheckBox cbTestScreenMsg;
-        private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.RichTextBox onTestTextBox;
-        private System.Windows.Forms.CheckBox cbOpenScreenMsg;
-        private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.RichTextBox onOpenTextBox;
         private System.Windows.Forms.Button btnFindError;
         private System.Windows.Forms.NumericUpDown clanPointsValue;
         private System.Windows.Forms.Label label40;
@@ -2840,5 +2763,15 @@
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.Label labelPVPAdditional;
         private System.Windows.Forms.ComboBox cbPVPAdditional;
+        private System.Windows.Forms.DataGridView messageGridView;
+        private System.Windows.Forms.DataGridViewComboBoxColumn state1;
+        private System.Windows.Forms.DataGridViewComboBoxColumn state2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn message;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn show;
+        private System.Windows.Forms.TextBox tbDungTarget;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox cbTargetMode;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.CheckBox cbMarkOnTest;
     }
 }

@@ -104,6 +104,50 @@ namespace StalkerOnlineQuesterEditor
         }
     }
 
+    public class QuestMessages
+    {
+        public string message = "";
+        public int state1 = -1;
+        public int state2 = -1;
+        public bool isHighMessage = false;
+
+        public QuestMessages()
+        {
+
+        }
+
+        public QuestMessages(QuestMessages original)
+        {
+            message = original.message;
+            state1 = original.state1;
+            state2 = original.state2;
+            isHighMessage = original.isHighMessage;
+        }
+
+    }
+
+    public static class QuestMessageType
+    {
+        static Dictionary<string, int> types = new Dictionary<string, int>()
+        { { "Open", 0 }, { "On test", 1 }, { "Closed", 2 }, { "Freez", 3 }, { "Absient", 4 }, {"Any", -1 } };
+
+
+
+        public static int getType(string name)
+        {
+            return types[name];
+        }
+
+        public static string getName(int type)
+        {
+            foreach(var i in types)
+            {
+                if (i.Value == type) return i.Key;
+            }
+            return "";
+        }
+    }
+
     //! Класс текстовой информации о квесте - название, описание, надписи на победу и проигрыш
     public class CQuestInformation : ICloneable
     {
@@ -111,11 +155,7 @@ namespace StalkerOnlineQuesterEditor
 		public string Description;
         public string DescriptionOnTest;
         public string DescriptionClosed;
-        public string onWin;
-        public string onFailed;
-        public string onGet;
-        public string onOpen;
-        public string onTest;
+        public List<QuestMessages> messages = new List<QuestMessages>();
         public Dictionary<int, QuestItemInfo> Items;
 
         public object Clone()
@@ -123,11 +163,8 @@ namespace StalkerOnlineQuesterEditor
             CQuestInformation copy = new CQuestInformation();
             copy.Title = (string)this.Title.Clone();
             copy.Description = (string)this.Description.Clone();
-            copy.onWin = (string)this.onWin.Clone();
-            copy.onFailed = (string)this.onFailed.Clone();
-            copy.onGet = (string)this.onGet.Clone();
-            copy.onOpen = (string)this.onOpen.Clone();
-            copy.onTest = (string)this.onTest.Clone();
+            foreach(var message in messages)
+                copy.messages.Add(new QuestMessages(message));
             foreach (KeyValuePair<int, QuestItemInfo> item in this.Items)
                 copy.Items.Add(item.Key, (QuestItemInfo)item.Value.Clone());
             return copy;
@@ -139,11 +176,8 @@ namespace StalkerOnlineQuesterEditor
             this.Description = "";
             this.DescriptionOnTest = "";
             this.DescriptionClosed = "";
-            this.onFailed = "";
-            this.onWin = "";
-            this.onGet = "";
-            this.onOpen = "";
-            this.onTest = "";
+
+
             this.Items = new Dictionary<int, QuestItemInfo>();
         }
 
@@ -270,6 +304,7 @@ namespace StalkerOnlineQuesterEditor
         public List<MapMark> mapMarks;
         public string TeleportTo;
         public bool dontTakeItems;
+        public bool dontHideMarks;
         public int MaxGroup;
         public int MinGroup;
         public int MaxMember;
@@ -295,6 +330,7 @@ namespace StalkerOnlineQuesterEditor
             copy.npc = this.npc;
             copy.mobs = this.mobs;
             copy.dontTakeItems = this.dontTakeItems;
+            copy.dontHideMarks = this.dontHideMarks;
             copy.space = space;
             copy.mapMarks = new List<MapMark>(this.mapMarks);
             return copy;
@@ -302,7 +338,7 @@ namespace StalkerOnlineQuesterEditor
 
         public bool Any()
         {
-            return items.Any() || Scenarios.Any() || MassQuests.Any() || dontTakeItems ||
+            return items.Any() || Scenarios.Any() || MassQuests.Any() || dontTakeItems || dontHideMarks ||
                 MaxGroup != 0 || MinGroup != 0 || TeleportTo != "" || basePercent != 0 || 
                 MinMember != 0 || MaxMember != 0 || npc.Any() || mobs.Any() || space != 0 || mapMarks.Any();
 
@@ -564,6 +600,8 @@ namespace StalkerOnlineQuesterEditor
         public List<CEffect> Effects;
         public bool RewardWindow;
         public string teleportTo;
+        public string dungeonTarget;
+        public int dungeonTargetMode;
         public int OTfraction;
         public int OTvalue;
         public int clanPoints;
@@ -584,6 +622,8 @@ namespace StalkerOnlineQuesterEditor
             copy.blackBoxes = new List<string>(this.blackBoxes);
             copy.GetKnowleges = new List<int>(GetKnowleges);
             copy.teleportTo = teleportTo;
+            copy.dungeonTarget = dungeonTarget;
+            copy.dungeonTargetMode = dungeonTargetMode;
             return copy;
         }
 
@@ -600,12 +640,14 @@ namespace StalkerOnlineQuesterEditor
             this.Effects = new List<CEffect>();
             this.RewardWindow = false;
             this.teleportTo = "";
+            dungeonTarget = "";
+            dungeonTargetMode = 1;
         }
         public bool Any()
         {
             return hasExperience() || items.Any() || Credits != 0 || ReputationNotEmpty() || teleportTo.Any() || OTvalue > 0 ||
                 KarmaPK != 0 || Effects.Any() || RewardWindow || ChangeQuests.Any() || NPCReputation.Any() || blackBoxes.Any() ||
-                Reputation2NotEmpty() || GetKnowleges.Any() || clanPoints != 0;
+                Reputation2NotEmpty() || GetKnowleges.Any() || clanPoints != 0 || dungeonTarget.Any();
         }
 
         private bool hasExperience()
@@ -760,11 +802,6 @@ namespace StalkerOnlineQuesterEditor
         public bool CantFail;
         public string Holder;
         public string DebugData;
-        public bool screenMessageOnWin;
-        public bool screenMessageOnFailed;
-        public bool screenMessageOnGet;
-        public bool screenMessageOnOpen;
-        public bool screenMessageOnTest;
         public int isFractionBonus;
 
         public object Clone()
@@ -777,11 +814,6 @@ namespace StalkerOnlineQuesterEditor
             copy.CantFail = this.CantFail;
             copy.Holder = this.Holder;
             copy.DebugData = this.DebugData;
-            copy.screenMessageOnWin = this.screenMessageOnWin;
-            copy.screenMessageOnFailed = this.screenMessageOnFailed;
-            copy.screenMessageOnGet = this.screenMessageOnGet;
-            copy.screenMessageOnOpen = this.screenMessageOnOpen;
-            copy.screenMessageOnTest = this.screenMessageOnTest;
             copy.isFractionBonus = this.isFractionBonus;
             return copy;
         }
@@ -805,11 +837,6 @@ namespace StalkerOnlineQuesterEditor
             this.CantCancel = false;
             this.Holder = Holder;
             this.DebugData = "";
-            this.screenMessageOnWin = false;
-            this.screenMessageOnFailed = false;
-            this.screenMessageOnGet = false;
-            screenMessageOnOpen = false;
-            screenMessageOnTest = false;
     }
 
         public bool Any()

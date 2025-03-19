@@ -199,6 +199,7 @@ namespace StalkerOnlineQuesterEditor
         public Dictionary<string, List<double>> NPCReputation = new Dictionary<string, List<double>>();
         public List<int> KarmaPK = new List<int>();
         public List<float> playerCoords = new List<float>();
+        public int coordsMap = -1;
         public int coordsRadius = 10;
         public List<DialogEffect> NecessaryEffects = new List<DialogEffect>();
         public List<DialogEffect> MustNoEffects = new List<DialogEffect>();
@@ -210,6 +211,7 @@ namespace StalkerOnlineQuesterEditor
         public RadioAvalible radioAvailable = RadioAvalible.None;
         public int tutorialPhase = -1;
         public int dungeonPhase = 0;
+        public string seasonEvent = "";
         public bool dungeonNot = false;
         public int[] PVPranks = new int[2];
         public int PVPMode = -1;
@@ -282,7 +284,7 @@ namespace StalkerOnlineQuesterEditor
                 PlayerLevel != "" || Skills.Any() || items.Any() || itemsNone.Any() || NPCReputation.Any() || transport.Any() || tutorialPhase >= 0 || 
                 RadioAvalible.None != radioAvailable || Reputation2.Any() || (PVPranks[0] > 0 || PVPranks[1] > 0) || PVPMode >= 0 || Perks.Any() ||
                 noPerks.Any() || knowledges.Any() || fracBonus[1] > 0 || weather.Any() || Achievements.Any() || noAchievements.Any() || playerCoords.Any() ||
-                clanOptions != ""  || dungeonPhase > 0 || KarmaPK.Any() || clanLevel.Sum() > 0; 
+                clanOptions != ""  || dungeonPhase > 0 || KarmaPK.Any() || clanLevel.Sum() > 0 || coordsMap >= 0 || seasonEvent.Any(); 
         }
 
         public string GetAsString()
@@ -443,7 +445,7 @@ namespace StalkerOnlineQuesterEditor
     {
         public List<string> weathers = new List<string>();
         public bool is_or = false;
-        public int space = 0;
+        public int space = -1;
         public string timeStart = "00:00";
         public string timeEnd = "00:00";
         public bool only_no = false;
@@ -475,7 +477,7 @@ namespace StalkerOnlineQuesterEditor
 
         public bool Any()
         {
-            return space != 0 && (weathers.Any() || timeStart != timeEnd);
+            return (weathers.Any() || timeStart != timeEnd);
         }
 
         public XElement getXML()
@@ -483,7 +485,9 @@ namespace StalkerOnlineQuesterEditor
             XElement result = null;
             if (!Any())
                 return null;
-            result = new XElement("TimeWeather", new XElement("space", space.ToString()));
+            result = new XElement("TimeWeather");
+            if (space != -1)
+                result.Add(new XElement("space", space.ToString()));
             if (weathers.Any())
             {
                 result.Add(new XElement("weathers", string.Join(",", weathers)));

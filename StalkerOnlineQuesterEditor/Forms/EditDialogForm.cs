@@ -61,7 +61,17 @@ namespace StalkerOnlineQuesterEditor
                 lReactionNPC.Text = "Приветствие:";
             cbRadioNode.SelectedIndex = 0;
             cbDungeonPhase.SelectedIndex = 0;
-            
+            cbSeasonEvent.Items.Clear();
+            cbSeasonEvent.Items.Add("");
+            cbSeasonEvent.Items.AddRange(SeasonEvents.getListNames());
+            cbSeasonEvent.SelectedIndex = 0;
+            cbMap.Items.Clear();
+            cbMap.Items.Add("-1 Карта игрока");
+            foreach (var i in parent.spacesConst.getSpacesNamesWithoutInstances())
+            {
+                cbMap.Items.Add(i);
+            }
+            cbMap.SelectedIndex = 0;
             if (!isAdd)
             {
                 fillDialogEditForm(currentDialogID);
@@ -95,28 +105,18 @@ namespace StalkerOnlineQuesterEditor
             foreach (string node in options.Split(','))
                 list.Add(int.Parse(node)); ;
             // какой-то пиздец c кланами и одиночками
-            if (list.Contains(1))
-                cbSameClanOnly.Checked = true;
-            if (list.Contains(2))
-                cbNotSameClanOnly.Checked = true;
-            if (list.Contains(3))
-                cbEnemy.Checked = true;
-            if (list.Contains(4))
-                cbNotEnemy.Checked = true;
-            if (list.Contains(5))
-                cbPeaceTime.Checked = true;
-            if (list.Contains(6))
-                cbWarTime.Checked = true;
-            if (list.Contains(7))
-                cbAnyClanOnly.Checked = true;
-            if (list.Contains(8))
-                cbLonerOnly.Checked = true;
-            if (list.Contains(9))
-                cbSecurExst.Checked = true;
-            if (list.Contains(10))
-                cbSecurNotExst.Checked = true;
-            if (list.Contains(11))
-                cbAllyance.Checked = true;
+                cbSameClanOnly.Checked = list.Contains(1);
+                cbNotSameClanOnly.Checked = list.Contains(2);
+                cbEnemy.Checked = list.Contains(3);
+                cbNotEnemy.Checked = list.Contains(4);
+                cbPeaceTime.Checked = list.Contains(5);
+                cbWarTime.Checked = list.Contains(6);
+                cbAnyClanOnly.Checked = list.Contains(7);
+                cbLonerOnly.Checked = list.Contains(8);
+                cbSecurExst.Checked = list.Contains(9);
+                cbSecurNotExst.Checked = list.Contains(10);
+                cbAllyance.Checked = list.Contains(11);
+                cbNotAllyance.Checked = list.Contains(12);
         }
         //! Заполняет всю форму данными из CDialog
         void fillDialogEditForm(int dialogID)
@@ -352,6 +352,10 @@ namespace StalkerOnlineQuesterEditor
                     tmp.Add(i.ToString().Replace(',', '.'));
                 tbCoordinates.Text = string.Join(" ", tmp);
             }
+
+            if (curDialog.Precondition.coordsMap != -1)
+                cbMap.SelectedItem = parent.spacesConst.getSpaceByID(curDialog.Precondition.coordsMap);
+
             nupCoordRadius.Value = curDialog.Precondition.coordsRadius;
             if (curDialog.Precondition.Skills.Any())
                 editPrecondition.Skills = curDialog.Precondition.Skills;
@@ -367,6 +371,7 @@ namespace StalkerOnlineQuesterEditor
 
             cbRadioNode.SelectedIndex = (int)curDialog.Precondition.radioAvailable;
             cbDungeonPhase.SelectedIndex = curDialog.Precondition.dungeonPhase;
+            cbSeasonEvent.SelectedItem = curDialog.Precondition.seasonEvent;
             cbDungeonNon.Checked = curDialog.Precondition.dungeonNot;
             cbForDev.Checked = curDialog.Precondition.forDev;
             cbHidden.Checked = curDialog.Precondition.hidden;
@@ -386,6 +391,8 @@ namespace StalkerOnlineQuesterEditor
             this.initWeatherTab();
             checkClanOptionsIndicator();
             checkKnowlegeIndicates();
+
+
         }
 
         //! Антиговнокод-функция, добавление номера квеста в текстбокс
@@ -432,7 +439,8 @@ namespace StalkerOnlineQuesterEditor
         {
             if (cbSameClanOnly.Checked || cbAnyClanOnly.Checked || cbLonerOnly.Checked || cbWarTime.Checked ||
                 cbEnemy.Checked || cbNotEnemy.Checked || cbPeaceTime.Checked || cbNotSameClanOnly.Checked ||
-                cbSecurExst.Checked || cbSecurNotExst.Checked || cbAllyance.Checked || (clanLevelTo.Value + clanLevelFrom.Value > 0))
+                cbSecurExst.Checked || cbSecurNotExst.Checked || cbAllyance.Checked || cbNotAllyance.Checked ||
+                (clanLevelTo.Value + clanLevelFrom.Value > 0))
             {
                 return true;
             }
@@ -976,8 +984,8 @@ namespace StalkerOnlineQuesterEditor
                     precondition.clanOptions += ",9";
                 if (cbSecurNotExst.Checked)
                     precondition.clanOptions += ",10";
-                if (cbAllyance.Checked)
-                    precondition.clanOptions += ",11";
+                if (cbAllyance.Checked) precondition.clanOptions += ",11";
+                if (cbNotAllyance.Checked) precondition.clanOptions += ",12";
                 if (precondition.clanOptions.Any())
                 {
                     if (radioButtonAND.Checked)
@@ -1021,6 +1029,7 @@ namespace StalkerOnlineQuesterEditor
                 MessageBox.Show("Ошибка условия \"Другое\"=>Координаты игрока", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            precondition.coordsMap = Convert.ToInt32(cbMap.SelectedItem.ToString().Split(' ')[0]);
             precondition.coordsRadius = Convert.ToInt32(nupCoordRadius.Value);
             if (cbSpaceWeather.SelectedItem != null)
             {
@@ -1072,6 +1081,8 @@ namespace StalkerOnlineQuesterEditor
 
             precondition.radioAvailable = (RadioAvalible)cbRadioNode.SelectedIndex;
             precondition.dungeonPhase = Math.Max(0, cbDungeonPhase.SelectedIndex);
+            if (cbSeasonEvent.SelectedItem != null)
+                precondition.seasonEvent = cbSeasonEvent.SelectedItem.ToString();
             precondition.dungeonNot = cbDungeonNon.Checked;
 
             if (debugTextBox.Text != "")
@@ -1524,7 +1535,7 @@ namespace StalkerOnlineQuesterEditor
             }
             string spaceName = parent.spacesConst.getSpaceNameByID(curDialog.Precondition.weather.space);
             if (curDialog.Precondition.weather.space < 0)
-                cbSpaceWeather.SelectedItem = "-1 Карта игрока";
+                cbSpaceWeather.SelectedIndex = 0;// "-1 Карта игрока";
             else
                 cbSpaceWeather.SelectedItem = parent.spacesConst.getSpaceByID(curDialog.Precondition.weather.space);
             string[] a = curDialog.Precondition.weather.timeStart.Split(':');
@@ -1557,6 +1568,7 @@ namespace StalkerOnlineQuesterEditor
             }
 
             cbWeatherOnlyNO.Checked = curDialog.Precondition.weather.only_no;
+            checkWeatherIndicates();
         }
 
         private void initItemsTab()
@@ -1785,8 +1797,14 @@ namespace StalkerOnlineQuesterEditor
             result = result || editKarmaPK.Any();
             result = result || tbCoordinates.Text.Any();
             result = result || (mtbPlayerLevelMax.Text.Any() || mtbPlayerLevelMin.Text.Any());
-
+            result = result || ((cbTutorialPhase.SelectedItem != null) && (Convert.ToInt32(cbMap.SelectedItem.ToString().Split(' ')[0]) != -1));
+            result = result || cbSeasonEvent.SelectedIndex > 0;
             pictureOther.Visible = result;
+        }
+
+        private void checkWeatherIndicates()
+        {
+            pictureWeather.Visible = editPrecondition.weather.Any();
         }
 
         private void checkTransportIndicates()
@@ -1808,6 +1826,7 @@ namespace StalkerOnlineQuesterEditor
             this.checkTransportIndicates();
             this.checkOtherIndicates();
             checkKnowlegeIndicates();
+            checkWeatherIndicates();
         }
 
         private void digitTextBox_KeyPress(object sender, KeyPressEventArgs e)

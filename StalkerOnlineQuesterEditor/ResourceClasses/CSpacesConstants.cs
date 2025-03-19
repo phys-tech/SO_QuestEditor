@@ -210,7 +210,7 @@ namespace StalkerOnlineQuesterEditor
             int level = 0;
             int dung_id = 0;
 
-            Console.WriteLine("CDungeonSpacesConstants:");
+           // Console.WriteLine("CDungeonSpacesConstants:");
 
             while (reader.Read())
             {
@@ -269,7 +269,7 @@ namespace StalkerOnlineQuesterEditor
                         boss.type = type;
                         space.bosses.Add(boss);
                     }
-                    Console.WriteLine("ADD DUNGEON " + dung_id.ToString() + " " + space.name);
+                    //Console.WriteLine("ADD DUNGEON " + dung_id.ToString() + " " + space.name);
                     dungeons.Add(dung_id, space);
 
                 }

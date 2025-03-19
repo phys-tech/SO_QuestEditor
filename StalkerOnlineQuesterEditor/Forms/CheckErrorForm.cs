@@ -541,7 +541,6 @@ namespace StalkerOnlineQuesterEditor.Forms
                     {
                         string line = "Квест №:" + quest.Key.ToString() + "\tявляется omnicounter, но его нет в файле omnicounter.json";
                         this.writeToLog(ERROR_QUEST_TYPE5, line, quest.Key);
-                        Console.WriteLine(line);
                     }
                 }
                 if (quest_types.Contains(quest.Value.Target.QuestType))

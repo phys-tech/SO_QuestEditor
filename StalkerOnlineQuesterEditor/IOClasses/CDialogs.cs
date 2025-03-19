@@ -225,7 +225,8 @@ namespace StalkerOnlineQuesterEditor
                         AddDataToList(dialog, "Precondition", "playerCoords", Precondition.playerCoords);
                         if (dialog.Element("Precondition").Element("coordsRadius") != null)
                             Precondition.coordsRadius = int.Parse(dialog.Element("Precondition").Element("coordsRadius").Value);
-
+                        if (dialog.Element("Precondition").Element("map") != null)
+                            Precondition.coordsMap = int.Parse(dialog.Element("Precondition").Element("map").Value);
                         if (dialog.Element("Precondition").Element("forDev") != null)
                             Precondition.forDev = true;
                         if (dialog.Element("Precondition").Element("hidden") != null)
@@ -286,6 +287,8 @@ namespace StalkerOnlineQuesterEditor
                             Precondition.radioAvailable = (RadioAvalible)Convert.ToInt32(dialog.Element("Precondition").Element("radioAvailable").Value);
                         if (dialog.Element("Precondition").Element("dungeonPhase") != null)
                             Precondition.dungeonPhase = Convert.ToInt32(dialog.Element("Precondition").Element("dungeonPhase").Value);
+                        if (dialog.Element("Precondition").Element("seasonEvent") != null)
+                            Precondition.seasonEvent = dialog.Element("Precondition").Element("seasonEvent").Value;
                         if (dialog.Element("Precondition").Element("dungeonNot") != null)
                             Precondition.dungeonNot = true;
                         if (dialog.Element("Precondition").Element("tests") != null)
@@ -792,6 +795,8 @@ namespace StalkerOnlineQuesterEditor
                             prec.Add(new XElement("radioAvailable", Convert.ToInt32(dialog.Precondition.radioAvailable).ToString()));
                         if (dialog.Precondition.dungeonPhase > 0)
                             prec.Add(new XElement("dungeonPhase", Convert.ToInt32(dialog.Precondition.dungeonPhase).ToString()));
+                        if (dialog.Precondition.seasonEvent.Any())
+                            prec.Add(new XElement("seasonEvent", dialog.Precondition.seasonEvent));
                         if (dialog.Precondition.dungeonNot)
                             prec.Add(new XElement("dungeonNot", "1"));
                         if (dialog.Precondition.MustNoEffects.Any())
@@ -823,6 +828,9 @@ namespace StalkerOnlineQuesterEditor
                             prec.Add(new XElement("playerCoords", Global.GetListAsString(dialog.Precondition.playerCoords)));
                             prec.Add(new XElement("coordsRadius", Global.GetIntAsString(dialog.Precondition.coordsRadius)));
                         }
+                        if (dialog.Precondition.coordsMap != -1)
+                            prec.Add(new XElement("map", Global.GetIntAsString(dialog.Precondition.coordsMap)));
+
 
                         if (dialog.Precondition.weather.Any())
                             prec.Add(dialog.Precondition.weather.getXML());

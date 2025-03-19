@@ -42,7 +42,10 @@ namespace StalkerOnlineQuesterEditor
                 if ((reader.TokenType == JsonToken.String) && (property_name == "local_name"))
                 {
                     if (tutorial_phases.ContainsKey(index))
-                        System.Windows.Forms.MessageBox.Show("Ошибка парсинга фаз обучения. TutorialPhases.json, Что-то пошло не так  индекс - " + index.ToString(), "Ошибка");
+                    {
+                        //System.Windows.Forms.MessageBox.Show("Ошибка парсинга фаз обучения. TutorialPhases.json, Что-то пошло не так  индекс - " + index.ToString(), "Ошибка");
+                        continue;
+                    }
                     tutorial_phases.Add(index, index.ToString() + " " + reader.Value.ToString());
                 }
                 

@@ -252,6 +252,7 @@ namespace StalkerOnlineQuesterEditor
                         precondition.omniCounter = item.Element("Precondition").Element("OmniCounter").Value.Trim().Equals("1");
                     if (item.Element("Precondition").Element("isGroup") != null)
                         precondition.isGroup = item.Element("Precondition").Element("isGroup").Value.Trim().Equals("1");
+                    //if (precondition.isGroup) Console.WriteLine(QuestID.ToString());
                 }
                 if (item.Element("QuestRules") != null)
                 {
@@ -260,10 +261,15 @@ namespace StalkerOnlineQuesterEditor
                         questRules.basePercent = float.Parse(item.Element("QuestRules").Element("baseToCapturePercent").Value, CultureInfo.InvariantCulture);
                     if (item.Element("QuestRules").Element("dontTakeItems") != null)
                         questRules.dontTakeItems = true;
+                    if (item.Element("QuestRules").Element("dontHideMarks") != null)
+                        questRules.dontHideMarks = true;
                     if (item.Element("QuestRules").Element("Items") != null)
                         CQuests.parceItems(item.Element("QuestRules").Element("Items"), questRules.items);
                     if (item.Element("QuestRules").Element("Spaces") != null)
+                    {
                         questRules.space = long.Parse(item.Element("QuestRules").Element("Spaces").Value);
+                    }
+                        
                     CQuests.AddDataToList(item, "QuestRules", "Scenarios", questRules.Scenarios);
                     CQuests.AddDataToList(item, "QuestRules", "MassQuests", questRules.MassQuests);
 
@@ -314,6 +320,11 @@ namespace StalkerOnlineQuesterEditor
 
                     if (item.Element("Reward").Element("Teleport") != null)
                         reward.teleportTo = item.Element("Reward").Element("Teleport").Value;
+
+                    if (item.Element("Reward").Element("dungeonTarget") != null)
+                        reward.dungeonTarget = item.Element("Reward").Element("dungeonTarget").Value;
+                    if (item.Element("Reward").Element("dungeonTargetMode") != null)
+                        reward.dungeonTargetMode = int.Parse(item.Element("Reward").Element("dungeonTargetMode").Value);
 
                     if (item.Element("Reward").Element("Reputation") != null)
                         foreach (string fraction in item.Element("Reward").Element("Reputation").Value.Split(';'))
@@ -446,12 +457,6 @@ namespace StalkerOnlineQuesterEditor
                             additional.ShowProgress = this.SHOW_JOURNAL | this.SHOW_MESSAGE_CLOSE | this.SHOW_MESSAGE_TAKE | this.SHOW_MESSAGE_PROGRESS;
                     }
 
-                    if (item.Element("Additional").Element("screenMessageOnWin") != null) additional.screenMessageOnWin = true;
-                    if (item.Element("Additional").Element("screenMessageOnFailed") != null) additional.screenMessageOnFailed = true;
-                    if (item.Element("Additional").Element("screenMessageOnGet") != null) additional.screenMessageOnGet = true;
-                    if (item.Element("Additional").Element("screenMessageOnOpen") != null) additional.screenMessageOnOpen = true;
-                    if (item.Element("Additional").Element("screenMessageOnTest") != null) additional.screenMessageOnTest = true;
-
                     ParseIntIfNotEmpty(item, "Additional", "IsSubQuest", out additional.IsSubQuest, 0);
                     CQuests.AddDataToList(item, "Additional", "ListOfSubQuest", additional.ListOfSubQuest);
 
@@ -465,6 +470,23 @@ namespace StalkerOnlineQuesterEditor
                     }
 
                     ParseIntIfNotEmpty(item, "Additional", "isFractionBonus", out additional.isFractionBonus, 0);
+                    if (item.Element("Additional").Element("messages") != null)
+                    {
+                        foreach (XElement message in item.Element("Additional").Element("messages").Elements())
+                        {
+                            QuestMessages msg = new QuestMessages();
+
+                            if (message.Element("stateFrom") != null)
+                                msg.state1 = int.Parse(message.Element("stateFrom").Value);
+                            if (message.Element("stateTo") != null)
+                                msg.state2 = int.Parse(message.Element("stateTo").Value);
+                            if (message.Element("notification") != null)
+                                msg.isHighMessage = bool.Parse(message.Element("notification").Value); 
+                            information.messages.Add(msg);
+
+                        }
+                    }
+
                 }
 
                 if (!dict_target.ContainsKey(QuestID))
@@ -503,16 +525,18 @@ namespace StalkerOnlineQuesterEditor
                     target[QuestID].QuestInformation.DescriptionOnTest = quest.Element("DescriptionOnTest").Value.ToString();
                 if (quest.Element("DescriptionClosed") != null)
                     target[QuestID].QuestInformation.DescriptionClosed = quest.Element("DescriptionClosed").Value.ToString();
-                if (quest.Element("onWin") != null)
-                    target[QuestID].QuestInformation.onWin = quest.Element("onWin").Value.ToString();
-                if (quest.Element("onGet") != null)
-                    target[QuestID].QuestInformation.onGet = quest.Element("onGet").Value.ToString();
-                if (quest.Element("onFailed") != null)
-                    target[QuestID].QuestInformation.onFailed = quest.Element("onFailed").Value.ToString();
-                if (quest.Element("onOpen") != null)
-                    target[QuestID].QuestInformation.onOpen = quest.Element("onOpen").Value.ToString();
-                if (quest.Element("onTest") != null)
-                    target[QuestID].QuestInformation.onTest = quest.Element("onTest").Value.ToString();
+                
+                if (quest.Element("messages") != null)
+                {
+                    int index = 0;
+                    foreach (XElement message in quest.Element("messages").Elements())
+                    {
+                        if (target[QuestID].QuestInformation.messages.Count <= index) continue;
+                        target[QuestID].QuestInformation.messages[index].message = message.Value;
+
+                        index++;
+                    }
+                }
                 int Version = 0;
                 if (!quest.Element("Version").Value.Equals(""))
                     Version = int.Parse(quest.Element("Version").Value);
@@ -715,18 +739,18 @@ namespace StalkerOnlineQuesterEditor
                     element.Add(new XElement("DescriptionOnTest", questValue.QuestInformation.DescriptionOnTest));
                 if (questValue.QuestInformation.DescriptionClosed != "")
                     element.Add(new XElement("DescriptionClosed", questValue.QuestInformation.DescriptionClosed));
-                if (questValue.QuestInformation.onWin != "")
-                    element.Add(new XElement("onWin", questValue.QuestInformation.onWin));
-                if (questValue.QuestInformation.onGet != "")
-                    element.Add(new XElement("onGet", questValue.QuestInformation.onGet));
 
-                if (questValue.QuestInformation.onFailed != "")
-                    element.Add(new XElement("onFailed", questValue.QuestInformation.onFailed));
-                if (questValue.QuestInformation.onOpen != "")
-                    element.Add(new XElement("onOpen", questValue.QuestInformation.onOpen));
-                if (questValue.QuestInformation.onTest != "")
-                    element.Add(new XElement("onTest", questValue.QuestInformation.onTest));
+                XElement subElement = new XElement("messages");
+                bool flag_messages = false;
+                foreach (var message in questValue.QuestInformation.messages)
+                {
+                    if (!message.message.Any())
+                        continue;
+                    subElement.Add(new XElement("message", message.message));
+                    flag_messages = true;
 
+                }
+                if (flag_messages) element.Add(subElement);
                 List<XElement> ItemsXE = getItemElements(questValue.QuestInformation.Items);
                 if (ItemsXE.Any())
                     element.Add(new XElement("Items", ItemsXE));
@@ -832,6 +856,9 @@ namespace StalkerOnlineQuesterEditor
                         element.Element("QuestRules").Add(new XElement("baseToCapturePercent", questValue.QuestRules.basePercent.ToString("G6", CultureInfo.InvariantCulture)));
                     if (questValue.QuestRules.dontTakeItems)
                         element.Element("QuestRules").Add(new XElement("dontTakeItems", "1"));
+                    if (questValue.QuestRules.dontHideMarks)
+                        element.Element("QuestRules").Add(new XElement("dontHideMarks", "1"));
+                    
                     if (questValue.QuestRules.npc.Any())
                         element.Element("QuestRules").Add(questValue.QuestRules.npc.getXML());
                     if (questValue.QuestRules.mobs.Any())
@@ -881,6 +908,11 @@ namespace StalkerOnlineQuesterEditor
                         element.Element("Reward").Add(new XElement("GetKnowleges", Global.GetListAsString(questValue.Reward.GetKnowleges)));
                     if (questValue.Reward.teleportTo.Any())
                         element.Element("Reward").Add(new XElement("Teleport", questValue.Reward.teleportTo));
+                    if (questValue.Reward.dungeonTarget.Any())
+                    {
+                        element.Element("Reward").Add(new XElement("dungeonTarget", questValue.Reward.dungeonTarget));
+                        element.Element("Reward").Add(new XElement("dungeonTargetMode", questValue.Reward.dungeonTargetMode.ToString()));
+                    }
                     if (questValue.Reward.RewardWindow)
                         element.Element("Reward").Add(new XElement("RewardWindow", Global.GetBoolAsString(questValue.Reward.RewardWindow)));
                     if (questValue.Reward.OTvalue > 0)
@@ -940,7 +972,7 @@ namespace StalkerOnlineQuesterEditor
                         element.Element("Penalty").Add(new XElement("Effects", EffectsXE));
                 }
 
-                if (questValue.Additional.Any())
+                if (questValue.Additional.Any() || questValue.QuestInformation.messages.Any())
                 {
                     element.Add(new XElement("Additional"));
                     if (questValue.Additional.IsSubQuest != 0)
@@ -955,18 +987,9 @@ namespace StalkerOnlineQuesterEditor
                         if (!flag)
                             questValue.Additional.ShowProgress &= ~8;
                     }*/
+
                     if (questValue.Additional.ShowProgress != 0)
                         element.Element("Additional").Add(new XElement("ShowProgress", questValue.Additional.ShowProgress.ToString()));
-                    if (questValue.Additional.screenMessageOnFailed)
-                        element.Element("Additional").Add(new XElement("screenMessageOnFailed", "1"));
-                    if (questValue.Additional.screenMessageOnGet)
-                        element.Element("Additional").Add(new XElement("screenMessageOnGet", "1"));
-                    if (questValue.Additional.screenMessageOnWin)
-                        element.Element("Additional").Add(new XElement("screenMessageOnWin", "1"));
-                    if (questValue.Additional.screenMessageOnOpen)
-                        element.Element("Additional").Add(new XElement("screenMessageOnOpen", "1"));
-                    if (questValue.Additional.screenMessageOnTest)
-                        element.Element("Additional").Add(new XElement("screenMessageOnTest", "1"));
                     if (questValue.Additional.CantCancel)
                         element.Element("Additional").Add(new XElement("CantCancel", Global.GetBoolAsString(questValue.Additional.CantCancel)));
                     if (questValue.Additional.CantFail)
@@ -979,6 +1002,17 @@ namespace StalkerOnlineQuesterEditor
                         element.Element("Additional").Add(new XElement("isEmpty", "1")); ;
                     if (questValue.Additional.isFractionBonus != 0)
                         element.Element("Additional").Add(new XElement("isFractionBonus", Global.GetIntAsString(questValue.Additional.isFractionBonus)));
+                    if (questValue.QuestInformation.messages.Any())
+                    {
+                        element.Element("Additional").Add(new XElement("messages"));
+                        foreach (var message in questValue.QuestInformation.messages)
+                        {
+                            element.Element("Additional").Element("messages").Add(new XElement("message", new XElement("stateFrom", message.state1),
+                                                                                                          new XElement("stateTo", message.state2),
+                                                                                                          new XElement("notification", message.isHighMessage)
+                            ));
+                        }
+                    }
 
                 }
 
@@ -1410,6 +1444,7 @@ namespace StalkerOnlineQuesterEditor
 
             foreach (string lang in CSettings.getListLocales())
             {
+                if (!m_LocBuffer.ContainsKey(lang)) continue;
                 List<CQuest> langBuffer = new List<CQuest>();
                 foreach (CQuest q in m_LocBuffer[lang].Values.ToList())
                     langBuffer.Add((CQuest)q.Clone());
@@ -1474,6 +1509,7 @@ namespace StalkerOnlineQuesterEditor
             {
                 CQuest HeadEnglish = getQuestFromLocale(CurrentQuestID, lang);
                 List<CQuest> engBuffer = new List<CQuest>();
+                if (!m_LocBuffer.ContainsKey(lang)) continue;
                 foreach (CQuest q in m_LocBuffer[lang].Values.ToList())
                     engBuffer.Add((CQuest)q.Clone());
                 CQuest parentEngQuest = getQuestFromLocale(parentID, lang);

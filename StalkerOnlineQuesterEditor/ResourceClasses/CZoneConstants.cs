@@ -61,6 +61,21 @@ namespace StalkerOnlineQuesterEditor
             return false;
         }
 
+        public List<string> getAreasGiveQuestByID(int quest_id)
+        {
+            List<string> result = new List<string>();
+            foreach (CZoneDescription area in zones.Values)
+            {
+                List<int> area_quest;
+                area_quest = area.getQuests();
+                if (area_quest == null) continue;
+                if (area_quest.Count == 0) continue;
+                if (area_quest.Contains(quest_id))
+                    result.Add(area.getSpace() + " " + area.getPos());
+            }
+            return result;
+        }
+
         public bool checkHaveArea(string key)
         {
             return zones.ContainsKey(key.Trim());
@@ -98,7 +113,7 @@ namespace StalkerOnlineQuesterEditor
             zones = new Dictionary<string, CZoneDescription>();
             if (!File.Exists("source/MobAreas.xml"))
                 return;
-
+            zones.Add("", new CZoneDescription("", new List<int>()));
             XDocument mobAreas = XDocument.Load("source/MobAreas.xml");
             foreach (XElement item in mobAreas.Root.Elements())
             {
@@ -147,6 +162,17 @@ namespace StalkerOnlineQuesterEditor
         {
             return quests;
         }
+
+        public string getSpace()
+        {
+            return this.space;
+        }
+
+        public string getPos()
+        {
+            return position;
+        }
+
 
         public void addQuests(List<int> value)
         {

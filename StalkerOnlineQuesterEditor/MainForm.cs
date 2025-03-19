@@ -40,7 +40,7 @@ namespace StalkerOnlineQuesterEditor
         //! Ссылка на экземпляр класса CDialogs, хранит все данные и функции по работе с диалогами
         public CDialogs dialogs;
         //! Ссылка на экземпляр класса CQuests
-        CQuests quests;
+        public CQuests quests;
         public CManagerNPC ManagerNPC;
         NodeDragHandler Listener;
         RectangleDrawingHandler RectDrawer;
@@ -134,6 +134,7 @@ namespace StalkerOnlineQuesterEditor
             CFractionDialogs.load(this);
             QuestPVPConstance.parse();
             AnomalyTypes.parse();
+            SeasonEvents.parse();
             TimeEntityModels.parse();
             QuestsOmnicounter.load();
             quests = new CQuests(this);
@@ -276,7 +277,7 @@ namespace StalkerOnlineQuesterEditor
                 if (npc_name == open_npc_name)
                 {
                     CSettings.setLastNpcIndex(index);
-                    Console.WriteLine("NPC::" + index.ToString() + " " + npc_name);
+                    //Console.WriteLine("NPC::" + index.ToString() + " " + npc_name);
 
                     if (NPCBox.InvokeRequired)
                     {
@@ -1424,7 +1425,7 @@ namespace StalkerOnlineQuesterEditor
         {
             if (questID == 0) return false;
             CQuest quest = quests.getQuestFromLocale(questID, "English");
-            return quest.QuestInformation.Title.Any() || quest.QuestInformation.Description.Any() || quest.QuestInformation.onWin.Any() || quest.QuestInformation.onFailed.Any() || quest.QuestInformation.onGet.Any() || quest.QuestInformation.onOpen.Any() || quest.QuestInformation.onTest.Any();
+            return quest.QuestInformation.Title.Any() || quest.QuestInformation.Description.Any() || quest.QuestInformation.messages.Any();
 
         }
 
@@ -2477,6 +2478,7 @@ namespace StalkerOnlineQuesterEditor
         {
 
             QuestBox.DroppedDown = false;
+            
             string find_text = QuestBox.Text.ToLower();
             List<string> result = new List<string>();
             foreach (int questID in quests.quest.Keys)
@@ -2497,8 +2499,16 @@ namespace StalkerOnlineQuesterEditor
                 }
             }
             FakeQuestBox.Items.Clear();
+            
             FakeQuestBox.Items.AddRange(result.ToArray());
-            FakeQuestBox.DroppedDown = true;
+            if (!result.Any())
+            {
+                FakeQuestBox.SelectedIndex = -1;
+                FakeQuestBox.Items.Add("");
+                FakeQuestBox.DroppedDown = false;
+            }
+            else
+                FakeQuestBox.DroppedDown = true;
             QuestBox.DroppedDown = false;
             //e.Handled = true;
         }
@@ -2517,16 +2527,32 @@ namespace StalkerOnlineQuesterEditor
             StringComparison compare = (cbIgnoreCase.Checked) ? (StringComparison.OrdinalIgnoreCase) : (StringComparison.Ordinal);
             foreach (CQuest quest in quests.quest.Values)
             {
-                if (quest.QuestInformation.Title.IndexOf(textToFind, compare) != -1)
+                if ((quest.QuestInformation.Title.IndexOf(textToFind, compare) != -1) || 
+                    (quests.locales[locale][quest.QuestID].QuestInformation.Title.IndexOf(textToFind, compare) != -1))
                 {
                     rusText = quest.QuestInformation.Title;
                     engText = quests.locales[locale][quest.QuestID].QuestInformation.Title;
                     found = true;
                 }
-                else if (quest.QuestInformation.Description.IndexOf(textToFind, compare) != -1)
+                else if ((quest.QuestInformation.Description.IndexOf(textToFind, compare) != -1) ||
+                    (quests.locales[locale][quest.QuestID].QuestInformation.Description.IndexOf(textToFind, compare) != -1))
                 {
                     rusText = quest.QuestInformation.Description;
                     engText = quests.locales[locale][quest.QuestID].QuestInformation.Description;
+                    found = true;
+                }
+                else if ((quest.QuestInformation.DescriptionOnTest.IndexOf(textToFind, compare) != -1) ||
+                    (quests.locales[locale][quest.QuestID].QuestInformation.DescriptionOnTest.IndexOf(textToFind, compare) != -1))
+                {
+                    rusText = quest.QuestInformation.DescriptionOnTest;
+                    engText = quests.locales[locale][quest.QuestID].QuestInformation.DescriptionOnTest;
+                    found = true;
+                }
+                else if ((quest.QuestInformation.DescriptionClosed.IndexOf(textToFind, compare) != -1) ||
+                    (quests.locales[locale][quest.QuestID].QuestInformation.DescriptionClosed.IndexOf(textToFind, compare) != -1))
+                {
+                    rusText = quest.QuestInformation.DescriptionClosed;
+                    engText = quests.locales[locale][quest.QuestID].QuestInformation.DescriptionClosed;
                     found = true;
                 }
                 if (found)
@@ -2831,36 +2857,27 @@ namespace StalkerOnlineQuesterEditor
                         desc++;
                     }
 
-                    if (quest.QuestInformation.onWin.Length > 0 && local.QuestInformation.onWin.Length == 0)
+                    if (quest.QuestInformation.messages.Count != local.QuestInformation.messages.Count)
                     {
-                        local.QuestInformation.onWin = quest.QuestInformation.onWin;
+                        local.QuestInformation.messages = quest.QuestInformation.messages.ToList();
                         local.Version = quest.Version - 1;
                         title++;
                     }
-                    if (quest.QuestInformation.onFailed.Length > 0 && local.QuestInformation.onFailed.Length == 0)
+                    else
                     {
-                        local.QuestInformation.onFailed = quest.QuestInformation.onFailed;
-                        local.Version = quest.Version - 1;
-                        desc++;
-                    }
-                    if (quest.QuestInformation.onGet.Length > 0 && local.QuestInformation.onGet.Length == 0)
-                    {
-                        local.QuestInformation.onGet = quest.QuestInformation.onGet;
-                        local.Version = quest.Version - 1;
-                        desc++;
-                    }
-                    if (quest.QuestInformation.onOpen.Length > 0 && local.QuestInformation.onOpen.Length == 0)
-                    {
-                        local.QuestInformation.onOpen = quest.QuestInformation.onOpen;
-                        local.Version = quest.Version - 1;
-                        desc++;
-                    }
-                    if (quest.QuestInformation.onTest.Length > 0 && local.QuestInformation.onTest.Length == 0)
-                    {
-                        local.QuestInformation.onTest = quest.QuestInformation.onTest;
-                        local.Version = quest.Version - 1;
-                        desc++;
-                    }
+                        int count = Math.Max(quest.QuestInformation.messages.Count, local.QuestInformation.messages.Count);
+                        for (var i = 0; i < quest.QuestInformation.messages.Count; i++)
+                        {
+                            if (quest.QuestInformation.messages[i].message != local.QuestInformation.messages[i].message)
+                            {
+                                local.QuestInformation.messages = quest.QuestInformation.messages.ToList();
+                                local.Version = quest.Version - 1;
+                                title++;
+                                break;
+                            }
+                        }
+
+                     }
                 }
             }
 
@@ -3274,9 +3291,7 @@ namespace StalkerOnlineQuesterEditor
                 {
                     CQuest local = this.quests.locales[loc][quest.QuestID];
 
-                    if (quest.QuestInformation.Title.Any() || quest.QuestInformation.Description.Any() ||
-                        quest.QuestInformation.onWin.Any() || quest.QuestInformation.onFailed.Any() || quest.QuestInformation.onGet.Any() ||
-                        quest.QuestInformation.onOpen.Any() || quest.QuestInformation.onTest.Any())
+                    if (quest.QuestInformation.Title.Any() || quest.QuestInformation.Description.Any() || quest.QuestInformation.messages.Any())
                         if ((quest.Additional.ShowProgress > 0) && (quest.Additional.ShowProgress != 64))
                         {
                             int count_words = 0;
@@ -3284,11 +3299,10 @@ namespace StalkerOnlineQuesterEditor
                             count_words += count_the_words(quest.QuestInformation.Description);
                             count_words += count_the_words(quest.QuestInformation.DescriptionClosed);
                             count_words += count_the_words(quest.QuestInformation.DescriptionOnTest);
-                            count_words += count_the_words(quest.QuestInformation.onGet);
-                            count_words += count_the_words(quest.QuestInformation.onWin);
-                            count_words += count_the_words(quest.QuestInformation.onFailed);
-                            count_words += count_the_words(quest.QuestInformation.onOpen);
-                            count_words += count_the_words(quest.QuestInformation.onTest);
+                            foreach(var message in quest.QuestInformation.messages)
+                            {
+                                count_words += count_the_words(message.message);
+                            }
                             all_words += count_words;
                         if (local.Version != quest.Version)
                         {
@@ -3313,26 +3327,7 @@ namespace StalkerOnlineQuesterEditor
                             worKsheeT.Cells[row, 2] = quest.QuestInformation.DescriptionOnTest;
                             worKsheeT.Cells[row, 3] = local.QuestInformation.DescriptionOnTest;
                             row++;
-                            worKsheeT.Cells[row, 1] = "onGet";
-                            worKsheeT.Cells[row, 2] = quest.QuestInformation.onGet;
-                            worKsheeT.Cells[row, 3] = local.QuestInformation.onGet;
-                            row++;
-                            worKsheeT.Cells[row, 1] = "onWin";
-                            worKsheeT.Cells[row, 2] = quest.QuestInformation.onWin;
-                            worKsheeT.Cells[row, 3] = local.QuestInformation.onWin;
-                            row++;
-                            worKsheeT.Cells[row, 1] = "onFailed";
-                            worKsheeT.Cells[row, 2] = quest.QuestInformation.onFailed;
-                            worKsheeT.Cells[row, 3] = local.QuestInformation.onFailed;
-                            row++;
-                            worKsheeT.Cells[row, 1] = "onOpen";
-                            worKsheeT.Cells[row, 2] = quest.QuestInformation.onOpen;
-                            worKsheeT.Cells[row, 3] = local.QuestInformation.onOpen;
-                            row++;
-                            worKsheeT.Cells[row, 1] = "onTest";
-                            worKsheeT.Cells[row, 2] = quest.QuestInformation.onTest;
-                            worKsheeT.Cells[row, 3] = local.QuestInformation.onTest;
-                            row++;
+                          
                         }
                         }
                 }
@@ -3551,7 +3546,6 @@ namespace StalkerOnlineQuesterEditor
                 }
             }
             wb.Close();
-            Console.WriteLine(count);
         }
 
         private void квестовToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3591,15 +3585,6 @@ namespace StalkerOnlineQuesterEditor
                 i++;
                 string DescriptionOnTest = (string)(sheet.UsedRange.Cells[i, 3] as Microsoft.Office.Interop.Excel.Range).Value2;
                 i++;
-                string onGet = (string)(sheet.UsedRange.Cells[i, 3] as Microsoft.Office.Interop.Excel.Range).Value2;
-                i++;
-                string onWin = (string)(sheet.UsedRange.Cells[i, 3] as Microsoft.Office.Interop.Excel.Range).Value2;
-                i++;
-                string onFailed = (string)(sheet.UsedRange.Cells[i, 3] as Microsoft.Office.Interop.Excel.Range).Value2;
-                i++;
-                string onOpen = (string)(sheet.UsedRange.Cells[i, 3] as Microsoft.Office.Interop.Excel.Range).Value2;
-                i++;
-                string onTest = (string)(sheet.UsedRange.Cells[i, 3] as Microsoft.Office.Interop.Excel.Range).Value2;
 
                 if (!quests.locales[locale].ContainsKey(quest_id))
                 {
@@ -3614,16 +3599,10 @@ namespace StalkerOnlineQuesterEditor
                     quest.QuestInformation.Description = Description;
                     quest.QuestInformation.DescriptionOnTest = DescriptionOnTest;
                     quest.QuestInformation.DescriptionClosed = DescriptionClosed;
-                    quest.QuestInformation.onWin = onWin;
-                    quest.QuestInformation.onFailed = onFailed;
-                    quest.QuestInformation.onGet = onGet;
-                    quest.QuestInformation.onOpen = onOpen;
-                    quest.QuestInformation.onTest = onTest;
                     quest.Version = version;
                 }
                 else count++;
             }
-            Console.WriteLine(count);
             app.Quit();
         }
 
@@ -3972,6 +3951,12 @@ namespace StalkerOnlineQuesterEditor
                 }
             }
             statusLabel.Text = "Выведено: " + dgvReview.RowCount.ToString();
+        }
+
+        private void способыПолученияКвестаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            QuestDialogFinderForm form = new QuestDialogFinderForm(this, 2);
+            form.Show();
         }
     }
 }

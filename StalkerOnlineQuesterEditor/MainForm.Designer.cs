@@ -304,6 +304,7 @@ namespace StalkerOnlineQuesterEditor
             this.проверкаОшибокToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.поискДиалоговПоQuestIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.поискДиалоговПоЗнаниюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.способыПолученияКвестаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.данныеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.собратьЭдиторДляПередачиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.вытащитьНепереведённыеТекстыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2411,7 +2412,8 @@ namespace StalkerOnlineQuesterEditor
             this.парсерыToolStripMenuItem,
             this.проверкаОшибокToolStripMenuItem,
             this.поискДиалоговПоQuestIDToolStripMenuItem,
-            this.поискДиалоговПоЗнаниюToolStripMenuItem});
+            this.поискДиалоговПоЗнаниюToolStripMenuItem,
+            this.способыПолученияКвестаToolStripMenuItem});
             this.обновленияToolStripMenuItem.Name = "обновленияToolStripMenuItem";
             resources.ApplyResources(this.обновленияToolStripMenuItem, "обновленияToolStripMenuItem");
             // 
@@ -2438,6 +2440,12 @@ namespace StalkerOnlineQuesterEditor
             this.поискДиалоговПоЗнаниюToolStripMenuItem.Name = "поискДиалоговПоЗнаниюToolStripMenuItem";
             resources.ApplyResources(this.поискДиалоговПоЗнаниюToolStripMenuItem, "поискДиалоговПоЗнаниюToolStripMenuItem");
             this.поискДиалоговПоЗнаниюToolStripMenuItem.Click += new System.EventHandler(this.поискДиалоговПоЗнаниюToolStripMenuItem_Click);
+            // 
+            // способыПолученияКвестаToolStripMenuItem
+            // 
+            this.способыПолученияКвестаToolStripMenuItem.Name = "способыПолученияКвестаToolStripMenuItem";
+            resources.ApplyResources(this.способыПолученияКвестаToolStripMenuItem, "способыПолученияКвестаToolStripMenuItem");
+            this.способыПолученияКвестаToolStripMenuItem.Click += new System.EventHandler(this.способыПолученияКвестаToolStripMenuItem_Click);
             // 
             // данныеToolStripMenuItem
             // 
@@ -2881,6 +2889,7 @@ namespace StalkerOnlineQuesterEditor
         private System.Windows.Forms.Button btnAGHelloChange;
         private System.Windows.Forms.Button btnAGHelloDel;
         private System.Windows.Forms.ComboBox FakeQuestBox;
+        private System.Windows.Forms.ToolStripMenuItem способыПолученияКвестаToolStripMenuItem;
     }
 }
 

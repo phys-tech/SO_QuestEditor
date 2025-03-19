@@ -133,6 +133,7 @@
             this.clanLevelTo = new System.Windows.Forms.NumericUpDown();
             this.clanLevelFrom = new System.Windows.Forms.NumericUpDown();
             this.gbClanOptions = new System.Windows.Forms.GroupBox();
+            this.cbNotAllyance = new System.Windows.Forms.CheckBox();
             this.cbAllyance = new System.Windows.Forms.CheckBox();
             this.cbSecurNotExst = new System.Windows.Forms.CheckBox();
             this.cbSecurExst = new System.Windows.Forms.CheckBox();
@@ -275,6 +276,8 @@
             this.cbDungeonNon = new System.Windows.Forms.CheckBox();
             this.cbDungeonPhase = new System.Windows.Forms.ComboBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.cbMap = new System.Windows.Forms.ComboBox();
             this.label33 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.nupCoordRadius = new System.Windows.Forms.NumericUpDown();
@@ -303,6 +306,7 @@
             this.bEditDialogCancel = new System.Windows.Forms.Button();
             this.lReactionNPC = new System.Windows.Forms.Label();
             this.pCommands = new System.Windows.Forms.Panel();
+            this.cbNoLocale = new System.Windows.Forms.CheckBox();
             this.cbHidden = new System.Windows.Forms.CheckBox();
             this.cbForDev = new System.Windows.Forms.CheckBox();
             this.debuglabel = new System.Windows.Forms.Label();
@@ -322,7 +326,8 @@
             this.autoDefaultNode = new System.Windows.Forms.ComboBox();
             this.cbAutoNode = new System.Windows.Forms.CheckBox();
             this.tReactionNPC = new System.Windows.Forms.RichTextBox();
-            this.cbNoLocale = new System.Windows.Forms.CheckBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.cbSeasonEvent = new System.Windows.Forms.ComboBox();
             this.gbActions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDungeonEnterKey)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nupChangeMoney)).BeginInit();
@@ -388,6 +393,7 @@
             this.pCommands.SuspendLayout();
             this.gbTexts.SuspendLayout();
             this.autoPanel.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tPlayerText
@@ -1467,6 +1473,7 @@
             // gbClanOptions
             // 
             this.gbClanOptions.BackColor = System.Drawing.SystemColors.Control;
+            this.gbClanOptions.Controls.Add(this.cbNotAllyance);
             this.gbClanOptions.Controls.Add(this.cbAllyance);
             this.gbClanOptions.Controls.Add(this.cbSecurNotExst);
             this.gbClanOptions.Controls.Add(this.cbSecurExst);
@@ -1487,6 +1494,16 @@
             this.gbClanOptions.TabStop = false;
             this.gbClanOptions.Text = "Клановые опции";
             // 
+            // cbNotAllyance
+            // 
+            this.cbNotAllyance.AutoSize = true;
+            this.cbNotAllyance.Location = new System.Drawing.Point(163, 65);
+            this.cbNotAllyance.Name = "cbNotAllyance";
+            this.cbNotAllyance.Size = new System.Drawing.Size(85, 17);
+            this.cbNotAllyance.TabIndex = 29;
+            this.cbNotAllyance.Text = "не союзник";
+            this.cbNotAllyance.UseVisualStyleBackColor = true;
+            // 
             // cbAllyance
             // 
             this.cbAllyance.AutoSize = true;
@@ -1500,7 +1517,7 @@
             // cbSecurNotExst
             // 
             this.cbSecurNotExst.AutoSize = true;
-            this.cbSecurNotExst.Location = new System.Drawing.Point(163, 128);
+            this.cbSecurNotExst.Location = new System.Drawing.Point(163, 151);
             this.cbSecurNotExst.Name = "cbSecurNotExst";
             this.cbSecurNotExst.Size = new System.Drawing.Size(83, 17);
             this.cbSecurNotExst.TabIndex = 27;
@@ -1553,7 +1570,7 @@
             // cbWarTime
             // 
             this.cbWarTime.AutoSize = true;
-            this.cbWarTime.Location = new System.Drawing.Point(163, 88);
+            this.cbWarTime.Location = new System.Drawing.Point(163, 111);
             this.cbWarTime.Name = "cbWarTime";
             this.cbWarTime.Size = new System.Drawing.Size(143, 17);
             this.cbWarTime.TabIndex = 22;
@@ -1573,7 +1590,7 @@
             // cbNotEnemy
             // 
             this.cbNotEnemy.AutoSize = true;
-            this.cbNotEnemy.Location = new System.Drawing.Point(163, 65);
+            this.cbNotEnemy.Location = new System.Drawing.Point(163, 88);
             this.cbNotEnemy.Name = "cbNotEnemy";
             this.cbNotEnemy.Size = new System.Drawing.Size(64, 17);
             this.cbNotEnemy.TabIndex = 20;
@@ -1593,7 +1610,7 @@
             // cbLonerOnly
             // 
             this.cbLonerOnly.AutoSize = true;
-            this.cbLonerOnly.Location = new System.Drawing.Point(163, 108);
+            this.cbLonerOnly.Location = new System.Drawing.Point(163, 131);
             this.cbLonerOnly.Name = "cbLonerOnly";
             this.cbLonerOnly.Size = new System.Drawing.Size(73, 17);
             this.cbLonerOnly.TabIndex = 18;
@@ -2850,6 +2867,7 @@
             // 
             // tabOther
             // 
+            this.tabOther.Controls.Add(this.groupBox8);
             this.tabOther.Controls.Add(this.groupBox7);
             this.tabOther.Controls.Add(this.groupBox6);
             this.tabOther.Controls.Add(this.groupBox5);
@@ -2868,7 +2886,7 @@
             // 
             this.groupBox7.Controls.Add(this.cbDungeonNon);
             this.groupBox7.Controls.Add(this.cbDungeonPhase);
-            this.groupBox7.Location = new System.Drawing.Point(575, 7);
+            this.groupBox7.Location = new System.Drawing.Point(369, 7);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(219, 81);
             this.groupBox7.TabIndex = 73;
@@ -2903,21 +2921,40 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.label37);
+            this.groupBox6.Controls.Add(this.cbMap);
             this.groupBox6.Controls.Add(this.label33);
             this.groupBox6.Controls.Add(this.label13);
             this.groupBox6.Controls.Add(this.nupCoordRadius);
             this.groupBox6.Controls.Add(this.tbCoordinates);
-            this.groupBox6.Location = new System.Drawing.Point(369, 7);
+            this.groupBox6.Location = new System.Drawing.Point(508, 94);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(200, 81);
+            this.groupBox6.Size = new System.Drawing.Size(200, 162);
             this.groupBox6.TabIndex = 72;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Координаты на карте(Игрок)";
             // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(6, 23);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(40, 13);
+            this.label37.TabIndex = 52;
+            this.label37.Text = "Карта:";
+            // 
+            // cbMap
+            // 
+            this.cbMap.FormattingEnabled = true;
+            this.cbMap.Location = new System.Drawing.Point(49, 20);
+            this.cbMap.Name = "cbMap";
+            this.cbMap.Size = new System.Drawing.Size(146, 21);
+            this.cbMap.TabIndex = 53;
+            // 
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(6, 45);
+            this.label33.Location = new System.Drawing.Point(6, 76);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(46, 13);
             this.label33.TabIndex = 51;
@@ -2926,7 +2963,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 21);
+            this.label13.Location = new System.Drawing.Point(6, 52);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(54, 13);
             this.label13.TabIndex = 50;
@@ -2934,7 +2971,7 @@
             // 
             // nupCoordRadius
             // 
-            this.nupCoordRadius.Location = new System.Drawing.Point(60, 43);
+            this.nupCoordRadius.Location = new System.Drawing.Point(60, 74);
             this.nupCoordRadius.Name = "nupCoordRadius";
             this.nupCoordRadius.Size = new System.Drawing.Size(61, 20);
             this.nupCoordRadius.TabIndex = 1;
@@ -2946,7 +2983,7 @@
             // 
             // tbCoordinates
             // 
-            this.tbCoordinates.Location = new System.Drawing.Point(60, 18);
+            this.tbCoordinates.Location = new System.Drawing.Point(60, 49);
             this.tbCoordinates.Name = "tbCoordinates";
             this.tbCoordinates.Size = new System.Drawing.Size(134, 20);
             this.tbCoordinates.TabIndex = 0;
@@ -3181,6 +3218,16 @@
             this.pCommands.Size = new System.Drawing.Size(818, 52);
             this.pCommands.TabIndex = 13;
             // 
+            // cbNoLocale
+            // 
+            this.cbNoLocale.AutoSize = true;
+            this.cbNoLocale.Location = new System.Drawing.Point(572, 4);
+            this.cbNoLocale.Name = "cbNoLocale";
+            this.cbNoLocale.Size = new System.Drawing.Size(102, 17);
+            this.cbNoLocale.TabIndex = 44;
+            this.cbNoLocale.Text = "Не переводить";
+            this.cbNoLocale.UseVisualStyleBackColor = true;
+            // 
             // cbHidden
             // 
             this.cbHidden.AutoSize = true;
@@ -3383,15 +3430,31 @@
             this.tReactionNPC.Text = "";
             this.tReactionNPC.TextChanged += new System.EventHandler(this.tReactionNPC_TextChanged);
             // 
-            // cbNoLocale
+            // groupBox8
             // 
-            this.cbNoLocale.AutoSize = true;
-            this.cbNoLocale.Location = new System.Drawing.Point(572, 4);
-            this.cbNoLocale.Name = "cbNoLocale";
-            this.cbNoLocale.Size = new System.Drawing.Size(102, 17);
-            this.cbNoLocale.TabIndex = 44;
-            this.cbNoLocale.Text = "Не переводить";
-            this.cbNoLocale.UseVisualStyleBackColor = true;
+            this.groupBox8.Controls.Add(this.cbSeasonEvent);
+            this.groupBox8.Location = new System.Drawing.Point(591, 7);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(203, 81);
+            this.groupBox8.TabIndex = 74;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Сезонное событие:";
+            // 
+            // cbSeasonEvent
+            // 
+            this.cbSeasonEvent.FormattingEnabled = true;
+            this.cbSeasonEvent.Items.AddRange(new object[] {
+            "нет фазы",
+            "фаза 1",
+            "фаза 2",
+            "фаза 3 ",
+            "фаза 4",
+            "фаза 5",
+            "фаза 6"});
+            this.cbSeasonEvent.Location = new System.Drawing.Point(6, 19);
+            this.cbSeasonEvent.Name = "cbSeasonEvent";
+            this.cbSeasonEvent.Size = new System.Drawing.Size(191, 21);
+            this.cbSeasonEvent.TabIndex = 46;
             // 
             // EditDialogForm
             // 
@@ -3497,6 +3560,7 @@
             this.gbTexts.PerformLayout();
             this.autoPanel.ResumeLayout(false);
             this.autoPanel.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3799,5 +3863,10 @@
         private System.Windows.Forms.NumericUpDown clanLevelTo;
         private System.Windows.Forms.NumericUpDown clanLevelFrom;
         private System.Windows.Forms.CheckBox cbNoLocale;
+        private System.Windows.Forms.CheckBox cbNotAllyance;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.ComboBox cbMap;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.ComboBox cbSeasonEvent;
     }
 }
