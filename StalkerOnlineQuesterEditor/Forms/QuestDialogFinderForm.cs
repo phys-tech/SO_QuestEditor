@@ -110,6 +110,7 @@ namespace StalkerOnlineQuesterEditor.Forms
             List<int> quests_r = new List<int>();
             List<int> quests_p = new List<int>();
             List<int> dialogs = new List<int>();
+
             int questID = 0;
             if (!int.TryParse(textBox1.Text, out questID) || questID == 0)
             {
@@ -229,6 +230,18 @@ namespace StalkerOnlineQuesterEditor.Forms
                 }
                 treeView1.Nodes.Add(node);
             }
+
+            List<string> dungeons = parent.dungeonConst.getDungeonsByQuest(quest);
+            if (dungeons.Any())
+            {
+                TreeNode node = new TreeNode("Выдаётся в подземельях:");
+                foreach (var i in dungeons)
+                {
+                    node.Nodes.Add("dung", i.ToString());
+                }
+                treeView1.Nodes.Add(node);
+            }
+           
         }
 
         private void onFound(List<int> checking, List<int> opening, List<int> closing)

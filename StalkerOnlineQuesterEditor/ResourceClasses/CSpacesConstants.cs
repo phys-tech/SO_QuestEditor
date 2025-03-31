@@ -198,7 +198,7 @@ namespace StalkerOnlineQuesterEditor
         public static string BOSSES_DATA_PATH = "source/dungeon_spaces.xml";
         JsonTextReader reader;
         protected Dictionary<int, DungeonSpace> dungeons = new Dictionary<int, DungeonSpace>();
-
+        protected Dictionary<int, List<int>> dungeon_quests = new Dictionary<int, List<int>>();
 
         public CDungeonSpacesConstants()
         {
@@ -209,6 +209,8 @@ namespace StalkerOnlineQuesterEditor
             string space_name = "";
             int level = 0;
             int dung_id = 0;
+            bool is_quest = false;
+            List<int> quests = new List<int>();
 
            // Console.WriteLine("CDungeonSpacesConstants:");
 
@@ -219,7 +221,12 @@ namespace StalkerOnlineQuesterEditor
                     level += 1;
                     continue;
                 }
-                
+
+                if ((reader.TokenType == JsonToken.Integer) && is_quest)
+                {
+                    quests.Add(Convert.ToInt32(reader.Value));
+                }
+
                 else if (reader.TokenType == JsonToken.EndObject)
                 {
                     level -= 1;
@@ -228,14 +235,23 @@ namespace StalkerOnlineQuesterEditor
 
                 if ((reader.TokenType == JsonToken.PropertyName) && (level == 1) )
                 {
+                    if (quests.Any())
+                    {
+                        dungeon_quests.Add(dung_id, quests);
+                        quests = new List<int>();
+                    }
+
                     dung_id = int.Parse(reader.Value.ToString());
                     continue;
                 }
-
-                if ((reader.TokenType == JsonToken.PropertyName) && (reader.Value.ToString() == "space"))
+                if (reader.TokenType == JsonToken.PropertyName)
                 {
-                    space_name = "";
+                    is_quest = (reader.Value.ToString() == "quest");
+                    if (reader.Value.ToString() == "space")
+                        space_name = "";
                 }
+
+                
                 else if ((reader.TokenType == JsonToken.String) && (!space_name.Any()))
                 {
                     space_name = reader.Value.ToString();
@@ -351,6 +367,19 @@ namespace StalkerOnlineQuesterEditor
                 if (pair.Value.name == name)
                     return pair.Key;
             return -1;
+        }
+
+        public List<string> getDungeonsByQuest(int quest_id)
+        {
+            List<string> result = new List<string>();
+            foreach(var i in dungeon_quests)
+            {
+                if (i.Value.Contains(quest_id))
+                {
+                    result.Add(getNameByID(i.Key));
+                }
+            }
+            return result;
         }
     }
 

@@ -161,6 +161,15 @@ namespace StalkerOnlineQuesterEditor
             data.Add("no map", true);
             return data;
         }
+
+        public string getSpaceByNPCname(string npcname)
+        {
+            if (NpcData.ContainsKey(npcname))
+            {
+                return NpcData[npcname].location;
+            }
+            return "";
+        }
         
         //! Парсит файл с местонахождением NPC
         private void parseNpcLocationFile(string fileName)

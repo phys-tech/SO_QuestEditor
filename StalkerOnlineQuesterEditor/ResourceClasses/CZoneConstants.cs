@@ -12,12 +12,14 @@ namespace StalkerOnlineQuesterEditor
     {
         //! Словарь ID территории (mark в xml файле) - Имя территории (по-русски, для геймдевов)
         protected Dictionary<string, CZoneDescription> zones;
+        protected List<CZoneDescription> noname_zones;
 
         //! Конструктор, создает словарь на основе xml файлов areas и AllAreas
         public CZoneConstants()
         {
             zones = new Dictionary<string, CZoneDescription>();
-           
+            noname_zones = new List<CZoneDescription>();
+
             // добавление неназванных зон из AllAreas.xml - создается парсером по всем spaces
             XDocument allAreas = XDocument.Load("source/AllAreas.xml");
             foreach(XElement item in allAreas.Root.Elements())
@@ -45,6 +47,29 @@ namespace StalkerOnlineQuesterEditor
                     zones[id].addQuests(quests);
                 }
             }
+            if (!File.Exists("source/NonameAreas.xml")) return;
+            XDocument noAreas = XDocument.Load("source/NonameAreas.xml");
+            foreach (XElement item in noAreas.Root.Elements())
+            {
+                string id = item.Element("mark").Value.ToString().Trim();
+                string space = item.Element("space").Value.ToString().Trim();
+                string position = item.Element("position").Value.ToString().Trim();
+                List<int> quests = new List<int>();
+                string[] q;
+                if (item.Element("quests") != null)
+                {
+                    q = item.Element("quests").Value.ToString().Trim().Split(' ');
+                    foreach (string i in q)
+                    {
+                        if (i != "0")
+                            quests.Add(Convert.ToInt32(i));
+                    }
+                }
+                if (!zones.ContainsKey(id))
+                {
+                    noname_zones.Add(new CZoneDescription(id, quests, space, position));
+                }
+            }
         }
 
         public bool checkAreaGiveQuestByID(int quest_id)
@@ -65,6 +90,15 @@ namespace StalkerOnlineQuesterEditor
         {
             List<string> result = new List<string>();
             foreach (CZoneDescription area in zones.Values)
+            {
+                List<int> area_quest;
+                area_quest = area.getQuests();
+                if (area_quest == null) continue;
+                if (area_quest.Count == 0) continue;
+                if (area_quest.Contains(quest_id))
+                    result.Add(area.getSpace() + " " + area.getPos());
+            }
+            foreach(CZoneDescription area in noname_zones)
             {
                 List<int> area_quest;
                 area_quest = area.getQuests();

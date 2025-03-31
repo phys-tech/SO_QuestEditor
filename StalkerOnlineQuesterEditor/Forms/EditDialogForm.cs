@@ -195,6 +195,14 @@ namespace StalkerOnlineQuesterEditor
                     commandsComboBox.SelectedItem = parent.dungeonConst.getNameByID(dung_id);
                     nudDungeonEnterKey.Value = enter_key;
                 }
+                if (ActionsComboBox.Text == "Наложить эффект")
+                {
+                    string[] data = curDialog.Actions.Data.Split();
+                    int effect_id = Convert.ToInt32(data[0]);
+                    int stack = Convert.ToInt32(data[1]);
+                    commandsComboBox.SelectedItem = parent.effects.getDescriptionOnID(effect_id);
+                    nudDungeonEnterKey.Value = stack;
+                }
                 if (ActionsComboBox.Text == "Запустить станок")
                 {
                     string key = parent.workbenchTypes.getName(curDialog.Actions.Data);
@@ -537,7 +545,7 @@ namespace StalkerOnlineQuesterEditor
             teleportComboBox.Visible = (SelectedValue == 5);
             ToDialogComboBox.Visible = (SelectedValue == 100);
 
-            List<int> list = new List<int>() { 19, 4, 6, 28, 32, 36 };
+            List<int> list = new List<int>() { 19, 4, 6, 28, 32, 36, 38 };
             commandsComboBox.Visible = list.Contains(SelectedValue);
     
             list = new List<int>() { 20, 1, 7, 30, 31};
@@ -556,13 +564,23 @@ namespace StalkerOnlineQuesterEditor
                     commandsComboBox.Items.Add(key);
             }
 
-            nudDungeonEnterKey.Visible = (SelectedValue == 28);
-            labelEnterKey.Visible = (SelectedValue == 28);
+            nudDungeonEnterKey.Visible = ((SelectedValue == 28) || (SelectedValue == 38));
+            labelEnterKey.Visible = ((SelectedValue == 28) || (SelectedValue == 38));
             if (SelectedValue == 28)
             {
                 commandsComboBox.Items.Clear();
                 foreach (string key in parent.dungeonConst.getAllSpaceNames())
                     commandsComboBox.Items.Add(key);
+                labelEnterKey.Text = "номер входа:";
+                nudDungeonEnterKey.Minimum = 0;
+            }
+            if (SelectedValue == 38)
+            {
+                commandsComboBox.Items.Clear();
+                foreach (string key in parent.effects.getAllDescriptions())
+                    commandsComboBox.Items.Add(key);
+                labelEnterKey.Text = "кол.стаков:";
+                nudDungeonEnterKey.Minimum = -999;
             }
             if (SelectedValue == 32)
             {
@@ -713,6 +731,11 @@ namespace StalkerOnlineQuesterEditor
                 if ((actions.Event.Display == "Телепорт в подземелье"))
                 {
                     actions.Data = parent.dungeonConst.getIDByName(commandsComboBox.SelectedItem.ToString()).ToString() +
+                        " " + nudDungeonEnterKey.Value.ToString();
+                }
+                if (actions.Event.Display == "Наложить эффект") 
+                {
+                    actions.Data = parent.effects.getIDOnDescription(commandsComboBox.SelectedItem.ToString()).ToString() +
                         " " + nudDungeonEnterKey.Value.ToString();
                 }
                 if (actions.Event.Display == ("Запустить станок"))
