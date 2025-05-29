@@ -699,6 +699,16 @@ namespace StalkerOnlineQuesterEditor
             copy.noLocale = noLocale;
             return copy;
         }
+
+        public CDialog Clear()
+        {
+            CDialog copy = new CDialog();
+            copy.coordinates = new NodeCoordinates(coordinates.X, coordinates.Y, false, coordinates.Active);
+            copy.DialogID = this.DialogID;
+            copy.Holder = this.Holder;
+            copy.Nodes = new List<int>(this.Nodes);
+            return copy;
+        }
         // Копирование всех нетекстовых полей (сделано для синхронизации данных, не изменяя перевода)
         public void InsertNonTextData(CDialog source)
         {

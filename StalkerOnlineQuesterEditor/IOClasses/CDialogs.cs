@@ -1206,7 +1206,7 @@ namespace StalkerOnlineQuesterEditor
             if (count < 1)
                 return result;
             string html = string.Empty;
-            string url = @"http://hz-dev2.stalker.so:8011/getnextidrange?key=qdialog_id&count=" + count.ToString();
+            string url = @"http://k-adm.stalker.so:8011/getnextidrange?key=qdialog_id&count=" + count.ToString();
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.AutomaticDecompression = DecompressionMethods.GZip;
@@ -1236,7 +1236,7 @@ namespace StalkerOnlineQuesterEditor
         {
 
             string html = string.Empty;
-            string url = @"http://hz-dev2.stalker.so:8011/getnextid?key=qdialog_id";
+            string url = @"http://k-adm.stalker.so:8011/getnextid?key=qdialog_id";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.AutomaticDecompression = DecompressionMethods.GZip;

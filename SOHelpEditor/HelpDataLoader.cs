@@ -220,9 +220,16 @@ namespace SOHelpEditor
                 System.Windows.Forms.MessageBox.Show("Ошибка загрузки данных помощи:" + JSON_PATH);
                 return;
             }          
-            StreamReader reader = new StreamReader(JSON_PATH, Encoding.UTF8);
-            helpData = JsonConvert.DeserializeObject<RootObject>(reader.ReadToEnd());
-            reader.Close();
+            helpData = JsonConvert.DeserializeObject<RootObject>(File.ReadAllText(JSON_PATH));
+            foreach(var i in helpData.chapters)
+            {
+                Console.WriteLine("Глава: " + i.id.ToString() + ":" + i.cards.Count.ToString());
+                foreach(var j in i.cards)
+                {
+                    Console.WriteLine("\t" + j.id.ToString());
+                }
+                
+            }
             loadImages();
             loadText();
         }
@@ -307,10 +314,8 @@ namespace SOHelpEditor
         public void saveData()
         {
             //Данные
-            string json_string = JsonConvert.SerializeObject(helpData);
-            StreamWriter writer = new StreamWriter(JSON_PATH);
-            writer.Write(json_string);
-            writer.Close();
+            string json_string = JsonConvert.SerializeObject(helpData, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText(JSON_PATH, json_string);
 
             //Локализация
             localXmlDocument.Save(LOCAL_XML_PATH);
@@ -327,10 +332,8 @@ namespace SOHelpEditor
                 saveImage(value.Value.image, image.path);
             }
 
-            json_string = JsonConvert.SerializeObject(imagesData);
-            writer = new StreamWriter(PICTURES_JSON_PATH);
-            writer.Write(json_string);
-            writer.Close();
+            json_string = JsonConvert.SerializeObject(imagesData, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText(PICTURES_JSON_PATH, json_string);
         }
     }
 }

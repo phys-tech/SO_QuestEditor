@@ -45,6 +45,7 @@ namespace StalkerOnlineQuesterEditor
                 return;
             }
             if (!inited) init();
+            if (rtb == null) return;
             string text = rtb.Text;
             textbox.Text = text;
             //textbox.SpellCheck.CustomDictionaries.Add(new Uri(@"ru-RU.dic", UriKind.Relative));

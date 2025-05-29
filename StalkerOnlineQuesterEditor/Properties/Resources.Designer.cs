@@ -22,7 +22,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StalkerOnlineQuesterEditor.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,27 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap back {
+        public static System.Drawing.Bitmap add {
+            get {
+                object obj = ResourceManager.GetObject("add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ArrowsBig {
+            get {
+                object obj = ResourceManager.GetObject("ArrowsBig", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap back {
             get {
                 object obj = ResourceManager.GetObject("back", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +93,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap back_24 {
+        public static System.Drawing.Bitmap back_24 {
             get {
                 object obj = ResourceManager.GetObject("back_24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +103,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap but_indicate {
+        public static System.Drawing.Bitmap but_indicate {
             get {
                 object obj = ResourceManager.GetObject("but_indicate", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +113,57 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Explorer {
+        public static System.Drawing.Bitmap but_indicate1 {
+            get {
+                object obj = ResourceManager.GetObject("but_indicate1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Clear {
+            get {
+                object obj = ResourceManager.GetObject("Clear", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Clear1 {
+            get {
+                object obj = ResourceManager.GetObject("Clear1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap delete {
+            get {
+                object obj = ResourceManager.GetObject("delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Edit {
+            get {
+                object obj = ResourceManager.GetObject("Edit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Explorer {
             get {
                 object obj = ResourceManager.GetObject("Explorer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +173,17 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap filter_24 {
+        public static System.Drawing.Bitmap Explorer1 {
+            get {
+                object obj = ResourceManager.GetObject("Explorer1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap filter_24 {
             get {
                 object obj = ResourceManager.GetObject("filter_24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +193,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap filter_g_24 {
+        public static System.Drawing.Bitmap filter_g_24 {
             get {
                 object obj = ResourceManager.GetObject("filter_g_24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,7 +203,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap next {
+        public static System.Drawing.Bitmap next {
             get {
                 object obj = ResourceManager.GetObject("next", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -133,7 +213,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap next_24 {
+        public static System.Drawing.Bitmap next_24 {
             get {
                 object obj = ResourceManager.GetObject("next_24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -143,7 +223,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SaveDisk {
+        public static System.Drawing.Bitmap SaveDisk {
             get {
                 object obj = ResourceManager.GetObject("SaveDisk", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -153,7 +233,17 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap w256h2561347801471RecycleBinempty {
+        public static System.Drawing.Bitmap SaveDisk1 {
+            get {
+                object obj = ResourceManager.GetObject("SaveDisk1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap w256h2561347801471RecycleBinempty {
             get {
                 object obj = ResourceManager.GetObject("w256h2561347801471RecycleBinempty", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -163,7 +253,7 @@ namespace StalkerOnlineQuesterEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap корзина_32х32 {
+        public static System.Drawing.Bitmap корзина_32х32 {
             get {
                 object obj = ResourceManager.GetObject("корзина_32х32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

@@ -39,13 +39,14 @@ namespace StalkerOnlineQuesterEditor
             this.treeDialogs = new System.Windows.Forms.TreeView();
             this.DialogShower = new UMD.HCIL.Piccolo.PCanvas();
             this.panelDialogTools = new System.Windows.Forms.Panel();
+            this.bClearDialog = new System.Windows.Forms.Button();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.bCopyDialogTree = new System.Windows.Forms.Button();
             this.lFindDialogID = new System.Windows.Forms.Label();
             this.tbFindDialogID = new System.Windows.Forms.TextBox();
             this.btnClearRecycle = new System.Windows.Forms.Button();
             this.labelDrawingTip = new System.Windows.Forms.Label();
             this.bCenterizeDialogShower = new System.Windows.Forms.Button();
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.labelYNode = new System.Windows.Forms.Label();
             this.labelXNode = new System.Windows.Forms.Label();
             this.bRemoveDialog = new System.Windows.Forms.Button();
@@ -442,6 +443,7 @@ namespace StalkerOnlineQuesterEditor
             // panelDialogTools
             // 
             resources.ApplyResources(this.panelDialogTools, "panelDialogTools");
+            this.panelDialogTools.Controls.Add(this.bClearDialog);
             this.panelDialogTools.Controls.Add(this.bCopyDialogTree);
             this.panelDialogTools.Controls.Add(this.lFindDialogID);
             this.panelDialogTools.Controls.Add(this.tbFindDialogID);
@@ -454,6 +456,23 @@ namespace StalkerOnlineQuesterEditor
             this.panelDialogTools.Controls.Add(this.bEditDialog);
             this.panelDialogTools.Controls.Add(this.bAddDialog);
             this.panelDialogTools.Name = "panelDialogTools";
+            // 
+            // bClearDialog
+            // 
+            resources.ApplyResources(this.bClearDialog, "bClearDialog");
+            this.bClearDialog.Image = global::StalkerOnlineQuesterEditor.Properties.Resources.Clear;
+            this.bClearDialog.Name = "bClearDialog";
+            this.bClearDialog.UseVisualStyleBackColor = true;
+            this.bClearDialog.Click += new System.EventHandler(this.bClearDialog_Click);
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "add.png");
+            this.imageList.Images.SetKeyName(1, "Edit.png");
+            this.imageList.Images.SetKeyName(2, "delete.png");
+            this.imageList.Images.SetKeyName(3, "ArrowsBig.png");
             // 
             // bCopyDialogTree
             // 
@@ -492,15 +511,6 @@ namespace StalkerOnlineQuesterEditor
             this.bCenterizeDialogShower.Name = "bCenterizeDialogShower";
             this.bCenterizeDialogShower.UseVisualStyleBackColor = true;
             this.bCenterizeDialogShower.Click += new System.EventHandler(this.bCenterizeDialogShower_Click);
-            // 
-            // imageList
-            // 
-            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
-            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "add.png");
-            this.imageList.Images.SetKeyName(1, "Edit.png");
-            this.imageList.Images.SetKeyName(2, "delete.png");
-            this.imageList.Images.SetKeyName(3, "ArrowsBig.png");
             // 
             // labelYNode
             // 
@@ -2890,6 +2900,7 @@ namespace StalkerOnlineQuesterEditor
         private System.Windows.Forms.Button btnAGHelloDel;
         private System.Windows.Forms.ComboBox FakeQuestBox;
         private System.Windows.Forms.ToolStripMenuItem способыПолученияКвестаToolStripMenuItem;
+        private System.Windows.Forms.Button bClearDialog;
     }
 }
 

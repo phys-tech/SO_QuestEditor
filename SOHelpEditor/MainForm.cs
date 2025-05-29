@@ -42,6 +42,7 @@ namespace SOHelpEditor
             {
                 TreeNode node = new TreeNode(dataLoader.getText(chapter.name));
                 node.Tag = chapter.id;
+                Console.WriteLine("Видим Глава " + chapter.id.ToString() + ":" + chapter.cards.Count);
                 int chapter_id = chapter.id;
                 data.Add(chapter_id, new List<Token>());
                 treeChapters.Nodes.Add(node);
@@ -55,15 +56,16 @@ namespace SOHelpEditor
                         data[chapter_id].Add(tmp);
                     }
                 }
-                else if (chapter.cards != null)
+                if (chapter.cards != null)
                 {
                     foreach(Card card in chapter.cards)
                     {
+                        Console.WriteLine(card.id);
                         TreeNode subNode = new TreeNode(dataLoader.getText(card.title));
                         subNode.Tag = card.id;
                         node.Nodes.Add(subNode);
                         data.Add(card.id, new List<Token>());
-                        if (card.full_card == null) continue;
+                        if (card.full_card == null) card.full_card = new List<Token>();
                         foreach (Token t in card.full_card)
                         {
                             Token tmp = new Token();
@@ -260,7 +262,7 @@ namespace SOHelpEditor
             string local_name = "Text_" + index.ToString();
             string local_path = "ID_" + current_id.ToString() + "." + local_name;
             
-            dataLoader.addText(local_path, local_name, text);
+            dataLoader.addText(local_path, local_name, text.Trim());
             string value = local_path;
             addToken(value, "text", current_id);
         }
@@ -272,7 +274,7 @@ namespace SOHelpEditor
             string local_name = "Pre_" + index.ToString();
             string local_path = "ID_" + current_id.ToString() + "." + local_name;
 
-            dataLoader.addText(local_path, local_name, text);
+            dataLoader.addText(local_path, local_name, text.Trim());
             string value = local_path;
             addToken(value, "pre", current_id);
         }

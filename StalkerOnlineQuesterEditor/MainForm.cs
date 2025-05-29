@@ -343,6 +343,7 @@ namespace StalkerOnlineQuesterEditor
                 bRemoveQuest.Enabled = false;
                 bAddDialog.Enabled = false;
                 bEditDialog.Enabled = false;
+                bClearDialog.Enabled = false;
                 bRemoveDialog.Enabled = false;
                 bCopyDialogTree.Enabled = false;
                 splitDialogsEmulator.Panel2.Controls.Clear();
@@ -665,6 +666,7 @@ namespace StalkerOnlineQuesterEditor
                 {
                     bAddDialog.Enabled = true;
                     bEditDialog.Enabled = true;
+                    bClearDialog.Enabled = true;
                     bCopyDialogTree.Enabled = true;
                     if (!isRoot(dialogID))
                     {
@@ -685,6 +687,7 @@ namespace StalkerOnlineQuesterEditor
                 {
                     bAddDialog.Enabled = false;
                     bEditDialog.Enabled = true;
+                    bClearDialog.Enabled = false;
                     bRemoveDialog.Enabled = true;
                     bCopyDialogTree.Enabled = true;
                 }
@@ -713,6 +716,7 @@ namespace StalkerOnlineQuesterEditor
             bRemoveDialog.Enabled = false;
             bEditDialog.Enabled = false;
             bCopyDialogTree.Enabled = false;
+            bClearDialog.Enabled = false;
         }
         //! Удаление диалога в зависимости от статуса - в корзину или навсегда
         private void bRemoveDialog_Click(object sender, EventArgs e)
@@ -733,6 +737,35 @@ namespace StalkerOnlineQuesterEditor
                 }
                 onDeselectNode();
             }
+        }
+
+        //! Отчистка диалога 
+        private void bClearDialog_Click(object sender, EventArgs e)
+        {
+            if (CSettings.getMode() != CSettings.MODE_EDITOR)
+                return;
+
+            if (selectedItemType != SelectedItemType.dialog) return;
+
+            var result = MessageBox.Show("Вы уверены, что хотите отчистить диалог полностью?", "Внимание", MessageBoxButtons.YesNo);
+            if (result == DialogResult.No) return;
+
+            int dialogID = int.Parse(treeDialogs.SelectedNode.Text);
+            if (dialogs.dialogs[currentNPC].ContainsKey(dialogID))
+                dialogs.dialogs[currentNPC][dialogID] = dialogs.dialogs[currentNPC][dialogID].Clear();
+
+            foreach (var i in CSettings.getListLocales())
+            {
+                if (!dialogs.locales[i][currentNPC].ContainsKey(dialogID)) continue;
+
+                dialogs.locales[i][currentNPC][dialogID] = dialogs.locales[i][currentNPC][dialogID].Clear();
+
+            }
+            CDialog rootDialog = getRootDialog(dialogs.dialogs[currentNPC]);
+            if (rootDialog != null)
+                fillDialogTree(rootDialog, dialogs.dialogs[currentNPC], tree, dialogs.locales);
+            NPCBox_SelectedIndexChanged(sender, e);
+            this.isDirty = true;
         }
 
         private void bRemoveFracDialog_Click(object sender, EventArgs e)
@@ -902,6 +935,8 @@ namespace StalkerOnlineQuesterEditor
             if (rootDialog != null)
                 fillDialogTree(rootDialog, dialogs, tree, locales);
         }
+
+
 
         //! Старует эмулятор диалога (язык диалога зависит от режима, непереведенные фрагменты помечаются красным)
         public void startEmulator(int dialogID)
@@ -1388,7 +1423,7 @@ namespace StalkerOnlineQuesterEditor
         {
             
             string html = string.Empty;
-            string url = @"http://hz-dev2.stalker.so:8011/getnextid?key=quest_id";
+            string url = @"http://k-adm.stalker.so:8011/getnextid?key=quest_id";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.AutomaticDecompression = DecompressionMethods.GZip;
