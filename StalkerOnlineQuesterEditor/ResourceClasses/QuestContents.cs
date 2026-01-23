@@ -689,14 +689,16 @@ namespace StalkerOnlineQuesterEditor
         public string getReputation2()
         {
             string result = "";
-
+            List<int> ex_rep = new List<int>() { 36, 45, 6, 5, 48 };
             foreach (int key in this.Reputation2.Keys)
             {
                 if (this.Reputation2[key] == 0)
                     continue;
                 if (!result.Equals(""))
                     result += ";";
-                result += (key.ToString() + ":" + this.Reputation2[key].ToString());
+                int rep_id = key;
+                if (ex_rep.Contains(key)) rep_id = key;
+                result += (rep_id.ToString() + ":" + this.Reputation2[key].ToString());
             }
 
 

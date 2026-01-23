@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 
@@ -18,6 +20,7 @@ namespace StalkerOnlineQuesterEditor
         public CDialogPrecondition editPrecondition = new CDialogPrecondition();
         public List<int> editKarmaPK = new List<int>();
         public CDialog curDialog;
+        System.Timers.Timer debounceTimer;
         int currentDialogID;
         ListLastDialogsForm listLastDialogsForm;
         bool isAdd;
@@ -129,8 +132,9 @@ namespace StalkerOnlineQuesterEditor
             tPlayerText.Text = curDialog.Title.Normalize();
             tReactionNPC.Text = curDialog.Text;
             update_errorFiner_btn();
-            TextUtils.findTextErrors(tPlayerText);
-            TextUtils.findTextErrors(tReactionNPC);
+             
+            //TextUtils.findTextErrors(tPlayerText);
+            //TextUtils.findTextErrors(tReactionNPC);
 
             foreach (TreeNode active in parent.GetCurrentTree().Nodes.Find("Active",true))
                 foreach (TreeNode node in active.Nodes)
@@ -172,7 +176,7 @@ namespace StalkerOnlineQuesterEditor
                     string key = parent.tpConst.getName(curDialog.Actions.Data);
                     teleportComboBox.SelectedItem = key;
                 }
-                List<string> list = new List<string>() { "Перейти в точку", "Бартер (обмен)", "Торговля", "Подземелье. активировать", "Вертолёт"};
+                List<string> list = new List<string>() { "Перейти в точку", "Бартер (обмен)", "Торговля", "Подземелье. активировать", "Вертолёт", "Зарядка магазинов" };
                 if (list.Contains(ActionsComboBox.Text))
                 {
                     tbAvatarGoTo.Text = curDialog.Actions.Data;
@@ -497,7 +501,20 @@ namespace StalkerOnlineQuesterEditor
         {
             calcSymbolMaxAnswer();
             if (!CSettings.hasErrorFinder()) return;
-            TextUtils.findTextErrors(tPlayerText);
+            if (debounceTimer != null)
+            {
+                debounceTimer.Stop();
+                debounceTimer.Dispose();
+            }
+
+            debounceTimer = new System.Timers.Timer(1000);
+            debounceTimer.AutoReset = false;
+            debounceTimer.Elapsed += async (s, ev) =>
+            {
+                await Task.Run(() => SpellChecker.CheckAndHighlightSpellingErrors(tPlayerText));
+            };
+
+            debounceTimer.Start();
         }
 
 
@@ -548,7 +565,7 @@ namespace StalkerOnlineQuesterEditor
             List<int> list = new List<int>() { 19, 4, 6, 28, 32, 36, 38 };
             commandsComboBox.Visible = list.Contains(SelectedValue);
     
-            list = new List<int>() { 20, 1, 7, 30, 31};
+            list = new List<int>() { 20, 1, 7, 30, 31, 40};
             tbAvatarGoTo.Visible = list.Contains(SelectedValue);
 
             if (SelectedValue == 19)
@@ -605,6 +622,9 @@ namespace StalkerOnlineQuesterEditor
                 case 100:
                     cbExit.Checked = false;
                     cbExit.Enabled = false;
+                    break;
+                case 38:
+                    cbExit.Enabled = true;
                     break;
                 default:
                     cbExit.Checked = true;
@@ -725,7 +745,7 @@ namespace StalkerOnlineQuesterEditor
                     actions.Data = parent.rpConst.getTtID(commandsComboBox.SelectedItem.ToString());
                 if (actions.Event.Display == "Списание репутации")
                     actions.Data = parent.fractions2.getFractionIDByDescr(commandsComboBox.SelectedItem.ToString()).ToString();
-                List<string> list = new List<string>() { "Перейти в точку", "Бартер (обмен)", "Торговля", "Подземелье. активировать", "Вертолёт" };
+                List<string> list = new List<string>() { "Перейти в точку", "Бартер (обмен)", "Торговля", "Подземелье. активировать", "Вертолёт", "Зарядка магазинов" };
                 if (list.Contains(actions.Event.Display))
                     actions.Data = tbAvatarGoTo.Text;
                 if ((actions.Event.Display == "Телепорт в подземелье"))
@@ -1972,7 +1992,21 @@ namespace StalkerOnlineQuesterEditor
         private void tReactionNPC_TextChanged(object sender, EventArgs e)
         {
             if (!CSettings.hasErrorFinder()) return;
-            TextUtils.findTextErrors(tReactionNPC);
+            if (debounceTimer != null)
+            {
+                debounceTimer.Stop();
+                debounceTimer.Dispose();
+            }
+
+            debounceTimer = new System.Timers.Timer(1000);
+            debounceTimer.AutoReset = false;
+            debounceTimer.Elapsed += async (s, ev) =>
+            {
+                await Task.Run(() => SpellChecker.CheckAndHighlightSpellingErrors(tReactionNPC));
+            };
+
+            debounceTimer.Start();
+
         }
 
         private void update_errorFiner_btn()
@@ -1985,8 +2019,10 @@ namespace StalkerOnlineQuesterEditor
         {
             CSettings.setErrorFinder(!CSettings.hasErrorFinder());
             update_errorFiner_btn();
-            TextUtils.findTextErrors(tPlayerText);
-            TextUtils.findTextErrors(tReactionNPC);
+
+            SpellChecker.CheckAndHighlightSpellingErrors(tPlayerText);
+            SpellChecker.CheckAndHighlightSpellingErrors(tReactionNPC);
         }
+
     }
 }

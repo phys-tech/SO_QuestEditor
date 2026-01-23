@@ -79,6 +79,7 @@ namespace StalkerOnlineQuesterEditor
                 lock_paths.Add(dialogFile);
                 
                 dialogErrors = new Dictionary<int, List<string>>();
+
                 string npc_name = Path.GetFileNameWithoutExtension(dialogFile);
                 target.Add(npc_name, new Dictionary<int, CDialog>());
 
@@ -326,12 +327,18 @@ namespace StalkerOnlineQuesterEditor
                         }
                         if (dialog.Element("Precondition").Element("Reputation2") != null)
                         {
+                            List<int> ex_rep = new List<int>() { 36, 45, 6, 5, 48 };
                             foreach (string el in dialog.Element("Precondition").Element("Reputation2").Value.Split(';'))
                             {
                                 if (el == "")
                                     continue;
                                 string[] fr = el.Split(':');
                                 int fractionID = int.Parse(fr[0]);
+                                if (ex_rep.Contains(fractionID))
+                                {
+                                    Console.WriteLine("ALERT!" + DialogID);
+                                    fractionID = 70;
+                                }
                                 Precondition.Reputation2.Add(fractionID, new List<double>());
                                 double A = double.Parse(fr[1], System.Globalization.CultureInfo.InvariantCulture);
                                 double B = double.Parse(fr[2], System.Globalization.CultureInfo.InvariantCulture);
@@ -426,6 +433,8 @@ namespace StalkerOnlineQuesterEditor
                     bool noLocale = false;
                     if (dialog.Element("noLocale") != null)
                         noLocale = true;
+                    //if (NPC_EX.Contains(npc_name))
+                    //    noLocale = true;
                     if (dialog.Element("isAutoNode") != null)
                     {
                         isAutoNode = dialog.Element("isAutoNode").Value.Trim().Equals("1");

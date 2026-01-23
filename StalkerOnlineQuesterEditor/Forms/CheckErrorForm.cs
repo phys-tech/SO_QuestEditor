@@ -875,5 +875,30 @@ namespace StalkerOnlineQuesterEditor.Forms
             }
             parent.selectQuestByID(index);
         }
+
+        private void sendErrorsOnText()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter("QEErrorlog.txt", false)) // false — перезаписать файл
+                {
+                    foreach (var item in lbLog.Items)
+                    {
+                        writer.WriteLine(item?.ToString());
+                    }
+                }
+
+                MessageBox.Show("Список успешно сохранён!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Ошибка при сохранении файла:\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void сохранитьВсёВФайлToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sendErrorsOnText();
+        }
     }
 }

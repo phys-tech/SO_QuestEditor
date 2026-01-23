@@ -301,17 +301,23 @@ namespace StalkerOnlineQuesterEditor
                 parentForm.editQuestRules.items.Clear();
                 parentForm.editQuestRules.items = items;
                 parentForm.checkQuestRulesIndicates();
+                parentForm.items_rules.Clear();
+                parentForm.items_rules = itemsInfo;
             }
             else if (formType == ITEM_REWARD)
             {
                 parentForm.editQuestReward.items.Clear();
                 parentForm.editQuestReward.items = items;
+                parentForm.items_reward.Clear();
+                parentForm.items_reward = itemsInfo;
             }
             else if (formType == ITEM_PENALTY)
             {
                 parentForm.editQuestPenalty.items.Clear();
                 parentForm.editQuestPenalty.items = items;
                 parentForm.checkRewardIndicates();
+                parentForm.items_penalty.Clear();
+                parentForm.items_penalty = itemsInfo;
             }
             else if (formType == ITEM_LOCALIZATION_RULES || formType == ITEM_LOCALIZATION_REWARD)
             {
@@ -319,12 +325,6 @@ namespace StalkerOnlineQuesterEditor
                     parseLocale();
                 parentForm2.cur_locale_quest.QuestInformation.Items = this.locale;
             }
-            if (parentForm != null)
-            {
-                parentForm.editInformation.Items.Clear();
-                parentForm.editInformation.Items = itemsInfo;
-            }
-
             this.Close();
         }
         //! Проверка, что в поле Вероятность ввели корректное число

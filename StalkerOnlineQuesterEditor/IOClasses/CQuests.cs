@@ -333,7 +333,10 @@ namespace StalkerOnlineQuesterEditor
                     if (item.Element("Reward").Element("Reputation2") != null)
                         foreach (string fraction in item.Element("Reward").Element("Reputation2").Value.Split(';'))
                             if (!fraction.Equals(""))
-                                reward.Reputation2.Add(int.Parse(fraction.Split(':')[0]), int.Parse(fraction.Split(':')[1]));
+                            {
+                               int fractionID = int.Parse(fraction.Split(':')[0]);
+                               reward.Reputation2.Add(fractionID, int.Parse(fraction.Split(':')[1]));
+                            }
                     if (item.Element("Reward").Element("NPCReputation") != null)
                         foreach (string fraction in item.Element("Reward").Element("NPCReputation").Value.Split(';'))
                             if (!fraction.Equals(""))
@@ -563,6 +566,54 @@ namespace StalkerOnlineQuesterEditor
                         else
                             target[QuestID].QuestInformation.Items.Add(itemID, new QuestItemInfo(title, description, activation, content));
                     }
+
+                /*
+                if (target[QuestID].Reward.clanPoints != 0)
+                {
+                    string line = QuestID.ToString() + "\t" + target[QuestID].QuestInformation.Title + "\t";
+                    string items = "";
+                    foreach (var i in target[QuestID].Reward.items)
+                        items += " " + i.itemType.ToString() + ":" + i.count.ToString() + ",";
+                    line += items + "\t";
+                    line += target[QuestID].Reward.Credits.ToString() + "\t";
+                    line += target[QuestID].Reward.Experience.ToString() + "\t";
+                    line += target[QuestID].Reward.KarmaPK.ToString() + "\t";
+                    string rep = "";
+                    foreach (var i in target[QuestID].Reward.Reputation2)
+                        rep += " " + i.Key.ToString() + ":" + i.Value.ToString() + ",";
+                    line += rep + "\t";
+                    string ef = "";
+                    foreach (var i in target[QuestID].Reward.Effects)
+                        ef += " " + i.getID().ToString() + ":" + i.getStack().ToString() + ",";
+                    line += ef + "\t";
+                    string qq = "";
+                    foreach (var i in target[QuestID].Reward.ChangeQuests)
+                        qq += " " + i.Key.ToString() + ":" + i.Value.ToString() + ",";
+                    line += qq + "\t";
+                    string bb = "";
+                    foreach (var i in target[QuestID].Reward.blackBoxes)
+                        bb += i + ", ";
+                    line += bb + "\t";
+                    line += target[QuestID].Reward.teleportTo + "\t";
+
+                    if (target[QuestID].Reward.OTvalue != 0)
+                        line += target[QuestID].Reward.OTfraction.ToString() + ":" + target[QuestID].Reward.OTvalue.ToString() + "\t";
+                    else
+                        line += " " + "\t";
+
+                    string kn = "";
+                    foreach (var i in target[QuestID].Reward.GetKnowleges)
+                    {
+                        kn += i + ", ";
+                    }
+                    line += kn + "\t";
+
+                    line += target[QuestID].Reward.clanPoints.ToString();
+
+                    //Console.WriteLine(line);
+
+                }
+                */
             }
         }
 
@@ -1386,7 +1437,7 @@ namespace StalkerOnlineQuesterEditor
         private int getQuestNewID(int count)
         {
             string html = string.Empty;
-            string url = @"http://hz-dev2.stalker.so:8011/getnextidrange?key=quest_id&count=" + count;
+            string url = @"http://k-adm.stalker.so:8011/getnextidrange?key=quest_id&count=" + count;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.AutomaticDecompression = DecompressionMethods.GZip;

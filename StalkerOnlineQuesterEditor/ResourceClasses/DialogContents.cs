@@ -334,8 +334,11 @@ namespace StalkerOnlineQuesterEditor
         public string getReputation2()
         {
             string result = "";
+            List<int> ex_rep = new List<int>() { 36, 45, 6, 5, 48 };
             foreach (int key in this.Reputation2.Keys)
             {
+                int rep_id = key;
+                if (ex_rep.Contains(rep_id)) rep_id = 70;
                 if (this.Reputation2[key].Count == 2)
                 {
                     if (result != "")

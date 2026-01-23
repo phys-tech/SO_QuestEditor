@@ -522,6 +522,7 @@ namespace StalkerOnlineQuesterEditor
                 fail_node.Font = new Font(fail_node.Font.Name, fail_node.Font.Size - 4, fail_node.Font.Style, fail_node.Font.Unit);
                 fail_node.X = text.X + 4;
                 fail_node.Y = text.Y + 13;
+                fail_node.Pickable = false;
                 newNode.AddChild(fail_node);
             }
 

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -51,10 +53,13 @@ namespace StalkerOnlineQuesterEditor
         public CQuestReward editQuestReward = new CQuestReward();
         public CQuestReward editQuestPenalty = new CQuestReward();
         public CQuestInformation editInformation = new CQuestInformation();
+        public Dictionary<int, QuestItemInfo> items_rules = new Dictionary<int, QuestItemInfo>();
+        public Dictionary<int, QuestItemInfo> items_reward = new Dictionary<int, QuestItemInfo>();
+        public Dictionary<int, QuestItemInfo> items_penalty = new Dictionary<int, QuestItemInfo>();
         public MainForm parent;
         public CQuest quest;
         int iState;
-
+        System.Timers.Timer debounceTimer;
         //! Конструктор, заполянет форму данными
         public EditQuestForm(MainForm parent, int currentQuest, int iState, int subID = 0)
         {
@@ -92,6 +97,27 @@ namespace StalkerOnlineQuesterEditor
                 editQuestPenalty = quest.QuestPenalty;
                 editTarget = quest.Target;
                 editInformation = quest.QuestInformation;
+                foreach (var item in editQuestRules.items)
+                {
+                    if (editInformation.Items.ContainsKey(item.itemType))
+                        {
+                        items_rules.Add(item.itemType, editInformation.Items[item.itemType]);
+                    }
+                }
+                foreach (var item in editQuestReward.items)
+                {
+                    if (editInformation.Items.ContainsKey(item.itemType))
+                    {
+                        items_reward.Add(item.itemType, editInformation.Items[item.itemType]);
+                    }
+                }
+                foreach (var item in editQuestPenalty.items)
+                {
+                    if (editInformation.Items.ContainsKey(item.itemType))
+                    {
+                        items_penalty.Add(item.itemType, editInformation.Items[item.itemType]);
+                    }
+                }
             }
             this.Text += " " + this.QuestID.ToString();
             this.Text += (": " + this.QuestID.ToString() + "   Версия: " + this.quest.Version.ToString());
@@ -168,13 +194,13 @@ namespace StalkerOnlineQuesterEditor
                 eventComboBox.SelectedItem = parent.questConst.getDescription(quest.Target.QuestType);
                 titleTextBox.Text = quest.QuestInformation.Title;
                 update_errorFiner_btn();
-                TextUtils.findTextErrors(titleTextBox);
+                SpellChecker.CheckAndHighlightSpellingErrors(titleTextBox);
                 descriptionTextBox.Text = quest.QuestInformation.Description;
-                TextUtils.findTextErrors(descriptionTextBox);
+                SpellChecker.CheckAndHighlightSpellingErrors (descriptionTextBox);
                 descriptionOnTestTextBox.Text = quest.QuestInformation.DescriptionOnTest;
-                TextUtils.findTextErrors(descriptionOnTestTextBox);
+                SpellChecker.CheckAndHighlightSpellingErrors(descriptionOnTestTextBox);
                 descriptionClosedTextBox.Text = quest.QuestInformation.DescriptionClosed;
-                TextUtils.findTextErrors(descriptionClosedTextBox);
+                SpellChecker.CheckAndHighlightSpellingErrors(descriptionClosedTextBox);
 
                 messageGridView.Rows.Clear();
                 foreach (var i in quest.QuestInformation.messages)
@@ -290,6 +316,8 @@ namespace StalkerOnlineQuesterEditor
 
             IsGroupCheckBox.Enabled = (QuestType == CQuestConstants.TYPE_KILLMOBS) || (QuestType == CQuestConstants.TYPE_KILLMOBS_WITH_ONTEST) || (QuestType == CQuestConstants.TYPE_TRIGGER_ACTION);
             cbPVPtarget2.Visible = false;
+            cbPVPOnlyAlly.Visible = false;
+            cbPVPOnlyEnemy.Visible = false;
             panelCreateMob.Visible = QuestType == 52;
             panelCreateMob.Enabled = QuestType == 52;
 
@@ -777,7 +805,7 @@ namespace StalkerOnlineQuesterEditor
                     labelPVPAdditional.Visible = true;
                     labelPVPAdditional.Text = "Добить";
                 }
-                else if ((QuestType == CQuestConstants.TYPE_B2C_FLAG) || (QuestType == CQuestConstants.TYPE_B2C_REVIVE))
+                else if ((QuestType == CQuestConstants.TYPE_B2C_FLAG))
                 {
                     cbPVPMode.Visible = false;
                     cbPVPtarget.Visible = false;
@@ -785,6 +813,22 @@ namespace StalkerOnlineQuesterEditor
                     lbPVPtarget.Visible = false;
                     cbPVPtarget3.Visible = false;
 
+                    cbPVPMode.Visible = true;
+                    cbPVPMode.Items.Clear();
+                    cbPVPMode.Items.Add("2 Защита");
+                    cbPVPMode.Items.Add("3 Атака");
+                    cbPVPMode.SelectedIndex = 0;
+                    nupPVPCount.Visible = true;
+                }
+                else if ((QuestType == CQuestConstants.TYPE_B2C_REVIVE))
+                {
+                    cbPVPMode.Visible = false;
+                    cbPVPtarget.Visible = false;
+                    cbPVPtarget2.Visible = false;
+                    lbPVPtarget.Visible = false;
+                    cbPVPtarget3.Visible = false;
+                    cbPVPOnlyAlly.Visible = true;
+                    cbPVPOnlyEnemy.Visible = true;
                     cbPVPMode.Visible = true;
                     cbPVPMode.Items.Clear();
                     cbPVPMode.Items.Add("2 Защита");
@@ -1077,10 +1121,17 @@ namespace StalkerOnlineQuesterEditor
                 cbPVPtarget.SelectedIndex = Math.Max(0, quest.Target.ObjectType - 2);
                 cbPVPAdditional.SelectedIndex = quest.Target.ObjectAttr;
             }
-            else if ((quest.Target.QuestType == CQuestConstants.TYPE_B2C_FLAG) || (QuestType == CQuestConstants.TYPE_B2C_REVIVE))
+            else if ((quest.Target.QuestType == CQuestConstants.TYPE_B2C_FLAG))
             {
                 nupPVPCount.Value = quest.Target.NumOfObjects;
                 cbPVPMode.SelectedIndex = Math.Max(0, Convert.ToInt32(quest.Target.additional) - 2); ;
+            }
+            else if ((QuestType == CQuestConstants.TYPE_B2C_REVIVE))
+            {
+                nupPVPCount.Value = quest.Target.NumOfObjects;
+                cbPVPMode.SelectedIndex = Math.Max(0, Convert.ToInt32(quest.Target.additional) - 2);
+                cbPVPOnlyAlly.Checked = Convert.ToBoolean(quest.Target.ObjectAttr & 1);
+                cbPVPOnlyEnemy.Checked = Convert.ToBoolean(quest.Target.ObjectAttr & 1 << 1); 
             }
             else if ((quest.Target.QuestType == 53) || (quest.Target.QuestType == 54))
             {
@@ -1731,10 +1782,21 @@ namespace StalkerOnlineQuesterEditor
                 target.ObjectType = cbPVPtarget.SelectedIndex + 2;
                 target.ObjectAttr = cbPVPAdditional.SelectedIndex;
             }
-            else if ((target.QuestType == CQuestConstants.TYPE_B2C_FLAG) || (QuestType == CQuestConstants.TYPE_B2C_REVIVE))
+            else if ((target.QuestType == CQuestConstants.TYPE_B2C_FLAG))
             {
                 target.NumOfObjects = Convert.ToInt32(nupPVPCount.Value);
                 target.additional = (cbPVPMode.SelectedIndex + 2).ToString();
+            }
+            else if ((QuestType == CQuestConstants.TYPE_B2C_REVIVE))
+            {
+                target.NumOfObjects = Convert.ToInt32(nupPVPCount.Value);
+                target.additional = (cbPVPMode.SelectedIndex + 2).ToString();
+                int value = 0;
+                if (cbPVPOnlyAlly.Checked)
+                    value |= 1;
+                if (cbPVPOnlyEnemy.Checked)
+                    value |= 1 << 1;
+                target.ObjectAttr = value;
             }
             else if ((target.QuestType == 53) || (target.QuestType == 54))
             {
@@ -1868,6 +1930,29 @@ namespace StalkerOnlineQuesterEditor
             rules.space = editQuestRules.space;
             rules.mapMarks = new List<MapMark>(editQuestRules.mapMarks);
 
+            editInformation.Items.Clear();
+            foreach(var i in items_penalty)
+            {
+                editInformation.Items.Add(i.Key, i.Value);
+            }
+            foreach (var i in items_reward)
+            {
+                if (editInformation.Items.ContainsKey(i.Key))
+                {
+                    MessageBox.Show("Штраф и награды имеют дублирующий предмет", "Ошибка");
+                    return null;
+                }
+                editInformation.Items.Add(i.Key, i.Value);
+            }
+            foreach (var i in items_rules)
+            {
+                if (editInformation.Items.ContainsKey(i.Key))
+                {
+                    MessageBox.Show("Штраф/награды и правила имеют дублирующий предмет", "Ошибка");
+                    return null;
+                }
+                editInformation.Items.Add(i.Key, i.Value);
+            }
             information.Items = editInformation.Items;
 
             target.AObjectAttrs = editTarget.AObjectAttrs;
@@ -1966,7 +2051,7 @@ namespace StalkerOnlineQuesterEditor
 
         private int ParseIntIfNotEmpty(string text)
         {
-            if (!text.Equals(""))
+            if (!text.Trim().Equals(""))
                 return int.Parse(text);
             return 0;
         }
@@ -2397,7 +2482,21 @@ namespace StalkerOnlineQuesterEditor
         private void RichTextBox_TextChanged(object sender, EventArgs e)
         {
             if (!CSettings.hasErrorFinder()) return;
-            TextUtils.findTextErrors(sender as RichTextBox);
+            if (debounceTimer != null)
+            {
+                debounceTimer.Stop();
+                debounceTimer.Dispose();
+            }
+
+            debounceTimer = new System.Timers.Timer(1000);
+            debounceTimer.AutoReset = false;
+            debounceTimer.Elapsed += async (s, ev) =>
+            {
+                await Task.Run(() => SpellChecker.CheckAndHighlightSpellingErrors(sender as RichTextBox));
+            };
+
+            debounceTimer.Start();
+
         }
 
         private void update_errorFiner_btn()
@@ -2410,10 +2509,13 @@ namespace StalkerOnlineQuesterEditor
         {
             CSettings.setErrorFinder(!CSettings.hasErrorFinder());
             update_errorFiner_btn();
-            TextUtils.findTextErrors(titleTextBox);
-            TextUtils.findTextErrors(descriptionTextBox);
-            TextUtils.findTextErrors(descriptionOnTestTextBox);
-            TextUtils.findTextErrors(descriptionClosedTextBox);
+            if (CSettings.hasErrorFinder())
+            {
+                SpellChecker.CheckAndHighlightSpellingErrors(titleTextBox);
+                SpellChecker.CheckAndHighlightSpellingErrors(descriptionTextBox);
+                SpellChecker.CheckAndHighlightSpellingErrors(descriptionOnTestTextBox);
+                SpellChecker.CheckAndHighlightSpellingErrors(descriptionClosedTextBox);
+            }
             /*
             TextUtils.findTextErrors(onWonTextBox);
             TextUtils.findTextErrors(onFailedTextBox);

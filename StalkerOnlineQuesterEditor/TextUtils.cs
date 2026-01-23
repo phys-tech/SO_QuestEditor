@@ -1,10 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Drawing;
+using System.Threading;
+using System.Windows.Markup;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Threading;
+using System.Windows.Documents;
+using System.Collections.Generic;
+
 
 namespace StalkerOnlineQuesterEditor
 {
@@ -19,74 +23,180 @@ namespace StalkerOnlineQuesterEditor
         }
     }
 
+
+
+    public static class SpellChecker
+    {
+        private static Thread wpfThread;
+        private static Dispatcher wpfDispatcher;
+        private static TextBox textbox;
+        private static bool inited = false;
+        private static readonly object lockObj = new object();
+
+        private static bool check = false;
+
+        public static void Init()
+        {
+            lock (lockObj)
+            {
+                if (inited) return;
+
+                var dispatcherReady = new ManualResetEvent(false);
+
+                wpfThread = new Thread(() =>
+                {
+                    wpfDispatcher = Dispatcher.CurrentDispatcher;
+                    dispatcherReady.Set();
+                    Dispatcher.Run(); // блокирующий вызов
+                });
+
+                wpfThread.SetApartmentState(ApartmentState.STA);
+                wpfThread.IsBackground = true;
+                wpfThread.Start();
+
+                dispatcherReady.WaitOne(); // ждём, пока dispatcher готов
+
+                var textboxReady = new ManualResetEvent(false);
+
+                wpfDispatcher.Invoke(() =>
+                {
+                    textbox = new TextBox();
+                    textbox.SpellCheck.IsEnabled = true;
+                    textbox.Language = XmlLanguage.GetLanguage("ru-RU");
+
+                    textboxReady.Set();
+                });
+
+                textboxReady.WaitOne();
+                inited = true;
+            }
+        }
+
+        public static List<WordLocation> GetSpellingErrors(string text)
+        {
+            if (!inited) Init();
+
+            var result = new List<WordLocation>();
+
+            wpfDispatcher.Invoke(() =>
+            {
+                textbox.Text = text ?? string.Empty;
+
+                int index = 0;
+                while (true)
+                {
+                    index = textbox.GetNextSpellingErrorCharacterIndex(index, LogicalDirection.Forward);
+                    if (index < 0 || index >= textbox.Text.Length) break;
+
+                    int len = textbox.GetSpellingErrorLength(index);
+                    result.Add(new WordLocation(index, len));
+                    index += len;
+                }
+            });
+
+            return result;
+        }
+
+        public static async void CheckAndHighlightSpellingErrors(System.Windows.Forms.RichTextBox rtb)
+        {
+            if (rtb == null || rtb.IsDisposed || rtb.Disposing)
+                return;
+
+            check = true;
+
+            // Получаем текст в UI-потоке
+            string text = "";
+            if (rtb.InvokeRequired)
+            {
+                rtb.Invoke(new Action(() => text = rtb.Text));
+            }
+            else
+            {
+                text = rtb.Text;
+            }
+
+            // Проверка орфографии в фоновом потоке
+            var errors = await Task.Run(() =>
+            {
+                SpellChecker.Init(); // безопасно повторно
+                return SpellChecker.GetSpellingErrors(text);
+            });
+
+            // Подсветка ошибок — только в UI потоке
+            if (rtb.InvokeRequired)
+            {
+                rtb.Invoke(new Action(() => HighlightErrors(rtb, errors)));
+            }
+            else
+            {
+                HighlightErrors(rtb, errors);
+            }
+        }
+
+        private static void HighlightErrors(System.Windows.Forms.RichTextBox rtb, List<WordLocation> errors)
+        {
+            if (rtb == null || rtb.IsDisposed || rtb.Disposing)
+                return;
+
+            if (!check) return;
+
+            int selStart = rtb.SelectionStart;
+
+            rtb.Select(0, rtb.Text.Length);
+            rtb.SelectionColor = System.Drawing.Color.Black;
+
+            foreach (var err in errors)
+            {
+                rtb.Select(err.index, err.len);
+                rtb.SelectionColor = System.Drawing.Color.DarkRed;
+            }
+
+            rtb.Select(selStart, 0);
+            rtb.SelectionColor = System.Drawing.Color.Black;
+            check = false;
+        }
+    }
+
+
+
+
+
+
     public static class TextUtils
     {
 
-        static TextBox textbox = new TextBox();
-        static bool inited = false;
-
-        static void init()
+       private async static void CheckSpellingAsync(System.Windows.Forms.RichTextBox rtb)
         {
-            inited = true;
-            textbox.Language = System.Windows.Markup.XmlLanguage.GetLanguage("ru-RU");
-            textbox.SpellCheck.IsEnabled = true;
+            string text = rtb.Text;
+
+            // Получаем ошибки в фоновом потоке
+            var errors = await Task.Run(() => SpellChecker.GetSpellingErrors(text));
+
+            // Назначаем подсветку — обязательно в UI-потоке
+            ApplyTextErrors(rtb, errors);
         }
-            
 
-        public static void findTextErrors(System.Windows.Forms.RichTextBox rtb)
+        private static void ApplyTextErrors(System.Windows.Forms.RichTextBox rtb, List<WordLocation> errors)
         {
-            if (!CSettings.hasErrorFinder())
+            if (rtb.InvokeRequired)
             {
-                int tmp = rtb.SelectionStart;
-                rtb.Select(0, rtb.Text.Length);
-                rtb.SelectionColor = Color.Black;
-                rtb.Select(tmp, 0);
-                
+                rtb.Invoke(new Action(() => ApplyTextErrors(rtb, errors)));
                 return;
             }
-            if (!inited) init();
-            if (rtb == null) return;
-            string text = rtb.Text;
-            textbox.Text = text;
-            //textbox.SpellCheck.CustomDictionaries.Add(new Uri(@"ru-RU.dic", UriKind.Relative));
-            int index = 0;
-            List<WordLocation> result = new List<WordLocation>();
-            while (true)
+
+            int sel = rtb.SelectionStart;
+            rtb.Select(0, rtb.Text.Length);
+            rtb.SelectionColor = System.Drawing.Color.Black;
+
+            foreach (var err in errors)
             {
-                //находим ошибку            
-                index = textbox.GetNextSpellingErrorCharacterIndex(index, System.Windows.Documents.LogicalDirection.Forward);
-                if (index > text.Length || index < 0) break;
-
-                var error = textbox.GetSpellingError(index);
-                int len = textbox.GetSpellingErrorLength(index);
-
-                result.Add(new WordLocation(index, len));
-                /*
-                string word = textbox.Text.Substring(index, len);
-
-                sb.AppendFormat("Ошибка в слове {0}, рекомендуется заменить на одно из следующих слов: ", word);
-                */
-                //переход к следующему слову
-                index += len;
+                rtb.Select(err.index, err.len);
+                rtb.SelectionColor = System.Drawing.Color.DarkRed;
             }
 
-            index = rtb.SelectionStart;
-
-            rtb.Select(0, text.Length);
-            rtb.SelectionColor = Color.Black;
-
-            foreach (var i in result)
-            {
-                rtb.Select(i.index, i.len);
-                rtb.SelectionColor = Color.DarkRed;
-            }
-
-
-            rtb.Select(index, 0);
-            rtb.SelectionColor = Color.Black;
+            rtb.Select(sel, 0);
+            rtb.SelectionColor = System.Drawing.Color.Black;
         }
-
-
 
     }
 }

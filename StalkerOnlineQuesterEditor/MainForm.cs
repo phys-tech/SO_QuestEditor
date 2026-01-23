@@ -1460,6 +1460,7 @@ namespace StalkerOnlineQuesterEditor
         {
             if (questID == 0) return false;
             CQuest quest = quests.getQuestFromLocale(questID, "English");
+            if (quest == null) return false;
             return quest.QuestInformation.Title.Any() || quest.QuestInformation.Description.Any() || quest.QuestInformation.messages.Any();
 
         }

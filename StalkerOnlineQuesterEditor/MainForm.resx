@@ -6842,7 +6842,7 @@
     <value>Меню</value>
   </data>
   <data name="menuSaveAll.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+S</value>
+    <value>Control, S</value>
   </data>
   <data name="menuSaveAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>115, 20</value>
