@@ -564,6 +564,7 @@ namespace StalkerOnlineQuesterEditor
         public int count = 1;
         public ItemAttribute attribute = 0;
         public int questID = 0;
+        public bool blocked = false;
         public float condition = new float();
 
         public static bool hasQuestItem(List<QuestItem> list)
@@ -853,6 +854,7 @@ namespace StalkerOnlineQuesterEditor
         public string description;
         public string activation;
         public string content;
+
 
         public object Clone()
         {

@@ -99,6 +99,7 @@ namespace StalkerOnlineQuesterEditor
                 {
                     int typeID = item.itemType;
                     int quantity = item.count;
+                    bool blocked = item.blocked;
                     string name = parent.itemConst.getItemName(typeID);
 
                     string attr;
@@ -127,7 +128,7 @@ namespace StalkerOnlineQuesterEditor
                         activation = parentForm.quest.QuestInformation.Items[typeID].activation;
                         content = parentForm.quest.QuestInformation.Items[typeID].content;
                     }
-                    object[] row = { name, attr, quantity.ToString(), title, description, content, activation };
+                    object[] row = { name, attr, quantity.ToString(), title, description, content, activation, blocked };
                     itemGridView.Rows.Add(row);
                 }
             }
@@ -149,6 +150,7 @@ namespace StalkerOnlineQuesterEditor
                 {
                     int typeID = item.itemType;
                     int quantity = item.count;
+                    bool blocked = item.blocked;
                     string name = parent.itemConst.getItemName(typeID);
                     string attr;
                     switch (item.attribute)
@@ -185,7 +187,7 @@ namespace StalkerOnlineQuesterEditor
                         }
                     }
 
-                    object[] row = { name, attr, quantity.ToString(), title, description, content, activation };
+                    object[] row = { name, attr, quantity.ToString(), title, description, content, activation, blocked };
                     itemGridView.Rows.Add(row);
 
                     for (int row_index = 0; row_index < itemGridView.Rows.Count; row_index ++ )
@@ -265,15 +267,18 @@ namespace StalkerOnlineQuesterEditor
                 if (!typeName.Equals(""))
                 {
                     int quantity = int.Parse(row.Cells["itemQuantity"].FormattedValue.ToString());
+                    bool blocked = Convert.ToBoolean(row.Cells["itemBlock"].Value);
                     if (quantity >= 1)
                     {
                         item.itemType = parent.itemConst.getIDOnName(typeName);
                         item.count = quantity;
+                        item.blocked = blocked;
                         string attrName = row.Cells["itemAttr"].FormattedValue.ToString();
                         string title = row.Cells["itemTitle"].FormattedValue.ToString();
                         string description = row.Cells["itemDescription"].FormattedValue.ToString();
                         string activation = row.Cells["itemActivation"].FormattedValue.ToString();
                         string content = row.Cells["itemContent"].FormattedValue.ToString();
+                        
                         switch (attrName)
                         {
                             case "Квестовый":

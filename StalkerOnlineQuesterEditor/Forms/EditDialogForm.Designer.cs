@@ -272,6 +272,8 @@
             this.dataGridViewComboBoxColumn4 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewComboBoxColumn5 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.tabOther = new System.Windows.Forms.TabPage();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.cbSeasonEvent = new System.Windows.Forms.ComboBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.cbDungeonNon = new System.Windows.Forms.CheckBox();
             this.cbDungeonPhase = new System.Windows.Forms.ComboBox();
@@ -326,8 +328,7 @@
             this.autoDefaultNode = new System.Windows.Forms.ComboBox();
             this.cbAutoNode = new System.Windows.Forms.CheckBox();
             this.tReactionNPC = new System.Windows.Forms.RichTextBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.cbSeasonEvent = new System.Windows.Forms.ComboBox();
+            this.cbItemsNOEquipped = new System.Windows.Forms.CheckBox();
             this.gbActions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDungeonEnterKey)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nupChangeMoney)).BeginInit();
@@ -383,6 +384,7 @@
             this.tabAchievements.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataAchievements)).BeginInit();
             this.tabOther.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nupCoordRadius)).BeginInit();
@@ -393,7 +395,6 @@
             this.pCommands.SuspendLayout();
             this.gbTexts.SuspendLayout();
             this.autoPanel.SuspendLayout();
-            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tPlayerText
@@ -2059,6 +2060,7 @@
             // tabItems
             // 
             this.tabItems.BackColor = System.Drawing.SystemColors.Control;
+            this.tabItems.Controls.Add(this.cbItemsNOEquipped);
             this.tabItems.Controls.Add(this.cbItemsEquipped);
             this.tabItems.Controls.Add(this.panel1);
             this.tabItems.Controls.Add(this.panel3);
@@ -2086,6 +2088,7 @@
             this.cbItemsEquipped.TabIndex = 39;
             this.cbItemsEquipped.Text = "Должно быть экипировано";
             this.cbItemsEquipped.UseVisualStyleBackColor = true;
+            this.cbItemsEquipped.CheckedChanged += new System.EventHandler(this.cbItemsEquipped_CheckedChanged);
             // 
             // panel1
             // 
@@ -2882,6 +2885,32 @@
             this.tabOther.Text = "Другое";
             this.tabOther.UseVisualStyleBackColor = true;
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.cbSeasonEvent);
+            this.groupBox8.Location = new System.Drawing.Point(591, 7);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(203, 81);
+            this.groupBox8.TabIndex = 74;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Сезонное событие:";
+            // 
+            // cbSeasonEvent
+            // 
+            this.cbSeasonEvent.FormattingEnabled = true;
+            this.cbSeasonEvent.Items.AddRange(new object[] {
+            "нет фазы",
+            "фаза 1",
+            "фаза 2",
+            "фаза 3 ",
+            "фаза 4",
+            "фаза 5",
+            "фаза 6"});
+            this.cbSeasonEvent.Location = new System.Drawing.Point(6, 19);
+            this.cbSeasonEvent.Name = "cbSeasonEvent";
+            this.cbSeasonEvent.Size = new System.Drawing.Size(191, 21);
+            this.cbSeasonEvent.TabIndex = 46;
+            // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.cbDungeonNon);
@@ -3430,31 +3459,16 @@
             this.tReactionNPC.Text = "";
             this.tReactionNPC.TextChanged += new System.EventHandler(this.tReactionNPC_TextChanged);
             // 
-            // groupBox8
+            // cbItemsNOEquipped
             // 
-            this.groupBox8.Controls.Add(this.cbSeasonEvent);
-            this.groupBox8.Location = new System.Drawing.Point(591, 7);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(203, 81);
-            this.groupBox8.TabIndex = 74;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Сезонное событие:";
-            // 
-            // cbSeasonEvent
-            // 
-            this.cbSeasonEvent.FormattingEnabled = true;
-            this.cbSeasonEvent.Items.AddRange(new object[] {
-            "нет фазы",
-            "фаза 1",
-            "фаза 2",
-            "фаза 3 ",
-            "фаза 4",
-            "фаза 5",
-            "фаза 6"});
-            this.cbSeasonEvent.Location = new System.Drawing.Point(6, 19);
-            this.cbSeasonEvent.Name = "cbSeasonEvent";
-            this.cbSeasonEvent.Size = new System.Drawing.Size(191, 21);
-            this.cbSeasonEvent.TabIndex = 46;
+            this.cbItemsNOEquipped.AutoSize = true;
+            this.cbItemsNOEquipped.Location = new System.Drawing.Point(177, 235);
+            this.cbItemsNOEquipped.Name = "cbItemsNOEquipped";
+            this.cbItemsNOEquipped.Size = new System.Drawing.Size(179, 17);
+            this.cbItemsNOEquipped.TabIndex = 40;
+            this.cbItemsNOEquipped.Text = "НЕ должно быть экипировано";
+            this.cbItemsNOEquipped.UseVisualStyleBackColor = true;
+            this.cbItemsNOEquipped.CheckedChanged += new System.EventHandler(this.cbItemsNOEquipped_CheckedChanged);
             // 
             // EditDialogForm
             // 
@@ -3542,6 +3556,7 @@
             this.tabAchievements.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataAchievements)).EndInit();
             this.tabOther.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -3560,7 +3575,6 @@
             this.gbTexts.PerformLayout();
             this.autoPanel.ResumeLayout(false);
             this.autoPanel.PerformLayout();
-            this.groupBox8.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3868,5 +3882,6 @@
         private System.Windows.Forms.ComboBox cbMap;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.ComboBox cbSeasonEvent;
+        private System.Windows.Forms.CheckBox cbItemsNOEquipped;
     }
 }

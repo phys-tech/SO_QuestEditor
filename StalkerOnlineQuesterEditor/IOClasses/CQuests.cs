@@ -633,6 +633,7 @@ namespace StalkerOnlineQuesterEditor
                 if (item.count < 1) continue;
                 item_node.Add(new XElement("count", item.count));
                 if (item.condition > 0) item_node.Add(new XElement("condition", item.condition));
+                if (item.blocked) item_node.Add(new XElement("locked", 1));
                 items.Add(item_node);
             }
             return items;
@@ -652,6 +653,8 @@ namespace StalkerOnlineQuesterEditor
                     item.count = int.Parse(itemNode.Element("count").Value);
                 if (itemNode.Element("condition") != null)
                     item.condition = float.Parse(itemNode.Element("condition").Value, System.Globalization.CultureInfo.InvariantCulture);
+                if (itemNode.Element("locked") != null)
+                    item.blocked = true;
                 list.Add(item);
             }
         }

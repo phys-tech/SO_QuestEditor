@@ -804,6 +804,9 @@ namespace StalkerOnlineQuesterEditor
 
                     labelPVPAdditional.Visible = true;
                     labelPVPAdditional.Text = "Добить";
+
+                    cbPVPOnlyAlly.Visible = true;
+                    cbPVPOnlyEnemy.Visible = true;
                 }
                 else if ((QuestType == CQuestConstants.TYPE_B2C_FLAG))
                 {
@@ -1120,6 +1123,9 @@ namespace StalkerOnlineQuesterEditor
                 cbPVPMode.SelectedIndex = Math.Max(0, Convert.ToInt32(quest.Target.additional) - 2);
                 cbPVPtarget.SelectedIndex = Math.Max(0, quest.Target.ObjectType - 2);
                 cbPVPAdditional.SelectedIndex = quest.Target.ObjectAttr;
+                int value = quest.Target.str_param.Any() ? Convert.ToInt32(quest.Target.str_param) : 0;
+                cbPVPOnlyAlly.Checked = Convert.ToBoolean(value & 1);
+                cbPVPOnlyEnemy.Checked = Convert.ToBoolean(value & 1 << 1);
             }
             else if ((quest.Target.QuestType == CQuestConstants.TYPE_B2C_FLAG))
             {
@@ -1130,8 +1136,9 @@ namespace StalkerOnlineQuesterEditor
             {
                 nupPVPCount.Value = quest.Target.NumOfObjects;
                 cbPVPMode.SelectedIndex = Math.Max(0, Convert.ToInt32(quest.Target.additional) - 2);
-                cbPVPOnlyAlly.Checked = Convert.ToBoolean(quest.Target.ObjectAttr & 1);
-                cbPVPOnlyEnemy.Checked = Convert.ToBoolean(quest.Target.ObjectAttr & 1 << 1); 
+                int value = Convert.ToInt32(quest.Target.str_param);
+                cbPVPOnlyAlly.Checked = Convert.ToBoolean(value & 1);
+                cbPVPOnlyEnemy.Checked = Convert.ToBoolean(value & 1 << 1); 
             }
             else if ((quest.Target.QuestType == 53) || (quest.Target.QuestType == 54))
             {
@@ -1781,6 +1788,12 @@ namespace StalkerOnlineQuesterEditor
                 target.additional = (cbPVPMode.SelectedIndex + 2).ToString();
                 target.ObjectType = cbPVPtarget.SelectedIndex + 2;
                 target.ObjectAttr = cbPVPAdditional.SelectedIndex;
+                int value = 0;
+                if (cbPVPOnlyAlly.Checked)
+                    value |= 1;
+                if (cbPVPOnlyEnemy.Checked)
+                    value |= 1 << 1;
+                target.str_param = value.ToString();
             }
             else if ((target.QuestType == CQuestConstants.TYPE_B2C_FLAG))
             {
@@ -1796,7 +1809,7 @@ namespace StalkerOnlineQuesterEditor
                     value |= 1;
                 if (cbPVPOnlyEnemy.Checked)
                     value |= 1 << 1;
-                target.ObjectAttr = value;
+                target.str_param = value.ToString();
             }
             else if ((target.QuestType == 53) || (target.QuestType == 54))
             {

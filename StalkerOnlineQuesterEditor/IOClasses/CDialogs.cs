@@ -373,6 +373,8 @@ namespace StalkerOnlineQuesterEditor
                                     Precondition.items.is_or = true;
                                 if (dialog.Element("Precondition").Element("items").Element("equipped") != null)
                                     Precondition.items.equipped = true;
+                                if (dialog.Element("Precondition").Element("items").Element("not_equipped") != null)
+                                    Precondition.items.not_equipped = true;
                                 CQuests.parceItems(dialog.Element("Precondition").Element("items").Element("Items"), Precondition.items.items);
                             }
                         }
@@ -386,6 +388,8 @@ namespace StalkerOnlineQuesterEditor
                                     Precondition.itemsNone.is_or = true;
                                 if (dialog.Element("Precondition").Element("noneItems").Element("equipped") != null)
                                     Precondition.items.equipped = true;
+                                if (dialog.Element("Precondition").Element("noneItems").Element("not_equipped") != null)
+                                    Precondition.items.not_equipped = true;
                                 CQuests.parceItems(dialog.Element("Precondition").Element("noneItems").Element("Items"), Precondition.itemsNone.items);
                             }
                         }
@@ -895,6 +899,8 @@ namespace StalkerOnlineQuesterEditor
                                 prec.Element("items").Add(new XElement("or", "1"));
                             if (dialog.Precondition.items.equipped)
                                 prec.Element("items").Add(new XElement("equipped", "1"));
+                            if (dialog.Precondition.items.not_equipped)
+                                prec.Element("items").Add(new XElement("not_equipped", "1"));
                             prec.Element("items").Add(CQuests.getItemsNode(dialog.Precondition.items.items));
                         }
                         if (dialog.Precondition.itemsNone.itemCategory != -1)
@@ -908,6 +914,8 @@ namespace StalkerOnlineQuesterEditor
                                 prec.Element("noneItems").Add(new XElement("or", "1"));
                             if (dialog.Precondition.itemsNone.equipped)
                                 prec.Element("noneItems").Add(new XElement("equipped", "1"));
+                            if (dialog.Precondition.itemsNone.not_equipped)
+                                prec.Element("noneItems").Add(new XElement("not_equipped", "1"));
                             prec.Element("noneItems").Add(CQuests.getItemsNode(dialog.Precondition.itemsNone.items));
                         }
                     }

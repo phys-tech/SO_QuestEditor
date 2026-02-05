@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelCreateMob = new System.Windows.Forms.Panel();
             this.cbMobInvul = new System.Windows.Forms.CheckBox();
             this.cbMobLevel = new System.Windows.Forms.ComboBox();
@@ -46,6 +46,8 @@
             this.cbMobType = new System.Windows.Forms.ComboBox();
             this.cbScenaryType = new System.Windows.Forms.ComboBox();
             this.panelPVPQuests = new System.Windows.Forms.Panel();
+            this.cbPVPOnlyEnemy = new System.Windows.Forms.CheckBox();
+            this.cbPVPOnlyAlly = new System.Windows.Forms.CheckBox();
             this.labelPVPAdditional = new System.Windows.Forms.Label();
             this.cbPVPAdditional = new System.Windows.Forms.ComboBox();
             this.cbPVPMode = new System.Windows.Forms.ComboBox();
@@ -239,8 +241,6 @@
             this.cbQuestLink = new System.Windows.Forms.ComboBox();
             this.cbFraction2Bonus = new System.Windows.Forms.ComboBox();
             this.label34 = new System.Windows.Forms.Label();
-            this.cbPVPOnlyAlly = new System.Windows.Forms.CheckBox();
-            this.cbPVPOnlyEnemy = new System.Windows.Forms.CheckBox();
             this.panelCreateMob.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nupMobCount)).BeginInit();
             this.panelPVPQuests.SuspendLayout();
@@ -443,6 +443,28 @@
             this.panelPVPQuests.Size = new System.Drawing.Size(622, 153);
             this.panelPVPQuests.TabIndex = 37;
             this.panelPVPQuests.Visible = false;
+            // 
+            // cbPVPOnlyEnemy
+            // 
+            this.cbPVPOnlyEnemy.AutoSize = true;
+            this.cbPVPOnlyEnemy.Location = new System.Drawing.Point(230, 52);
+            this.cbPVPOnlyEnemy.Name = "cbPVPOnlyEnemy";
+            this.cbPVPOnlyEnemy.Size = new System.Drawing.Size(114, 17);
+            this.cbPVPOnlyEnemy.TabIndex = 41;
+            this.cbPVPOnlyEnemy.Text = "только на врагов";
+            this.cbPVPOnlyEnemy.UseVisualStyleBackColor = true;
+            this.cbPVPOnlyEnemy.Visible = false;
+            // 
+            // cbPVPOnlyAlly
+            // 
+            this.cbPVPOnlyAlly.AutoSize = true;
+            this.cbPVPOnlyAlly.Location = new System.Drawing.Point(230, 30);
+            this.cbPVPOnlyAlly.Name = "cbPVPOnlyAlly";
+            this.cbPVPOnlyAlly.Size = new System.Drawing.Size(129, 17);
+            this.cbPVPOnlyAlly.TabIndex = 40;
+            this.cbPVPOnlyAlly.Text = "только на сюзников";
+            this.cbPVPOnlyAlly.UseVisualStyleBackColor = true;
+            this.cbPVPOnlyAlly.Visible = false;
             // 
             // labelPVPAdditional
             // 
@@ -1052,8 +1074,8 @@
             this.show});
             this.messageGridView.Location = new System.Drawing.Point(6, 280);
             this.messageGridView.Name = "messageGridView";
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.messageGridView.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.messageGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.messageGridView.Size = new System.Drawing.Size(618, 122);
             this.messageGridView.TabIndex = 75;
             // 
@@ -1631,8 +1653,8 @@
             // 
             // radius
             // 
-            dataGridViewCellStyle2.NullValue = "0";
-            this.radius.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.NullValue = "0";
+            this.radius.DefaultCellStyle = dataGridViewCellStyle4;
             this.radius.HeaderText = "радиус";
             this.radius.Name = "radius";
             // 
@@ -2491,28 +2513,6 @@
             this.label34.Size = new System.Drawing.Size(79, 13);
             this.label34.TabIndex = 61;
             this.label34.Text = "Бонус группы:";
-            // 
-            // cbPVPOnlyAlly
-            // 
-            this.cbPVPOnlyAlly.AutoSize = true;
-            this.cbPVPOnlyAlly.Location = new System.Drawing.Point(11, 41);
-            this.cbPVPOnlyAlly.Name = "cbPVPOnlyAlly";
-            this.cbPVPOnlyAlly.Size = new System.Drawing.Size(129, 17);
-            this.cbPVPOnlyAlly.TabIndex = 40;
-            this.cbPVPOnlyAlly.Text = "только на сюзников";
-            this.cbPVPOnlyAlly.UseVisualStyleBackColor = true;
-            this.cbPVPOnlyAlly.Visible = false;
-            // 
-            // cbPVPOnlyEnemy
-            // 
-            this.cbPVPOnlyEnemy.AutoSize = true;
-            this.cbPVPOnlyEnemy.Location = new System.Drawing.Point(136, 41);
-            this.cbPVPOnlyEnemy.Name = "cbPVPOnlyEnemy";
-            this.cbPVPOnlyEnemy.Size = new System.Drawing.Size(114, 17);
-            this.cbPVPOnlyEnemy.TabIndex = 41;
-            this.cbPVPOnlyEnemy.Text = "только на врагов";
-            this.cbPVPOnlyEnemy.UseVisualStyleBackColor = true;
-            this.cbPVPOnlyEnemy.Visible = false;
             // 
             // EditQuestForm
             // 

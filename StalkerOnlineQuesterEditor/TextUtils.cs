@@ -108,7 +108,11 @@ namespace StalkerOnlineQuesterEditor
             string text = "";
             if (rtb.InvokeRequired)
             {
-                rtb.Invoke(new Action(() => text = rtb.Text));
+                try
+                {
+                    rtb.Invoke(new Action(() => text = rtb.Text));
+                }
+                catch { return; };
             }
             else
             {
