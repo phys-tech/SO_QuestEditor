@@ -103,7 +103,7 @@ namespace StalkerOnlineQuesterEditor
                     string name = parent.itemConst.getItemName(typeID);
 
                     string attr;
-                    switch (item.attribute)
+                    switch ((ItemAttribute)item.attribute)
                     {
                         case ItemAttribute.QUEST:
                             attr = "Квестовый";
@@ -153,7 +153,7 @@ namespace StalkerOnlineQuesterEditor
                     bool blocked = item.blocked;
                     string name = parent.itemConst.getItemName(typeID);
                     string attr;
-                    switch (item.attribute)
+                    switch ((ItemAttribute)item.attribute)
                     {
                         case ItemAttribute.QUEST:
                             attr = "Квестовый";
@@ -282,7 +282,7 @@ namespace StalkerOnlineQuesterEditor
                         switch (attrName)
                         {
                             case "Квестовый":
-                                item.attribute = ItemAttribute.QUEST;
+                                item.attribute = Convert.ToInt32(ItemAttribute.QUEST);
                                 try
                                 {
                                     itemsInfo.Add(item.itemType, new QuestItemInfo(title, description, activation, content));
@@ -293,8 +293,8 @@ namespace StalkerOnlineQuesterEditor
                                     return;
                                 }
                                 break;
-                            case "Использовать": item.attribute = ItemAttribute.USE; break;
-                            default: item.attribute = ItemAttribute.NORMAL; break;
+                            case "Использовать": item.attribute = Convert.ToInt32(ItemAttribute.USE); break;
+                            default: item.attribute = Convert.ToInt32(ItemAttribute.NORMAL); break;
                         }
                         items.Add(item);
                     }

@@ -192,6 +192,7 @@
             this.cbAnimationNPC = new System.Windows.Forms.CheckBox();
             this.cbAnimationPlayer = new System.Windows.Forms.CheckBox();
             this.tabItems = new System.Windows.Forms.TabPage();
+            this.cbItemsNOEquipped = new System.Windows.Forms.CheckBox();
             this.cbItemsEquipped = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rbItemsOr = new System.Windows.Forms.RadioButton();
@@ -201,15 +202,7 @@
             this.rbNonItemsAnd = new System.Windows.Forms.RadioButton();
             this.panelItems = new System.Windows.Forms.Panel();
             this.GVNonItems = new System.Windows.Forms.DataGridView();
-            this.GVNonItems_itemType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.GVNonItems_itemAttr = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.GVNonItems_itemQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GVNonItems_ItemCond = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GVItems = new System.Windows.Forms.DataGridView();
-            this.GVItems_itemType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.GVItems_itemAttr = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.GVItems_itemQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GVItems_ItemCond = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.cbNonCategory = new System.Windows.Forms.ComboBox();
@@ -328,7 +321,14 @@
             this.autoDefaultNode = new System.Windows.Forms.ComboBox();
             this.cbAutoNode = new System.Windows.Forms.CheckBox();
             this.tReactionNPC = new System.Windows.Forms.RichTextBox();
-            this.cbItemsNOEquipped = new System.Windows.Forms.CheckBox();
+            this.GVNonItems_itemType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.GVNonItems_itemQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GVNonItems_itemAttr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GVNonItems_ItemCond = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GVItems_itemType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.GVItems_itemQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GVItems_itemAttr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GVItems_ItemCond = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gbActions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDungeonEnterKey)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nupChangeMoney)).BeginInit();
@@ -2079,6 +2079,17 @@
             this.tabItems.Text = "Предметы";
             this.tabItems.SizeChanged += new System.EventHandler(this.tabItems_SizeChanged);
             // 
+            // cbItemsNOEquipped
+            // 
+            this.cbItemsNOEquipped.AutoSize = true;
+            this.cbItemsNOEquipped.Location = new System.Drawing.Point(177, 235);
+            this.cbItemsNOEquipped.Name = "cbItemsNOEquipped";
+            this.cbItemsNOEquipped.Size = new System.Drawing.Size(179, 17);
+            this.cbItemsNOEquipped.TabIndex = 40;
+            this.cbItemsNOEquipped.Text = "НЕ должно быть экипировано";
+            this.cbItemsNOEquipped.UseVisualStyleBackColor = true;
+            this.cbItemsNOEquipped.CheckedChanged += new System.EventHandler(this.cbItemsNOEquipped_CheckedChanged);
+            // 
             // cbItemsEquipped
             // 
             this.cbItemsEquipped.AutoSize = true;
@@ -2173,8 +2184,8 @@
             this.GVNonItems.AllowUserToOrderColumns = true;
             this.GVNonItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.GVNonItems_itemType,
-            this.GVNonItems_itemAttr,
             this.GVNonItems_itemQuantity,
+            this.GVNonItems_itemAttr,
             this.GVNonItems_ItemCond});
             this.GVNonItems.Dock = System.Windows.Forms.DockStyle.Right;
             this.GVNonItems.Location = new System.Drawing.Point(408, 0);
@@ -2182,79 +2193,19 @@
             this.GVNonItems.Size = new System.Drawing.Size(392, 191);
             this.GVNonItems.TabIndex = 7;
             // 
-            // GVNonItems_itemType
-            // 
-            this.GVNonItems_itemType.HeaderText = "Тип";
-            this.GVNonItems_itemType.Name = "GVNonItems_itemType";
-            this.GVNonItems_itemType.Width = 300;
-            // 
-            // GVNonItems_itemAttr
-            // 
-            this.GVNonItems_itemAttr.HeaderText = "Аттрибут";
-            this.GVNonItems_itemAttr.Items.AddRange(new object[] {
-            "Обычный",
-            "Квестовый",
-            "Использовать"});
-            this.GVNonItems_itemAttr.Name = "GVNonItems_itemAttr";
-            this.GVNonItems_itemAttr.Width = 70;
-            // 
-            // GVNonItems_itemQuantity
-            // 
-            this.GVNonItems_itemQuantity.HeaderText = "Количество";
-            this.GVNonItems_itemQuantity.Name = "GVNonItems_itemQuantity";
-            this.GVNonItems_itemQuantity.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.GVNonItems_itemQuantity.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.GVNonItems_itemQuantity.Width = 75;
-            // 
-            // GVNonItems_ItemCond
-            // 
-            this.GVNonItems_ItemCond.HeaderText = "(%)Мин. прочность(%)";
-            this.GVNonItems_ItemCond.Name = "GVNonItems_ItemCond";
-            this.GVNonItems_ItemCond.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
             // GVItems
             // 
             this.GVItems.AllowUserToOrderColumns = true;
             this.GVItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.GVItems_itemType,
-            this.GVItems_itemAttr,
             this.GVItems_itemQuantity,
+            this.GVItems_itemAttr,
             this.GVItems_ItemCond});
             this.GVItems.Dock = System.Windows.Forms.DockStyle.Left;
             this.GVItems.Location = new System.Drawing.Point(0, 0);
             this.GVItems.Name = "GVItems";
             this.GVItems.Size = new System.Drawing.Size(393, 191);
             this.GVItems.TabIndex = 6;
-            // 
-            // GVItems_itemType
-            // 
-            this.GVItems_itemType.HeaderText = "Тип";
-            this.GVItems_itemType.Name = "GVItems_itemType";
-            this.GVItems_itemType.Width = 250;
-            // 
-            // GVItems_itemAttr
-            // 
-            this.GVItems_itemAttr.HeaderText = "Аттрибут";
-            this.GVItems_itemAttr.Items.AddRange(new object[] {
-            "Обычный",
-            "Квестовый",
-            "Использовать"});
-            this.GVItems_itemAttr.Name = "GVItems_itemAttr";
-            this.GVItems_itemAttr.Width = 70;
-            // 
-            // GVItems_itemQuantity
-            // 
-            this.GVItems_itemQuantity.HeaderText = "Количество";
-            this.GVItems_itemQuantity.Name = "GVItems_itemQuantity";
-            this.GVItems_itemQuantity.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.GVItems_itemQuantity.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.GVItems_itemQuantity.Width = 75;
-            // 
-            // GVItems_ItemCond
-            // 
-            this.GVItems_ItemCond.HeaderText = "(%)Мин. прочность (%)";
-            this.GVItems_ItemCond.Name = "GVItems_ItemCond";
-            this.GVItems_ItemCond.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // label12
             // 
@@ -3459,16 +3410,55 @@
             this.tReactionNPC.Text = "";
             this.tReactionNPC.TextChanged += new System.EventHandler(this.tReactionNPC_TextChanged);
             // 
-            // cbItemsNOEquipped
+            // GVNonItems_itemType
             // 
-            this.cbItemsNOEquipped.AutoSize = true;
-            this.cbItemsNOEquipped.Location = new System.Drawing.Point(177, 235);
-            this.cbItemsNOEquipped.Name = "cbItemsNOEquipped";
-            this.cbItemsNOEquipped.Size = new System.Drawing.Size(179, 17);
-            this.cbItemsNOEquipped.TabIndex = 40;
-            this.cbItemsNOEquipped.Text = "НЕ должно быть экипировано";
-            this.cbItemsNOEquipped.UseVisualStyleBackColor = true;
-            this.cbItemsNOEquipped.CheckedChanged += new System.EventHandler(this.cbItemsNOEquipped_CheckedChanged);
+            this.GVNonItems_itemType.HeaderText = "Тип";
+            this.GVNonItems_itemType.Name = "GVNonItems_itemType";
+            this.GVNonItems_itemType.Width = 300;
+            // 
+            // GVNonItems_itemQuantity
+            // 
+            this.GVNonItems_itemQuantity.HeaderText = "Количество";
+            this.GVNonItems_itemQuantity.Name = "GVNonItems_itemQuantity";
+            this.GVNonItems_itemQuantity.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.GVNonItems_itemQuantity.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.GVNonItems_itemQuantity.Width = 75;
+            // 
+            // GVNonItems_itemAttr
+            // 
+            this.GVNonItems_itemAttr.HeaderText = "Квест";
+            this.GVNonItems_itemAttr.Name = "GVNonItems_itemAttr";
+            // 
+            // GVNonItems_ItemCond
+            // 
+            this.GVNonItems_ItemCond.HeaderText = "(%)Мин. прочность(%)";
+            this.GVNonItems_ItemCond.Name = "GVNonItems_ItemCond";
+            this.GVNonItems_ItemCond.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // GVItems_itemType
+            // 
+            this.GVItems_itemType.HeaderText = "Тип";
+            this.GVItems_itemType.Name = "GVItems_itemType";
+            this.GVItems_itemType.Width = 250;
+            // 
+            // GVItems_itemQuantity
+            // 
+            this.GVItems_itemQuantity.HeaderText = "Количество";
+            this.GVItems_itemQuantity.Name = "GVItems_itemQuantity";
+            this.GVItems_itemQuantity.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.GVItems_itemQuantity.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.GVItems_itemQuantity.Width = 75;
+            // 
+            // GVItems_itemAttr
+            // 
+            this.GVItems_itemAttr.HeaderText = "Квест";
+            this.GVItems_itemAttr.Name = "GVItems_itemAttr";
+            // 
+            // GVItems_ItemCond
+            // 
+            this.GVItems_ItemCond.HeaderText = "(%)Мин. прочность (%)";
+            this.GVItems_ItemCond.Name = "GVItems_ItemCond";
+            this.GVItems_ItemCond.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // EditDialogForm
             // 
@@ -3744,10 +3734,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.RadioButton rbNonItemsOr;
         private System.Windows.Forms.RadioButton rbNonItemsAnd;
-        private System.Windows.Forms.DataGridViewComboBoxColumn GVNonItems_itemType;
-        private System.Windows.Forms.DataGridViewComboBoxColumn GVNonItems_itemAttr;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GVNonItems_itemQuantity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GVNonItems_ItemCond;
         private System.Windows.Forms.PictureBox pictureOther;
         private System.Windows.Forms.TabPage tabOther;
         private System.Windows.Forms.ComboBox cbTutorialPhase;
@@ -3858,10 +3844,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown nupCoordRadius;
         private System.Windows.Forms.TextBox tbCoordinates;
-        private System.Windows.Forms.DataGridViewComboBoxColumn GVItems_itemType;
-        private System.Windows.Forms.DataGridViewComboBoxColumn GVItems_itemAttr;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GVItems_itemQuantity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GVItems_ItemCond;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.ComboBox cbDungeonPhase;
         private System.Windows.Forms.CheckBox cbDungeonNon;
@@ -3883,5 +3865,13 @@
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.ComboBox cbSeasonEvent;
         private System.Windows.Forms.CheckBox cbItemsNOEquipped;
+        private System.Windows.Forms.DataGridViewComboBoxColumn GVNonItems_itemType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GVNonItems_itemQuantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GVNonItems_itemAttr;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GVNonItems_ItemCond;
+        private System.Windows.Forms.DataGridViewComboBoxColumn GVItems_itemType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GVItems_itemQuantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GVItems_itemAttr;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GVItems_ItemCond;
     }
 }

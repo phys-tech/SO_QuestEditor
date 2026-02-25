@@ -628,7 +628,7 @@ namespace StalkerOnlineQuesterEditor
                 XElement item_node = new XElement("item");
                 if (item.itemType == 0) continue;
                 item_node.Add(new XElement("itemType", item.itemType));
-                if (item.attribute != ItemAttribute.NORMAL)
+                if ((ItemAttribute)item.attribute != ItemAttribute.NORMAL)
                     item_node.Add(new XElement("attribute", (int)item.attribute));
                 if (item.count < 1) continue;
                 item_node.Add(new XElement("count", item.count));
@@ -648,7 +648,7 @@ namespace StalkerOnlineQuesterEditor
                 if (itemNode.Element("itemType") == null) continue;
                 item.itemType = int.Parse(itemNode.Element("itemType").Value);
                 if (itemNode.Element("attribute") != null)
-                    item.attribute = (ItemAttribute)int.Parse(itemNode.Element("attribute").Value);
+                    item.attribute = int.Parse(itemNode.Element("attribute").Value);
                 if (itemNode.Element("count") != null)
                     item.count = int.Parse(itemNode.Element("count").Value);
                 if (itemNode.Element("condition") != null)

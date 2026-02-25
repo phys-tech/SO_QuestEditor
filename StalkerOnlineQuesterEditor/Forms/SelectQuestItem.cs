@@ -104,7 +104,7 @@ namespace StalkerOnlineQuesterEditor
                             lItems.Text += "\tНаграда:\n";
                             foreach (QuestItem item in q.Reward.items) 
                             {
-                                if (item.attribute == ItemAttribute.QUEST)
+                                if ((ItemAttribute)item.attribute == ItemAttribute.QUEST)
                                 {
                                     lItems.Text += item.count.ToString() + " X " + itemParent.parent.itemConst.getItemName(item.itemType) + "\n";
                                 }
@@ -116,7 +116,7 @@ namespace StalkerOnlineQuesterEditor
                             lItems.Text += "\tПравила квеста:\n";
                             foreach (QuestItem item in q.QuestRules.items)
                             {
-                                if (item.attribute == ItemAttribute.QUEST)
+                                if ((ItemAttribute)item.attribute == ItemAttribute.QUEST)
                                 {
                                     lItems.Text += item.count.ToString() + " X " + itemParent.parent.itemConst.getItemName(item.itemType) + "\n";
                                 }

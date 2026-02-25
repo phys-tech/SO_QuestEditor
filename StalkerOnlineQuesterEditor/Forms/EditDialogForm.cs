@@ -1106,7 +1106,7 @@ namespace StalkerOnlineQuesterEditor
                     QuestItem item = new QuestItem();
                     item.itemType = Convert.ToInt32(tmp[0]);
                     item.count = Convert.ToInt32(tmp[1]);
-                    item.attribute = (ItemAttribute)Convert.ToInt32(tmp[2]);
+                    item.attribute = Convert.ToInt32(tmp[2]);
                     item.condition = Convert.ToSingle(tmp[3]);
 
                     precondition.items.items.Add(item);
@@ -1118,7 +1118,7 @@ namespace StalkerOnlineQuesterEditor
    
                     item.itemType = Convert.ToInt32(tmp[0]);
                     item.count = Convert.ToInt32(tmp[1]);
-                    item.attribute = (ItemAttribute)Convert.ToInt32(tmp[2]);
+                    item.attribute = Convert.ToInt32(tmp[2]);
                     item.condition = Convert.ToSingle(tmp[3]);
                     precondition.itemsNone.items.Add(item);
                 }
@@ -1178,13 +1178,7 @@ namespace StalkerOnlineQuesterEditor
             {
                 int item_type = item.itemType;
                 string item_name = parent.itemConst.getItemName(item_type);
-                string item_attr;
-                switch (item.attribute)
-                {
-                    case ItemAttribute.QUEST: item_attr = "Квестовый"; break;
-                    case ItemAttribute.USE: item_attr = "Использовать"; break;
-                    default: item_attr = "Обычный"; break;
-                }
+                int item_attr = item.attribute;
                 int count = item.count;
                 string cond;
                 try
@@ -1195,7 +1189,7 @@ namespace StalkerOnlineQuesterEditor
                 {
                     cond = "0";
                 }
-                object[] row = { item_name, item_attr, count, cond };
+                object[] row = { item_name, count, item_attr, cond};
                 dg.Rows.Add(row);
             }
         }
@@ -1216,15 +1210,8 @@ namespace StalkerOnlineQuesterEditor
                     if ((int.TryParse(row.Cells[dg.Name + "_itemQuantity"].FormattedValue.ToString(), out quantity)) && (quantity >= 1))
                     {
                         int typeID = parent.itemConst.getIDOnName(typeName);
-                        string attrName = row.Cells[dg.Name + "_itemAttr"].FormattedValue.ToString();
-                        int attr;
-                        switch (attrName)
-                        {
-                            case "Квестовый": attr = 1; break;
-                            case "Использовать": attr = 2; break;
-                            default: attr = 0; break;
-                        }
-
+                        int attr = 0;
+                        int.TryParse(row.Cells[dg.Name + "_itemAttr"].FormattedValue.ToString(), out attr);
                         object[] obj = { typeID, quantity, attr, cond };
                         result.Add(obj);
                     }

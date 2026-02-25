@@ -562,7 +562,7 @@ namespace StalkerOnlineQuesterEditor
     {
         public int itemType = 0;
         public int count = 1;
-        public ItemAttribute attribute = 0;
+        public int attribute = 0;
         public int questID = 0;
         public bool blocked = false;
         public float condition = new float();
@@ -570,7 +570,7 @@ namespace StalkerOnlineQuesterEditor
         public static bool hasQuestItem(List<QuestItem> list)
         {
             foreach (QuestItem item in list)
-                if (item.attribute == ItemAttribute.QUEST) return true;
+                if (item.attribute > 0) return true;
             return false;
         }
     }
