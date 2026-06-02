@@ -32,7 +32,7 @@ namespace StalkerOnlineQuesterEditor
         public CSpacesConstants()
         {
             spaces = new List<CSpaceDescription>();
-            XDocument doc = XDocument.Load("../../../res/scripts/common/data/Spaces.xml"); 
+            XDocument doc;
             try
             {
                 doc = XDocument.Load("../../../res/scripts/common/data/Spaces.xml");

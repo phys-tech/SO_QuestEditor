@@ -630,6 +630,7 @@ namespace StalkerOnlineQuesterEditor
         public string Holder; //имя NPC
         public string Title;
         public string Text;
+        public int priorityMark = -1; //Метка приоретета, чтоб отображать иконку какой квест даст
         public CDialogPrecondition Precondition; //Условия
         public Actions Actions; //Действия диалога
         public List<int> Nodes;
@@ -646,7 +647,7 @@ namespace StalkerOnlineQuesterEditor
         public CDialog(string Holder, string Title, string Text, CDialogPrecondition Precondition,
                     Actions Actions, List<int> Nodes, List<int> CheckNodes, int DialogID, int version, 
                     NodeCoordinates Coordinates, string DebugData = "", bool noLocale = false, int nextDialog = 0, 
-                    bool isAutoNode = false, string defaultNode = "")
+                    bool isAutoNode = false, string defaultNode = "", int priorityMark = 0)
         {
             this.Holder = Holder;
             this.Title = Title;
@@ -663,6 +664,7 @@ namespace StalkerOnlineQuesterEditor
             this.isAutoNode = isAutoNode;
             this.defaultNode = defaultNode;
             this.nextDialog = nextDialog;
+            this.priorityMark = priorityMark;
         }
         public CDialog()
         {
@@ -682,6 +684,7 @@ namespace StalkerOnlineQuesterEditor
             this.defaultNode = "";
             this.ToDoTooltip = "";
             nextDialog = 0;
+            priorityMark = 0;
         }
         public CDialog Clone()
         {
@@ -701,6 +704,7 @@ namespace StalkerOnlineQuesterEditor
             copy.defaultNode = this.defaultNode;
             copy.nextDialog = nextDialog;
             copy.noLocale = noLocale;
+            copy.priorityMark = priorityMark;
             return copy;
         }
 

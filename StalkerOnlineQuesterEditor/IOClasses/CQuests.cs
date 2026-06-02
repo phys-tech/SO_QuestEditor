@@ -486,10 +486,24 @@ namespace StalkerOnlineQuesterEditor
                             if (message.Element("notification") != null)
                                 msg.isHighMessage = bool.Parse(message.Element("notification").Value); 
                             information.messages.Add(msg);
-
                         }
                     }
-
+                    if (item.Element("Additional").Element("radioMessages") != null)
+                    {
+                        foreach (XElement message in item.Element("Additional").Element("radioMessages").Elements())
+                        {
+                            QuestRadioMessage msg = new QuestRadioMessage();
+                            if (message.Element("sound") != null)
+                                msg.sound = message.Element("sound").Value.ToString();
+                            if (message.Element("stateFrom") != null)
+                                msg.state1 = int.Parse(message.Element("stateFrom").Value);
+                            if (message.Element("stateTo") != null)
+                                msg.state2 = int.Parse(message.Element("stateTo").Value);
+                            if (message.Element("duration") != null)
+                                msg.duration = int.Parse(message.Element("duration").Value);
+                            information.radioMessages.Add(msg);
+                        }
+                    }
                 }
 
                 if (!dict_target.ContainsKey(QuestID))
@@ -1026,7 +1040,7 @@ namespace StalkerOnlineQuesterEditor
                         element.Element("Penalty").Add(new XElement("Effects", EffectsXE));
                 }
 
-                if (questValue.Additional.Any() || questValue.QuestInformation.messages.Any())
+                if (questValue.Additional.Any() || questValue.QuestInformation.messages.Any() || questValue.QuestInformation.radioMessages.Any())
                 {
                     element.Add(new XElement("Additional"));
                     if (questValue.Additional.IsSubQuest != 0)
@@ -1064,6 +1078,18 @@ namespace StalkerOnlineQuesterEditor
                             element.Element("Additional").Element("messages").Add(new XElement("message", new XElement("stateFrom", message.state1),
                                                                                                           new XElement("stateTo", message.state2),
                                                                                                           new XElement("notification", message.isHighMessage)
+                            ));
+                        }
+                    }
+                    if (questValue.QuestInformation.radioMessages.Any())
+                    {
+                        element.Element("Additional").Add(new XElement("radioMessages"));
+                        foreach (var message in questValue.QuestInformation.radioMessages)
+                        {
+                            element.Element("Additional").Element("radioMessages").Add(new XElement("message", new XElement("sound", message.sound),
+                                                                                                            new XElement("stateFrom", message.state1),
+                                                                                                          new XElement("stateTo", message.state2),
+                                                                                                          new XElement("duration", message.duration)
                             ));
                         }
                     }

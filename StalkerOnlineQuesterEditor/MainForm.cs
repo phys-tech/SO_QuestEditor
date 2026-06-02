@@ -229,6 +229,7 @@ namespace StalkerOnlineQuesterEditor
 
             //tmpMethod();
             //tmpMethod2();
+            //changeSpaceID();
 
         }
         //! Set mode for me, if Command line has /master parameter, TestButton and some labels will be shown
@@ -3426,7 +3427,55 @@ namespace StalkerOnlineQuesterEditor
             writer.Close();
         }
 
-        
+        private void changeSpaceID()
+        {
+            
+            Dictionary<int, int> _spaces_ids = new Dictionary<int, int>() { [51] = 46, [48] = 2 };
+            Dictionary<string, string> _spaces_names = new Dictionary<string, string>() { ["station_lesnaya"] = "start_station_lesnaya", ["lubech"] = "city_lubech_2" };
+
+            //Dictionary<int, int> _spaces_ids = new Dictionary<int, int>() { [46] = 51, [2] = 48 };
+            //Dictionary<string, string> _spaces_names = new Dictionary<string, string>() { ["start_station_lesnaya"] = "station_lesnaya", ["city_lubech_2"] = "lubech" };
+
+            foreach(var npc in dialogs.dialogs.Values)
+            {
+                foreach(var dialog in npc)
+                {
+                    if (_spaces_ids.ContainsKey(dialog.Value.Precondition.coordsMap))
+                    {
+                        dialog.Value.Precondition.coordsMap = _spaces_ids[dialog.Value.Precondition.coordsMap];
+                    }
+
+                    if (_spaces_ids.ContainsKey(dialog.Value.Precondition.weather.space))
+                    {
+                        dialog.Value.Precondition.weather.space = _spaces_ids[dialog.Value.Precondition.weather.space];
+                    }
+                }
+
+               
+            }
+
+            return;
+            foreach (var quest in quests.quest)
+            {
+                foreach(var spaceid in _spaces_ids.Keys)
+                {
+                    if (Convert.ToBoolean(quest.Value.QuestRules.space & (((long)1) << spaceid)))
+                    {
+                        Dictionary<string, bool> spaces = spacesConst.getIntToSpaces(quest.Value.QuestRules.space);
+                        foreach (var space_name in _spaces_names.Keys)
+                        {
+                            if (spaces[space_name])
+                            {
+                                spaces[_spaces_names[space_name]] = true;
+                                spaces[space_name] = false;
+                            }
+                        }
+                        break;
+
+                    }
+                }
+            }
+        }
         private void tmpMethod()
         {
            

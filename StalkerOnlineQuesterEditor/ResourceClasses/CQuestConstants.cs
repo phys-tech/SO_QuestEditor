@@ -380,7 +380,7 @@ namespace StalkerOnlineQuesterEditor
             {
                 if (pair.Value == name) return pair.Key;
             }
-            return 0;
+            return -1;
         }
 
         public static string getNameByID(int frac_id)

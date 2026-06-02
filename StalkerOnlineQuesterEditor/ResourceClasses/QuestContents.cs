@@ -104,6 +104,28 @@ namespace StalkerOnlineQuesterEditor
         }
     }
 
+    public class QuestRadioMessage
+    {
+        public string sound = "";
+        public int state1 = -1;
+        public int state2 = -1;
+        public int duration = 5;
+
+        public QuestRadioMessage()
+        {
+
+        }
+
+        public QuestRadioMessage(QuestRadioMessage original)
+        {
+            sound = original.sound;
+            state1 = original.state1;
+            state2 = original.state2;
+            duration = original.duration;
+        }
+
+    }
+
     public class QuestMessages
     {
         public string message = "";
@@ -156,6 +178,7 @@ namespace StalkerOnlineQuesterEditor
         public string DescriptionOnTest;
         public string DescriptionClosed;
         public List<QuestMessages> messages = new List<QuestMessages>();
+        public List<QuestRadioMessage> radioMessages = new List<QuestRadioMessage>();
         public Dictionary<int, QuestItemInfo> Items;
 
         public object Clone()

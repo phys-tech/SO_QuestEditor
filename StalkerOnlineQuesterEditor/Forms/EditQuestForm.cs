@@ -228,6 +228,14 @@ namespace StalkerOnlineQuesterEditor
                 fillPrecondition();
                 fillQuestRules();
                 fillReward();
+
+                dataGridRadio.Rows.Clear();
+                foreach (var i in quest.QuestInformation.radioMessages)
+                {
+                    object[] row = { QuestMessageType.getName(i.state1), QuestMessageType.getName(i.state2), i.duration, i.sound  };
+                    dataGridRadio.Rows.Add(row);
+                }
+
             }
             else
             {
@@ -1472,14 +1480,46 @@ namespace StalkerOnlineQuesterEditor
                     information.messages.Add(item);
                 }
              }
-                /*
-                information.onWin = onWonTextBox.Text;
-                information.onGet = onGotTextBox.Text;
-                information.onFailed = onFailedTextBox.Text;
-                information.onOpen = onOpenTextBox.Text;
-                information.onTest = onTestTextBox.Text;
-                */
-                rules.basePercent = Convert.ToSingle(nBaseToCapturePercent.Value) / 100;
+
+            
+            foreach (DataGridViewRow row in dataGridRadio.Rows)
+            {
+                QuestRadioMessage item = new QuestRadioMessage();
+                item.sound = row.Cells["sound"].FormattedValue.ToString();
+                if (!item.sound.Equals(""))
+                {
+                    if (row.Cells["_state1"].Value == null || row.Cells["_state2"].Value == null)
+                    {
+                        MessageBox.Show("Ошибка состояния квеста для сообщения рации", "Ошибка");
+                        return null;
+                    }
+                    item.state1 = QuestMessageType.getType(row.Cells["_state1"].Value.ToString());
+                    item.state2 = QuestMessageType.getType(row.Cells["_state2"].Value.ToString());
+
+                    int duration = 0;
+                    if (!int.TryParse(row.Cells["duration"].Value.ToString(), out duration))
+                    {
+                        MessageBox.Show("Ошибка времени для сообщения рации", "Ошибка");
+                        return null;
+                    }
+
+                    if (duration < 5)
+                    {
+                        MessageBox.Show("Время зконка рации не должно быть меньше 5 сек", "Ошибка");
+                        return null;
+                    }
+                    item.duration = duration;
+                    information.radioMessages.Add(item);
+                }
+            }
+            /*
+            information.onWin = onWonTextBox.Text;
+            information.onGet = onGotTextBox.Text;
+            information.onFailed = onFailedTextBox.Text;
+            information.onOpen = onOpenTextBox.Text;
+            information.onTest = onTestTextBox.Text;
+            */
+            rules.basePercent = Convert.ToSingle(nBaseToCapturePercent.Value) / 100;
             rules.dontTakeItems = !cbTakeItems.Checked;
             rules.dontHideMarks = cbMarkOnTest.Checked;
             target.QuestType = parent.questConst.getQuestTypeOnDescription(eventComboBox.SelectedItem.ToString());

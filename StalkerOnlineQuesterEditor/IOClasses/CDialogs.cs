@@ -99,6 +99,7 @@ namespace StalkerOnlineQuesterEditor
                     string DebugData = "";
                     bool isAutoNode = false;
                     string defaultNode = "";
+                    int priorityMark = -1;
                     List<int> Nodes = new List<int>();
                     List<int> CheckNodes = new List<int>();
                     Actions Actions = new Actions();
@@ -437,6 +438,9 @@ namespace StalkerOnlineQuesterEditor
                     bool noLocale = false;
                     if (dialog.Element("noLocale") != null)
                         noLocale = true;
+                    if (dialog.Element("priorityMark") != null)
+                        int.TryParse(dialog.Element("priorityMark").Value.ToString(), out priorityMark);
+                    
                     //if (NPC_EX.Contains(npc_name))
                     //    noLocale = true;
                     if (dialog.Element("isAutoNode") != null)
@@ -449,7 +453,7 @@ namespace StalkerOnlineQuesterEditor
                         int.TryParse(dialog.Element("nextDialog").Value.ToString(), out nextDialog);
                     if (!target[npc_name].Keys.Contains(DialogID))
                         target[npc_name].Add(DialogID, new CDialog(npc_name, "", "", Precondition, Actions, Nodes, CheckNodes, DialogID, 0, 
-                            nodeCoord, DebugData, noLocale, nextDialog, isAutoNode, defaultNode));
+                            nodeCoord, DebugData, noLocale, nextDialog, isAutoNode, defaultNode, priorityMark));
                 }
             }
 
@@ -979,6 +983,7 @@ namespace StalkerOnlineQuesterEditor
                         element.Add(new XElement("Active", Global.GetBoolAsString(dialog.coordinates.Active)));
                     if (dialog.DebugData != "") element.Add(new XElement("DebugData", dialog.DebugData));
                     if (dialog.noLocale) element.Add(new XElement("noLocale", "1"));
+                    if (dialog.priorityMark >= 0) element.Add(new XElement("priorityMark", dialog.priorityMark.ToString()));
                     if (dialog.isAutoNode)
                     {
                         element.Add(new XElement("isAutoNode", Global.GetBoolAsString(dialog.isAutoNode)));

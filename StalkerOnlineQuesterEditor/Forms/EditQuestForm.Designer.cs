@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelCreateMob = new System.Windows.Forms.Panel();
             this.cbMobInvul = new System.Windows.Forms.CheckBox();
             this.cbMobLevel = new System.Windows.Forms.ComboBox();
@@ -241,6 +242,12 @@
             this.cbQuestLink = new System.Windows.Forms.ComboBox();
             this.cbFraction2Bonus = new System.Windows.Forms.ComboBox();
             this.label34 = new System.Windows.Forms.Label();
+            this.tabRadio = new System.Windows.Forms.TabPage();
+            this.dataGridRadio = new System.Windows.Forms.DataGridView();
+            this._state1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this._state2 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sound = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelCreateMob.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nupMobCount)).BeginInit();
             this.panelPVPQuests.SuspendLayout();
@@ -269,6 +276,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nupb2ctime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nupConditionDead)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLevel)).BeginInit();
+            this.tabRadio.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridRadio)).BeginInit();
             this.SuspendLayout();
             // 
             // panelCreateMob
@@ -1074,8 +1083,8 @@
             this.show});
             this.messageGridView.Location = new System.Drawing.Point(6, 280);
             this.messageGridView.Name = "messageGridView";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.messageGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.messageGridView.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.messageGridView.Size = new System.Drawing.Size(618, 122);
             this.messageGridView.TabIndex = 75;
             // 
@@ -1265,6 +1274,7 @@
             this.tcDescriptions.Controls.Add(this.tabOpen);
             this.tcDescriptions.Controls.Add(this.tabOnTest);
             this.tcDescriptions.Controls.Add(this.tabClosed);
+            this.tcDescriptions.Controls.Add(this.tabRadio);
             this.tcDescriptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tcDescriptions.Location = new System.Drawing.Point(0, 23);
             this.tcDescriptions.Name = "tcDescriptions";
@@ -1653,8 +1663,8 @@
             // 
             // radius
             // 
-            dataGridViewCellStyle4.NullValue = "0";
-            this.radius.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle3.NullValue = "0";
+            this.radius.DefaultCellStyle = dataGridViewCellStyle3;
             this.radius.HeaderText = "радиус";
             this.radius.Name = "radius";
             // 
@@ -2514,6 +2524,74 @@
             this.label34.TabIndex = 61;
             this.label34.Text = "Бонус группы:";
             // 
+            // tabRadio
+            // 
+            this.tabRadio.Controls.Add(this.dataGridRadio);
+            this.tabRadio.Location = new System.Drawing.Point(4, 24);
+            this.tabRadio.Name = "tabRadio";
+            this.tabRadio.Padding = new System.Windows.Forms.Padding(3);
+            this.tabRadio.Size = new System.Drawing.Size(532, 156);
+            this.tabRadio.TabIndex = 3;
+            this.tabRadio.Text = "Рация";
+            this.tabRadio.UseVisualStyleBackColor = true;
+            // 
+            // dataGridRadio
+            // 
+            this.dataGridRadio.AllowUserToOrderColumns = true;
+            this.dataGridRadio.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridRadio.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this._state1,
+            this._state2,
+            this.duration,
+            this.sound});
+            this.dataGridRadio.Location = new System.Drawing.Point(5, 3);
+            this.dataGridRadio.Name = "dataGridRadio";
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridRadio.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridRadio.Size = new System.Drawing.Size(521, 122);
+            this.dataGridRadio.TabIndex = 76;
+            // 
+            // _state1
+            // 
+            this._state1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this._state1.HeaderText = "Состояние ДО";
+            this._state1.Items.AddRange(new object[] {
+            "Any",
+            "Open",
+            "On test",
+            "Closed",
+            "Freez",
+            "Absient"});
+            this._state1.Name = "_state1";
+            this._state1.Width = 70;
+            // 
+            // _state2
+            // 
+            this._state2.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this._state2.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this._state2.HeaderText = "Состояние ПОСЛЕ";
+            this._state2.Items.AddRange(new object[] {
+            "Any",
+            "Open",
+            "On test",
+            "Closed",
+            "Freez",
+            "Absient"});
+            this._state2.Name = "_state2";
+            this._state2.Width = 70;
+            // 
+            // duration
+            // 
+            this.duration.HeaderText = "сек";
+            this.duration.Name = "duration";
+            this.duration.Width = 40;
+            // 
+            // sound
+            // 
+            this.sound.HeaderText = "звук";
+            this.sound.Name = "sound";
+            this.sound.Width = 295;
+            // 
             // EditQuestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2584,6 +2662,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nupb2ctime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nupConditionDead)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLevel)).EndInit();
+            this.tabRadio.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridRadio)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2801,5 +2881,11 @@
         private System.Windows.Forms.CheckBox cbMarkOnTest;
         private System.Windows.Forms.CheckBox cbPVPOnlyAlly;
         private System.Windows.Forms.CheckBox cbPVPOnlyEnemy;
+        private System.Windows.Forms.TabPage tabRadio;
+        private System.Windows.Forms.DataGridView dataGridRadio;
+        private System.Windows.Forms.DataGridViewComboBoxColumn _state1;
+        private System.Windows.Forms.DataGridViewComboBoxColumn _state2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn duration;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sound;
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using Microsoft.VisualBasic;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 
 namespace StalkerOnlineQuesterEditor
 {
@@ -387,6 +389,15 @@ namespace StalkerOnlineQuesterEditor
             cbDungeonNon.Checked = curDialog.Precondition.dungeonNot;
             cbForDev.Checked = curDialog.Precondition.forDev;
             cbHidden.Checked = curDialog.Precondition.hidden;
+
+
+            cbCategoryMark.Items.Clear();
+            cbCategoryMark.Items.Add("-1 Без метки");
+            cbCategoryMark.Items.AddRange(QuestPriorities.getListNames());
+            cbCategoryMark.SelectedIndex = 0;
+            if (curDialog.priorityMark >= 0)
+                cbCategoryMark.SelectedItem = QuestPriorities.getNameByID(curDialog.priorityMark);
+
             this.initReputationTab(dataReputation, parent.fractions, this.editPrecondition.Reputation, this.editPrecondition.NPCReputation);
             this.initReputationTab(dataReputation2, parent.fractions2, this.editPrecondition.Reputation2, new Dictionary<string, List<double>>());
             fillGroupBonuses();
@@ -669,7 +680,8 @@ namespace StalkerOnlineQuesterEditor
         private void bEditDialogOk_Click(object sender, EventArgs e)
         {
             int newID;
-            string DebugData = ""; 
+            string DebugData = "";
+            int priorityMark = 0;
             Actions actions = new Actions();
             CDialogPrecondition precondition = new CDialogPrecondition();
             NodeCoordinates coord = new NodeCoordinates();
@@ -1136,6 +1148,9 @@ namespace StalkerOnlineQuesterEditor
             int nextDialog = 0;
             int.TryParse(tbNextDialog.Text, out nextDialog);
 
+            if (cbCategoryMark.SelectedItem != null) 
+                priorityMark = QuestPriorities.getIDByName(cbCategoryMark.SelectedItem.ToString());
+            
             if (isAdd)
             {
                 newID = CDialogs.getDialogsNewID();
@@ -1162,7 +1177,7 @@ namespace StalkerOnlineQuesterEditor
                 }
                 parent.replaceDialog(new CDialog(holder, tPlayerText.Text, tReactionNPC.Text,
                     precondition, actions, nodes, check_nodes, currentDialogID, version, 
-                                        coord, DebugData, cbNoLocale.Checked, nextDialog, cbAutoNode.Checked, autoDefaultNode.Text), currentDialogID);
+                                        coord, DebugData, cbNoLocale.Checked, nextDialog, cbAutoNode.Checked, autoDefaultNode.Text, priorityMark), currentDialogID);
             }
             //parent.Enabled = true;
             parent.setEnable();
@@ -1914,7 +1929,7 @@ namespace StalkerOnlineQuesterEditor
         {
             GVItems.Width = (sender as Panel).Width / 2;
             GVNonItems.Width = (sender as Panel).Width / 2;
-            GVNonItems.Location = new Point((sender as Panel).Width / 2, GVNonItems.Location.Y);
+            GVNonItems.Location = new System.Drawing.Point((sender as Panel).Width / 2, GVNonItems.Location.Y);
         }
 
         private void rbOr_CheckedChanged(object sender, EventArgs e)
@@ -1957,7 +1972,7 @@ namespace StalkerOnlineQuesterEditor
             if (listLastDialogsForm.IsDisposed)
                 listLastDialogsForm = new ListLastDialogsForm(parent);
             listLastDialogsForm.setListData(data);
-            listLastDialogsForm.Location = new Point(this.Location.X + this.Width + 10, this.Location.Y);
+            listLastDialogsForm.Location = new System.Drawing.Point(this.Location.X + this.Width + 10, this.Location.Y);
             listLastDialogsForm.Show();
         }
 
